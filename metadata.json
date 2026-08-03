@@ -1,0 +1,6 @@
+{
+  "name": "MUCO Labs",
+  "description": "MUCO Labs - Your Vision. Our Technology. Enterprise Web, Mobile, AI Solutions, Digital Marketing & IT Consulting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
