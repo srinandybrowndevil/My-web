@@ -197,6 +197,10 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
                   <img
                     src={project.image}
                     alt={project.title}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
@@ -334,7 +338,15 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
             </div>
 
             <div className="h-48 rounded-2xl overflow-hidden bg-slate-800">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-cover" />
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+                }}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             <div className="space-y-3">

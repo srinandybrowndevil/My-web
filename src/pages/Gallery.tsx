@@ -63,6 +63,9 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                     src={FOUNDER_INFO.image}
                     alt={FOUNDER_INFO.name}
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';
+                    }}
                     className="w-full h-80 object-cover object-top transform group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 text-center">
@@ -190,6 +193,9 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                   src={item.image}
                   alt={item.title}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80';
+                  }}
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
@@ -257,6 +263,9 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                 src={activeItem.image}
                 alt={activeItem.title}
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80';
+                }}
                 className="w-full h-full object-cover"
               />
               <button

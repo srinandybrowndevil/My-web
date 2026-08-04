@@ -395,6 +395,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     src={FOUNDER_INFO.image}
                     alt={FOUNDER_INFO.name}
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';
+                    }}
                     className="w-full h-64 object-cover object-top"
                   />
                   <div className="p-3 bg-slate-950/90 text-center border-t border-slate-800">

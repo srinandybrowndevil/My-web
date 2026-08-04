@@ -24,7 +24,7 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     description: 'High-concurrency B2B marketplace allowing agricultural producers to list bulk inventory, accept international wire payments, and track freight logistics.',
     techStack: ['Next.js 15', 'TypeScript', 'Tailwind CSS', 'Stripe', 'Redis'],
     status: 'Completed & Live',
-    image: 'https://images.unsplash.com/photo-1556742049-0a670f4a4591?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=800&q=80',
     liveUrl: '#',
     highlights: ['3.2x growth in online B2B buyer inquiries', 'Sub-second search filtering across 10,000+ SKUs', 'Integrated multi-currency pricing']
   },
