@@ -45,7 +45,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
           {[
             {
               icon: <User className="w-6 h-6 text-blue-600 dark:text-blue-400" />,
-              title: 'Founder & MD',
+              title: 'Founder & Chairman',
               value: 'Srinivash Mahalingam',
               sub: 'Direct Leadership & Tech Guidance'
             },
@@ -112,7 +112,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
             {/* Founder Statement */}
             <div className="md:col-span-8 space-y-4">
               <span className="text-xs font-bold uppercase tracking-widest text-blue-400 block">
-                Founder & CEO Statement
+                Founder & Chairman Statement
               </span>
               <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
                 Driven By Engineering Craft & Transparent Value
@@ -123,7 +123,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
               <div className="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
                 <div>
                   <p className="font-extrabold text-white text-sm">{FOUNDER_INFO.name}</p>
-                  <p className="text-xs text-blue-400 font-medium">Founder & CEO, MUCO Labs</p>
+                  <p className="text-xs text-blue-400 font-medium">Founder & Chairman, MUCO Labs</p>
                 </div>
                 <button
                   onClick={() => onNavigate('gallery')}

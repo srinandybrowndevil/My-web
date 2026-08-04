@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageId } from '../types';
+import { MucoLogo } from '../components/MucoLogo';
 import {
   Smartphone,
   CheckCircle2,
@@ -173,9 +174,7 @@ export const AppStudio: React.FC<AppStudioProps> = ({
                 {/* Simulated App Header */}
                 <div className="flex items-center justify-between py-2 border-b border-slate-700/30">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-xs">
-                      M
-                    </div>
+                    <MucoLogo variant="mark" customSize={22} />
                     <span className="font-extrabold text-xs tracking-tight">
                       MUCO <span className="text-blue-500">Mobile</span>
                     </span>

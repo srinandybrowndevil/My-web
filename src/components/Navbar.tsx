@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PageId } from '../types';
 import { ThemeToggle } from './ThemeToggle';
 import { Menu, X, Phone, ArrowRight, ShieldCheck } from 'lucide-react';
+import { MucoLogo } from './MucoLogo';
 
 interface NavbarProps {
   currentPage: PageId;
@@ -52,26 +53,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
           {/* Logo */}
           <button
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-3 group text-left focus:outline-none"
+            className="group text-left focus:outline-none"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-500 p-0.5 shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-200">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-black text-white text-base tracking-wider">
-                M<span className="text-blue-400">L</span>
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white">
-                  MUCO <span className="text-blue-600 dark:text-blue-400">Labs</span>
-                </span>
-                <span className="text-[10px] font-semibold tracking-wider text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-800/60">
-                  Est. 2026
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-tight">
-                Your Vision. Our Technology.
-              </p>
-            </div>
+            <MucoLogo variant="full" size="md" showTagline={true} />
           </button>
 
           {/* Desktop Nav Links */}

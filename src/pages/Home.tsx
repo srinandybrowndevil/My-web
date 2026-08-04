@@ -425,7 +425,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-800 pt-5">
                 <div>
                   <p className="text-base font-extrabold text-white">{FOUNDER_INFO.name}</p>
-                  <p className="text-xs text-blue-400 font-medium">Founder & Managing Director, MUCO Labs</p>
+                  <p className="text-xs text-blue-400 font-medium">Founder & Chairman, MUCO Labs</p>
                 </div>
 
                 <button

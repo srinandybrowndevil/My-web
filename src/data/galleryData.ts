@@ -13,7 +13,7 @@ export interface GalleryItem {
 
 export const FOUNDER_INFO = {
   name: 'Srinivash Mahalingam',
-  role: 'Founder & CEO / Managing Director',
+  role: 'Founder & Chairman',
   company: 'MUCO Labs',
   foundedYear: '2026',
   location: 'Erode, Tamil Nadu, India',
@@ -39,7 +39,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     id: 'gal-2',
     title: 'Founder & Engineering Architectural Session',
     category: 'Engineering Lab',
-    description: 'Founder & CEO Srinivash Mahalingam leading a system design sprint for a multi-tenant cloud SaaS deployment.',
+    description: 'Founder & Chairman Srinivash Mahalingam leading a system design sprint for a multi-tenant cloud SaaS deployment.',
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
     date: 'July 2026',
     location: 'MUCO Labs HQ',

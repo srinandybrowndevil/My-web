@@ -49,7 +49,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
         </p>
       </section>
 
-      {/* Founder & CEO Spotlight Card */}
+      {/* Founder & Chairman Spotlight Card */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 text-white rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl relative overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
@@ -70,7 +70,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 text-center">
                     <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase text-blue-400 bg-blue-950/90 px-3 py-1 rounded-full border border-blue-800/80">
-                      <UserCheck className="w-3.5 h-3.5 text-emerald-400" /> Verified Founder & CEO
+                      <UserCheck className="w-3.5 h-3.5 text-emerald-400" /> Verified Founder & Chairman
                     </span>
                   </div>
                 </div>
