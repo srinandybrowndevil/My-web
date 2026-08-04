@@ -1,4 +1,4 @@
-import founderPortrait from '../assets/images/founder_ceo_portrait_1785845079526.jpg';
+import founderPortrait from '../assets/images/srinivash.png';
 
 export interface GalleryItem {
   id: string;
