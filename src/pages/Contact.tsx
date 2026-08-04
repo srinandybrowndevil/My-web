@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck } from 'lucide-react';
 import { ContactFormData } from '../types';
+import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInbox';
 
 interface ContactProps {
   initialMessage?: string;
@@ -19,6 +20,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showInboxModal, setShowInboxModal] = useState(false);
 
   useEffect(() => {
     if (initialMessage) {
@@ -30,8 +32,30 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const newMsgItem: SavedMessage = {
+      id: `msg-${Date.now()}`,
+      name: formData.name || 'Valued Client',
+      email: formData.email,
+      phone: formData.phone,
+      company: formData.company || 'N/A',
+      serviceCategory: formData.serviceCategory,
+      budgetRange: formData.budgetRange,
+      message: formData.message,
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      status: 'New'
+    };
+
+    // Save locally
     try {
-      // Send to server API if available or process locally
+      const existingStr = localStorage.getItem('muco_contact_messages');
+      const existing: SavedMessage[] = existingStr ? JSON.parse(existingStr) : [];
+      localStorage.setItem('muco_contact_messages', JSON.stringify([newMsgItem, ...existing]));
+    } catch {
+      // localStorage error fallback
+    }
+
+    try {
+      // Send to server API
       await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,18 +72,34 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
   return (
     <div className="space-y-12 pb-16">
+      {/* Admin Messages Inbox Modal */}
+      <AdminMessagesInbox isOpen={showInboxModal} onClose={() => setShowInboxModal(false)} />
+
       {/* Header Banner */}
-      <section className="text-center max-w-3xl mx-auto px-4 pt-8">
-        <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-semibold text-xs mb-3">
+      <section className="text-center max-w-3xl mx-auto px-4 pt-8 space-y-3">
+        <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-semibold text-xs">
           <Mail className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>Get In Touch With MUCO Labs</span>
         </div>
+
         <h1 className="text-3xl sm:text-5xl font-black text-slate-950 dark:text-white tracking-tight">
           Let's Discuss Your Vision
         </h1>
-        <p className="text-sm text-slate-900 dark:text-slate-200 mt-2 font-medium">
+
+        <p className="text-sm text-slate-900 dark:text-slate-200 font-medium">
           Reach out directly to founder Srinivash Mahalingam and our software engineering team in Erode, Tamil Nadu.
         </p>
+
+        {/* View Submitted Messages Inbox Button */}
+        <div className="pt-2">
+          <button
+            onClick={() => setShowInboxModal(true)}
+            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-500 font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-slate-700 dark:border-blue-500/40 transition-all"
+          >
+            <Inbox className="w-4 h-4 text-emerald-400" />
+            <span>View Received Messages Inbox (Admin)</span>
+          </button>
+        </div>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -169,14 +209,23 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   Message Successfully Sent!
                 </h2>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-                  Thank you for reaching out to MUCO Labs. Founder Srinivash Mahalingam or an engineering lead will review your request and get back to you within 24 hours.
+                  Thank you for reaching out to MUCO Labs. Founder Srinivash Mahalingam or an engineering lead will review your request and get back to you within 24 hours. Your message has been saved to the Lead Inbox.
                 </p>
-                <button
-                  onClick={() => setIsSubmitted(false)}
-                  className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 px-6 rounded-xl"
-                >
-                  Send Another Message
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                  <button
+                    onClick={() => setIsSubmitted(false)}
+                    className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs py-2.5 px-5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                  >
+                    Send Another Message
+                  </button>
+                  <button
+                    onClick={() => setShowInboxModal(true)}
+                    className="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs py-2.5 px-5 rounded-xl shadow-md transition-all flex items-center gap-2"
+                  >
+                    <Inbox className="w-4 h-4 text-emerald-300" />
+                    <span>View In Client Lead Inbox</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">

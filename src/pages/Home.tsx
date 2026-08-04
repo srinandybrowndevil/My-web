@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageId } from '../types';
 import { CORE_SERVICES, TECH_STACK } from '../data/servicesData';
+import { FOUNDER_INFO } from '../data/galleryData';
 import { DynamicIcon } from '../components/DynamicIcon';
 import { EstimateCalculator } from '../components/EstimateCalculator';
 import {
@@ -385,7 +386,26 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 text-white rounded-3xl p-8 sm:p-12 shadow-2xl border border-slate-800 relative overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-            <div className="lg:col-span-7 space-y-5">
+            {/* Founder Image & Info */}
+            <div className="lg:col-span-4 flex flex-col items-center justify-center">
+              <div className="relative group w-full max-w-[240px]">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-40 group-hover:opacity-80 transition duration-300" />
+                <div className="relative rounded-2xl overflow-hidden border-2 border-blue-500/50 shadow-xl bg-slate-950">
+                  <img
+                    src={FOUNDER_INFO.image}
+                    alt={FOUNDER_INFO.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-64 object-cover object-top"
+                  />
+                  <div className="p-3 bg-slate-950/90 text-center border-t border-slate-800">
+                    <p className="font-extrabold text-white text-sm">{FOUNDER_INFO.name}</p>
+                    <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{FOUNDER_INFO.role}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-8 space-y-5">
               <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 px-3.5 py-1 rounded-full text-xs font-semibold border border-blue-500/30">
                 <Building className="w-3.5 h-3.5" />
                 <span>Leadership & Vision</span>
@@ -395,48 +415,23 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 Architecting Modern Technology From Erode to the World
               </h2>
 
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
                 "At MUCO Labs, we believe that software should be engineered with absolute transparent clarity, zero fluff, and raw performance. Founded in 2026, our mission is to empower visionaries and businesses with robust technology that yields tangible growth."
               </p>
 
-              <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4 border-t border-slate-800 pt-5">
+              <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-800 pt-5">
                 <div>
-                  <p className="text-base font-extrabold text-white">Srinivash Mahalingam</p>
+                  <p className="text-base font-extrabold text-white">{FOUNDER_INFO.name}</p>
                   <p className="text-xs text-blue-400 font-medium">Founder & Managing Director, MUCO Labs</p>
                 </div>
-                <div className="hidden sm:block w-px h-8 bg-slate-800" />
-                <div className="text-xs text-slate-400 space-y-0.5">
-                  <p className="flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-blue-400" /> Erode, Tamil Nadu, India
-                  </p>
-                  <p className="flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-blue-400" /> mucolabs2026@gmail.com
-                  </p>
-                </div>
-              </div>
-            </div>
 
-            <div className="lg:col-span-5 bg-slate-900/90 rounded-2xl p-6 border border-slate-800 space-y-4">
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-3">
-                Why Work With MUCO Labs?
-              </h3>
-              <div className="space-y-3 text-xs">
-                {[
-                  { title: 'No Hidden Costs', desc: 'All pricing for web, mobile, software, AI, and marketing is published upfront.' },
-                  { title: 'Modern Tech Stack', desc: 'React 19, Next.js 15, TypeScript, Tailwind CSS, Python, Node.js & Gemini AI.' },
-                  { title: 'Direct Founder Line', desc: 'Direct technical communication with founder Srinivash Mahalingam (+91 6381809844).' },
-                  { title: 'Full Source Code Ownership', desc: 'You retain 100% intellectual property rights and database access.' }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-bold text-[10px]">
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <p className="font-bold text-white">{item.title}</p>
-                      <p className="text-slate-400">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                <button
+                  onClick={() => onNavigate('gallery')}
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-lg transition-all flex items-center gap-2"
+                >
+                  <span>Explore Photo Gallery</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>

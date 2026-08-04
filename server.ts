@@ -8,20 +8,87 @@ async function startServer() {
 
   app.use(express.json());
 
+  // In-memory messages store for submitted leads
+  let contactMessages: Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    company?: string;
+    serviceCategory: string;
+    budgetRange: string;
+    message: string;
+    timestamp: string;
+    status: 'New' | 'Contacted' | 'Closed';
+  }> = [
+    {
+      id: 'msg-sample-1',
+      name: 'Anand Kumar',
+      email: 'anand@texexports.com',
+      phone: '+91 98421 12345',
+      company: 'TexExports India',
+      serviceCategory: 'Website Development',
+      budgetRange: '₹50,000 - ₹1,00,000',
+      message: 'Need a custom B2B web application with multi-language support and product catalog for international buyers.',
+      timestamp: '2026-08-03 10:30 AM',
+      status: 'New'
+    },
+    {
+      id: 'msg-sample-2',
+      name: 'Priya Sundaram',
+      email: 'priya@freshmart.in',
+      phone: '+91 98940 67890',
+      company: 'FreshMart Supermarkets',
+      serviceCategory: 'Mobile App Development',
+      budgetRange: '₹1,00,000+',
+      message: 'Looking for a cross-platform mobile delivery app on iOS and Play Store for grocery ordering in Erode.',
+      timestamp: '2026-08-03 02:15 PM',
+      status: 'Contacted'
+    }
+  ];
+
   // API Routes
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', company: 'MUCO Labs', founder: 'Srinivash Mahalingam' });
   });
 
+  // Get all submitted contact messages
+  app.get('/api/contact/messages', (req, res) => {
+    res.json({ success: true, count: contactMessages.length, messages: contactMessages });
+  });
+
+  // Save new contact message
   app.post('/api/contact', (req, res) => {
     const { name, email, phone, company, serviceCategory, budgetRange, message } = req.body;
-    console.log('[MUCO Labs Lead Received]', { name, email, phone, company, serviceCategory, budgetRange, message });
+    
+    const newMsg = {
+      id: `msg-${Date.now()}`,
+      name: name || 'Anonymous',
+      email: email || 'No email provided',
+      phone: phone || 'No phone provided',
+      company: company || 'Individual',
+      serviceCategory: serviceCategory || 'General Inquiry',
+      budgetRange: budgetRange || 'Flexible',
+      message: message || '',
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      status: 'New' as const
+    };
+
+    contactMessages.unshift(newMsg);
+    console.log('[MUCO Labs Lead Received]', newMsg);
 
     res.json({
       success: true,
       message: 'Thank you for contacting MUCO Labs. Founder Srinivash Mahalingam or an engineer will get back to you shortly.',
-      receivedData: { name, email, phone, serviceCategory }
+      receivedData: newMsg
     });
+  });
+
+  // Clear or delete a message
+  app.delete('/api/contact/messages/:id', (req, res) => {
+    const { id } = req.params;
+    contactMessages = contactMessages.filter((m) => m.id !== id);
+    res.json({ success: true, remainingCount: contactMessages.length });
   });
 
   // Vite middleware for development vs static serve for production

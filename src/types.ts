@@ -1,4 +1,26 @@
-export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'maintenance' | 'contact' | 'faq';
+export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq';
+
+export interface ProjectItem {
+  id: string;
+  title: string;
+  category:
+    | 'Web Development'
+    | 'Mobile App'
+    | 'SaaS Platform'
+    | 'AI & Automation'
+    | 'Digital Marketing & SEO'
+    | 'UI/UX & Branding'
+    | 'Cloud & IT Consulting'
+    | 'Upcoming / In Development';
+  client: string;
+  year: string;
+  description: string;
+  techStack: string[];
+  status: 'Completed & Live' | 'In Active Development' | 'Planned / Q3 2026';
+  image: string;
+  liveUrl?: string;
+  highlights: string[];
+}
 
 export interface ServiceCategory {
   id: string;

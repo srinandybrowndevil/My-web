@@ -8,7 +8,10 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Services } from './pages/Services';
 import { Pricing } from './pages/Pricing';
+import { Portfolio } from './pages/Portfolio';
+import { AppStudio } from './pages/AppStudio';
 import { Maintenance } from './pages/Maintenance';
+import { Gallery } from './pages/Gallery';
 import { Contact } from './pages/Contact';
 import { FAQ } from './pages/FAQ';
 
@@ -50,8 +53,20 @@ export default function App() {
             onNavigateToMaintenance={() => handleNavigate('maintenance')}
           />
         )}
+        {currentPage === 'portfolio' && (
+          <Portfolio onNavigate={handleNavigate} />
+        )}
+        {currentPage === 'apps' && (
+          <AppStudio
+            onNavigateToContactWithItem={handleNavigateToContactWithItem}
+            onNavigate={handleNavigate}
+          />
+        )}
         {currentPage === 'maintenance' && (
           <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
+        )}
+        {currentPage === 'gallery' && (
+          <Gallery onNavigate={handleNavigate} />
         )}
         {currentPage === 'contact' && (
           <Contact initialMessage={contactInitialMessage} />

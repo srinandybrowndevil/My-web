@@ -56,8 +56,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 { id: 'home', label: 'Home Page' },
                 { id: 'about', label: 'About MUCO Labs' },
                 { id: 'services', label: 'All Services' },
+                { id: 'portfolio', label: 'Project Portfolio' },
+                { id: 'apps', label: 'Publish to Play/App Store' },
                 { id: 'pricing', label: 'Pricing Calculator' },
                 { id: 'maintenance', label: 'Maintenance Plans' },
+                { id: 'gallery', label: 'Photo Gallery & Life at MUCO' },
                 { id: 'faq', label: 'Help & FAQ' },
                 { id: 'contact', label: 'Contact Us' }
               ].map((link) => (

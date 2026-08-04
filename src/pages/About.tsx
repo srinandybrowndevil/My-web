@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageId } from '../types';
+import { FOUNDER_INFO } from '../data/galleryData';
 import {
   Building2,
   Calendar,
@@ -85,20 +86,48 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
       {/* Founder's Vision Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 border border-slate-800 shadow-2xl relative overflow-hidden">
-          <div className="max-w-3xl space-y-6 relative z-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-blue-400 block">
-              Founder Statement
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-              Driven By Engineering Craft & Transparent Value
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              "When I established MUCO Labs in 2026 in Erode, Tamil Nadu, the core goal was clear: bridge the gap between ambitious business visions and production-grade software execution. Too many businesses suffer from vague estimates, delayed delivery, and opaque codebases. At MUCO Labs, every project has upfront pricing, strict SLA commitments, and clean, high-performance code."
-            </p>
-            <div className="pt-4 border-t border-slate-800 flex items-center gap-4">
-              <div>
-                <p className="font-extrabold text-white text-base">Srinivash Mahalingam</p>
-                <p className="text-xs text-blue-400 font-medium">Founder & Managing Director</p>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+            {/* Founder Image */}
+            <div className="md:col-span-4 flex justify-center">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-40 group-hover:opacity-80 transition duration-300" />
+                <div className="relative rounded-2xl overflow-hidden border-2 border-blue-500/50 shadow-xl bg-slate-950 w-full max-w-[260px]">
+                  <img
+                    src={FOUNDER_INFO.image}
+                    alt={FOUNDER_INFO.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-72 object-cover object-top"
+                  />
+                  <div className="p-3 bg-slate-950/90 text-center border-t border-slate-800">
+                    <p className="font-extrabold text-white text-sm">{FOUNDER_INFO.name}</p>
+                    <p className="text-[10px] text-blue-400 font-bold uppercase tracking-wider">{FOUNDER_INFO.role}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Founder Statement */}
+            <div className="md:col-span-8 space-y-4">
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-400 block">
+                Founder & CEO Statement
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+                Driven By Engineering Craft & Transparent Value
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+                "When I established MUCO Labs in 2026 in Erode, Tamil Nadu, the core goal was clear: bridge the gap between ambitious business visions and production-grade software execution. Too many businesses suffer from vague estimates, delayed delivery, and opaque codebases. At MUCO Labs, every project has upfront pricing, strict SLA commitments, and clean, high-performance code."
+              </p>
+              <div className="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+                <div>
+                  <p className="font-extrabold text-white text-sm">{FOUNDER_INFO.name}</p>
+                  <p className="text-xs text-blue-400 font-medium">Founder & CEO, MUCO Labs</p>
+                </div>
+                <button
+                  onClick={() => onNavigate('gallery')}
+                  className="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white font-bold px-4 py-2 rounded-xl border border-blue-500/30 transition-all text-xs"
+                >
+                  View Founder Photo Gallery
+                </button>
               </div>
             </div>
           </div>
