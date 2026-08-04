@@ -4,6 +4,8 @@ import { CORE_SERVICES, TECH_STACK } from '../data/servicesData';
 import { FOUNDER_INFO } from '../data/galleryData';
 import { DynamicIcon } from '../components/DynamicIcon';
 import { EstimateCalculator } from '../components/EstimateCalculator';
+import { FeaturedProjects } from '../components/FeaturedProjects';
+import { GlobalReach } from '../components/GlobalReach';
 import {
   ArrowRight,
   Sparkles,
@@ -38,40 +40,42 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           {/* Main Bento Hero Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {/* Left Primary Bento Item */}
-            <div className="lg:col-span-5 bg-white/80 dark:bg-slate-900/60 glass-light dark:glass rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-slate-200/80 dark:border-white/10 shadow-xl bento-card">
-              <div>
+            <div className="lg:col-span-5 glass-luxury rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-amber-500/20 shadow-2xl bento-card relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-widest rounded-full">
+                  <span className="px-3 py-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-black uppercase tracking-widest rounded-full">
                     Established 2026
                   </span>
-                  <span className="px-2.5 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-300 text-[10px] font-bold uppercase tracking-wider rounded-full flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-500" /> MUCO Labs
+                  <span className="px-2.5 py-1 bg-blue-500/10 border border-blue-500/30 text-blue-300 text-[10px] font-black uppercase tracking-wider rounded-full flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-400" /> MUCO Labs
                   </span>
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+                <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-[1.1]">
                   Your Vision.<br />
-                  <span className="text-blue-600 dark:text-blue-400 bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 bg-clip-text dark:text-transparent">
+                  <span className="gold-text-gradient font-black">
                     Our Technology.
                   </span>
                 </h1>
 
-                <p className="text-slate-900 dark:text-slate-200 text-xs sm:text-sm mt-4 leading-relaxed font-medium">
-                  Premium software engineering, custom mobile apps, enterprise AI solutions, and digital transformation. Founded by Srinivash Mahalingam in Erode, Tamil Nadu.
+                <p className="text-slate-300 text-xs sm:text-sm mt-4 leading-relaxed font-normal">
+                  World-class software engineering, custom mobile apps, enterprise AI engines, and digital transformation. Founded by Srinivash Mahalingam in Erode, Tamil Nadu.
                 </p>
 
                 <div className="pt-6 flex flex-wrap gap-3">
                   <button
                     onClick={() => onNavigate('pricing')}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-3 px-6 rounded-2xl shadow-lg shadow-blue-500/25 transition-all"
+                    className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 font-black text-xs py-3 px-6 rounded-2xl shadow-xl shadow-amber-500/20 transition-all transform hover:-translate-y-0.5"
                   >
                     <span>Explore Pricing</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 text-slate-950" />
                   </button>
 
                   <button
                     onClick={() => onNavigate('contact')}
-                    className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 font-semibold text-xs py-3 px-5 rounded-2xl border border-slate-200 dark:border-slate-700 transition-all"
+                    className="flex items-center gap-2 bg-slate-900/90 text-white hover:bg-slate-800 font-bold text-xs py-3 px-5 rounded-2xl border border-amber-500/30 transition-all"
                   >
                     <span>Contact Us</span>
                   </button>
@@ -79,26 +83,26 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </div>
 
               {/* Bottom Info Bar inside Hero Card */}
-              <div className="mt-8 pt-6 border-t border-slate-200/60 dark:border-slate-800/60 space-y-2.5">
+              <div className="mt-8 pt-6 border-t border-amber-500/20 space-y-2.5 relative z-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20">
                     <Mail className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs text-slate-900 dark:text-slate-200 font-semibold">mucolabs2026@gmail.com</span>
+                  <span className="text-xs text-slate-200 font-bold">mucolabs2026@gmail.com</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20">
                     <MapPin className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs text-slate-900 dark:text-slate-200 font-semibold">Erode, Tamil Nadu, India</span>
+                  <span className="text-xs text-slate-200 font-bold">Erode, Tamil Nadu, India</span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
                     <Phone className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-black text-slate-950 dark:text-white">+91 6381809844</span>
+                  <span className="text-xs font-black text-white">+91 6381809844</span>
                 </div>
               </div>
             </div>
@@ -380,6 +384,16 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Featured Projects Showcase Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <FeaturedProjects onNavigate={onNavigate} />
+      </section>
+
+      {/* Global Reach Interactive Map Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <GlobalReach onNavigate={onNavigate} />
       </section>
 
       {/* Founder & Company Profile Spotlight */}

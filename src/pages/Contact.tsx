@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck, FileSpreadsheet } from 'lucide-react';
 import { ContactFormData } from '../types';
 import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInbox';
+import { GoogleSheetsHub } from '../components/GoogleSheetsHub';
+import { getAccessToken, appendLeadToSheet } from '../services/googleSheets';
+import { useToast } from '../context/ToastContext';
 
 interface ContactProps {
   initialMessage?: string;
 }
 
 export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
+  const { showToast } = useToast();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -21,6 +25,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showInboxModal, setShowInboxModal] = useState(false);
+  const [showSheetsModal, setShowSheetsModal] = useState(false);
 
   useEffect(() => {
     if (initialMessage) {
@@ -32,6 +37,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
     const newMsgItem: SavedMessage = {
       id: `msg-${Date.now()}`,
       name: formData.name || 'Valued Client',
@@ -41,7 +47,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       serviceCategory: formData.serviceCategory,
       budgetRange: formData.budgetRange,
       message: formData.message,
-      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      timestamp,
       status: 'New'
     };
 
@@ -54,6 +60,31 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       // localStorage error fallback
     }
 
+    // Auto append to Google Sheets if connected
+    const activeSheetId = localStorage.getItem('muco_active_sheets_id');
+    const currentToken = getAccessToken();
+    if (activeSheetId && currentToken) {
+      try {
+        await appendLeadToSheet(
+          activeSheetId,
+          {
+            name: newMsgItem.name,
+            email: newMsgItem.email,
+            phone: newMsgItem.phone,
+            company: newMsgItem.company,
+            serviceCategory: newMsgItem.serviceCategory,
+            budgetRange: newMsgItem.budgetRange,
+            message: newMsgItem.message,
+            timestamp: newMsgItem.timestamp,
+            status: 'New',
+          },
+          currentToken
+        );
+      } catch (err) {
+        console.warn('Auto Google Sheets append deferred:', err);
+      }
+    }
+
     try {
       // Send to server API
       await fetch('/api/contact', {
@@ -63,8 +94,18 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       }).catch(() => {});
 
       setIsSubmitted(true);
+      showToast(
+        'Your project inquiry was received! We will reach out within 2-4 business hours.',
+        'success',
+        'Inquiry Submitted'
+      );
     } catch {
       setIsSubmitted(true);
+      showToast(
+        'Your message was recorded locally and queued for MUCO engineering review.',
+        'info',
+        'Message Recorded'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -74,6 +115,9 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     <div className="space-y-12 pb-16">
       {/* Admin Messages Inbox Modal */}
       <AdminMessagesInbox isOpen={showInboxModal} onClose={() => setShowInboxModal(false)} />
+
+      {/* Google Sheets Lead Hub Modal */}
+      <GoogleSheetsHub isOpen={showSheetsModal} onClose={() => setShowSheetsModal(false)} />
 
       {/* Header Banner */}
       <section className="text-center max-w-3xl mx-auto px-4 pt-8 space-y-3">
@@ -90,14 +134,22 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           Reach out directly to founder Srinivash Mahalingam and our software engineering team in Erode, Tamil Nadu.
         </p>
 
-        {/* View Submitted Messages Inbox Button */}
-        <div className="pt-2">
+        {/* View Submitted Messages Inbox & Google Sheets Hub */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => setShowInboxModal(true)}
             className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-500 font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-slate-700 dark:border-blue-500/40 transition-all"
           >
             <Inbox className="w-4 h-4 text-emerald-400" />
-            <span>View Received Messages Inbox (Admin)</span>
+            <span>View Received Messages Inbox</span>
+          </button>
+
+          <button
+            onClick={() => setShowSheetsModal(true)}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-emerald-500/40 transition-all"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-200" />
+            <span>Google Sheets Lead Sync</span>
           </button>
         </div>
       </section>

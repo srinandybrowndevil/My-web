@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { PageId } from '../types';
 import { CORE_SERVICES } from '../data/servicesData';
 import { DynamicIcon } from '../components/DynamicIcon';
@@ -28,8 +29,12 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
       {/* Services List */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {CORE_SERVICES.map((srv, index) => (
-          <div
+          <motion.div
             key={srv.id}
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.5, delay: index % 2 === 0 ? 0.05 : 0.15, ease: 'easeOut' }}
             className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800/80 shadow-md hover:shadow-xl transition-all duration-300"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -109,7 +114,7 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </section>
 

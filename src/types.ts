@@ -1,4 +1,4 @@
-export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq';
+export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets';
 
 export interface ProjectItem {
   id: string;
