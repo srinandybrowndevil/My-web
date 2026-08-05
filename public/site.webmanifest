@@ -1,0 +1,17 @@
+{
+  "name": "MUCO Labs - AI, Software Development & Digital Transformation",
+  "short_name": "MUCO Labs",
+  "description": "MUCO Labs is a leading software development and AI solutions company specializing in web development, mobile apps, cloud service management, AutoCAD design, SaaS platforms, CRM, ERP, UI/UX, and digital transformation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#030712",
+  "icons": [
+    {
+      "src": "/muco_logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

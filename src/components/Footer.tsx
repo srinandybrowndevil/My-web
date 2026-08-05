@@ -3,20 +3,42 @@ import { PageId } from '../types';
 import { Phone, Mail, MapPin, Globe, ArrowUpRight, ShieldCheck, Heart } from 'lucide-react';
 import { MucoLogo } from './MucoLogo';
 
+// Service Mapping for Pricing page deep-linking
+const FOOTER_SERVICES = [
+  { name: 'Website Development', targetId: 'website-development' },
+  { name: 'Mobile App Development', targetId: 'mobile-app-development' },
+  { name: 'Custom Software Development', targetId: 'custom-software' },
+  { name: 'CRM & ERP Solutions', targetId: 'crm-erp' },
+  { name: 'SaaS Platform Development', targetId: 'saas-platform' },
+  { name: 'AI Chatbots & Automation', targetId: 'ai-chatbots' },
+  { name: 'AI Agent Development', targetId: 'ai-agents' },
+  { name: 'UI/UX Design', targetId: 'ui-ux' },
+  { name: 'Cloud Service Management', targetId: 'cloud-services' },
+  { name: 'DevOps & CI/CD', targetId: 'devops' },
+  { name: 'API Development & Integration', targetId: 'api-development' },
+  { name: 'Database Design & Management', targetId: 'database-management' },
+  { name: 'AutoCAD Design & Drafting', targetId: 'autocad' },
+  { name: 'CAD Conversion & 2D/3D Modeling', targetId: 'cad-modeling' },
+  { name: 'Digital Marketing', targetId: 'digital-marketing' },
+  { name: 'Search Engine Optimization (SEO)', targetId: 'seo' },
+  { name: 'Branding & Graphic Design', targetId: 'branding' },
+  { name: 'IT Consulting', targetId: 'it-consulting' },
+  { name: 'Technical Support & Maintenance', targetId: 'maintenance' }
+];
+
 interface FooterProps {
-  onNavigate: (page: PageId) => void;
+  onNavigate: (page: PageId, customMsg?: string, hash?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const handleNav = (page: PageId) => {
-    onNavigate(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleNav = (page: PageId, hash?: string) => {
+    onNavigate(page, undefined, hash);
   };
 
   return (
     <footer className="bg-slate-950 text-slate-300 border-t border-slate-800/80 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/80">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-10 pb-12 border-b border-slate-800/80">
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <MucoLogo variant="full" size="md" lightText={true} showTagline={true} />
@@ -50,6 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 { id: 'pricing', label: 'Pricing Calculator' },
                 { id: 'maintenance', label: 'Maintenance Plans' },
                 { id: 'gallery', label: 'Our Team & Leadership' },
+                { id: 'blog', label: 'Blog & Tech Articles' },
                 { id: 'faq', label: 'Help & FAQ' },
                 { id: 'contact', label: 'Contact Us' }
               ].map((link) => (
@@ -67,45 +90,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </ul>
           </div>
 
-          {/* Col 3: Key Offerings */}
-          <div className="space-y-3">
+          {/* Col 3: Services (MUCO Labs Offerings - Deep Links to Pricing) */}
+          <div className="lg:col-span-2 space-y-3">
             <p className="text-xs font-bold text-white uppercase tracking-wider">Services</p>
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-blue-400 transition-colors text-left">
-                  Website Development (from ₹14,999)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-blue-400 transition-colors text-left">
-                  Mobile App Development (from ₹49,999)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-blue-400 transition-colors text-left">
-                  Custom Software & CRM/ERP (from ₹79,999)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-blue-400 transition-colors text-left">
-                  SaaS Platform Development (from ₹149,999)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-blue-400 transition-colors text-left">
-                  AI Chatbots & Automation (from ₹24,999)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('pricing')} className="hover:text-blue-400 transition-colors text-left">
-                  Digital Marketing & SEO (from ₹7,999/mo)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleNav('maintenance')} className="hover:text-blue-400 transition-colors text-left">
-                  Maintenance & SLA Plans (from ₹2,999/mo)
-                </button>
-              </li>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs text-slate-400">
+              {FOOTER_SERVICES.map((service, idx) => (
+                <li key={idx}>
+                  <button
+                    onClick={() => handleNav('pricing', service.targetId)}
+                    className="text-slate-400 hover:text-blue-400 transition-colors text-left group flex items-start gap-1.5 leading-snug"
+                  >
+                    <span className="text-blue-500/60 group-hover:text-blue-400 transition-colors">•</span>
+                    <span className="group-hover:translate-x-0.5 transition-transform">
+                      {service.name}
+                    </span>
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 

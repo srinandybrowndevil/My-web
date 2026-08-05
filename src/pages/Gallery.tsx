@@ -487,6 +487,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                     src={item.image}
                     alt={item.title}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Tag,
@@ -66,6 +66,7 @@ interface PricingMaintenanceViewProps {
 // Data Structures
 interface PricingCardItem {
   id: string;
+  targetIds?: string[];
   title: string;
   price: string;
   numericPrice: number;
@@ -80,6 +81,7 @@ interface PricingCardItem {
 
 interface AutoCADItem {
   id: string;
+  targetIds?: string[];
   title: string;
   price: string;
   numericPrice: number;
@@ -104,6 +106,45 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
   const [activeTab, setActiveTab] = useState<string>(initialSection);
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+  // Deep-link hash navigation effect
+  useEffect(() => {
+    const handleHashScroll = () => {
+      const rawHash = window.location.hash.replace('#', '');
+      if (!rawHash) return;
+
+      // Ensure all tabs and items are visible
+      setActiveTab('all');
+      setSearchQuery('');
+
+      setTimeout(() => {
+        const el = document.getElementById(rawHash);
+        if (el) {
+          const headerOffset = 95; // Account for fixed header height
+          const elementPosition = el.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: 'smooth'
+          });
+
+          setHighlightedId(rawHash);
+
+          const timer = setTimeout(() => {
+            setHighlightedId(null);
+          }, 3200);
+
+          return () => clearTimeout(timer);
+        }
+      }, 150);
+    };
+
+    handleHashScroll();
+    window.addEventListener('hashchange', handleHashScroll);
+    return () => window.removeEventListener('hashchange', handleHashScroll);
+  }, []);
 
   // Calculator state
   const [calcDevTier, setCalcDevTier] = useState<number>(24999);
@@ -152,6 +193,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
     },
     {
       id: 'web-custom-app',
+      targetIds: ['custom-software', 'saas-platform'],
       title: 'Custom Web Application',
       price: '₹79,999',
       numericPrice: 79999,
@@ -163,6 +205,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
     },
     {
       id: 'web-crm',
+      targetIds: ['crm-erp'],
       title: 'CRM Development',
       price: '₹1,20,000',
       numericPrice: 120000,
@@ -226,6 +269,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
   const aiPricing: PricingCardItem[] = [
     {
       id: 'ai-chatbot',
+      targetIds: ['ai-chatbots'],
       title: 'AI Chatbot',
       price: '₹29,999',
       numericPrice: 29999,
@@ -259,6 +303,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
     },
     {
       id: 'ai-assistant',
+      targetIds: ['ai-agents'],
       title: 'AI Business Assistant',
       price: '₹99,999',
       numericPrice: 99999,
@@ -275,6 +320,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
   const marketingPricing: PricingCardItem[] = [
     {
       id: 'mkt-seo',
+      targetIds: ['seo'],
       title: 'SEO (Search Engine Optimization)',
       price: '₹10,000',
       numericPrice: 10000,
@@ -333,6 +379,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
     },
     {
       id: 'creative-identity',
+      targetIds: ['branding'],
       title: 'Brand Identity',
       price: '₹9,999',
       numericPrice: 9999,
@@ -345,6 +392,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
     },
     {
       id: 'creative-uiux',
+      targetIds: ['ui-ux'],
       title: 'UI/UX Design',
       price: '₹14,999',
       numericPrice: 14999,
@@ -370,6 +418,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
   const consultingPricing: PricingCardItem[] = [
     {
       id: 'consult-startup',
+      targetIds: ['it-consulting'],
       title: 'Startup Consulting',
       price: '₹5,000',
       numericPrice: 5000,
@@ -429,6 +478,7 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
     },
     {
       id: 'cad-3d-floor',
+      targetIds: ['cad-modeling'],
       title: 'AutoCAD 3D Floor Plan',
       price: '₹2,999',
       numericPrice: 2999,
@@ -627,85 +677,119 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
   const calcGrandTotal1stYear = calcOneTimeDevTotal + (calcMonthlyCost * 12) + calcAnnualInfra + calcGstAmount;
 
   // Render Single Pricing Card
-  const renderPricingCard = (item: PricingCardItem) => (
-    <motion.div
-      key={item.id}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className={`relative bg-white dark:bg-slate-900 rounded-3xl p-6 border transition-all duration-300 flex flex-col justify-between ${
-        item.popular
-          ? 'border-2 border-blue-500/80 shadow-xl shadow-blue-500/10 dark:shadow-blue-500/5'
-          : 'border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md'
-      }`}
-    >
-      {item.badge && (
-        <span className="absolute -top-3.5 right-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md">
-          {item.badge}
-        </span>
-      )}
+  const renderPricingCard = (item: PricingCardItem) => {
+    const isCardHighlighted = Boolean(
+      highlightedId && (
+        highlightedId === item.id ||
+        (item.targetIds && item.targetIds.includes(highlightedId))
+      )
+    );
 
-      <div>
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
-            {item.icon}
-          </div>
-          <div>
-            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
-              {item.category}
-            </span>
-            <h3 className="text-lg font-black text-slate-900 dark:text-white leading-tight">
-              {item.title}
-            </h3>
-          </div>
-        </div>
-
-        <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 min-h-[36px]">
-          {item.description}
-        </p>
-
-        <div className="bg-slate-50 dark:bg-slate-950/70 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/80 mb-5">
-          <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block mb-0.5">
-            Pricing
-          </span>
-          <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              {item.price}
-            </span>
-            {item.period && (
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">
-                {item.period}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="space-y-2 mb-6">
-          <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
-            Key Features Included:
-          </span>
-          <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
-            {item.features.map((feat, idx) => (
-              <li key={idx} className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <span>{feat}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <button
-        onClick={() => onNavigateToContactWithItem(`Inquiry regarding ${item.title} (${item.price})`)}
-        className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 group ${
-          item.popular
-            ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20'
-            : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100'
+    return (
+      <motion.div
+        key={item.id}
+        id={item.id}
+        whileHover={{ y: -4, transition: { duration: 0.2 } }}
+        className={`relative bg-white dark:bg-slate-900 rounded-3xl p-6 border transition-all duration-500 flex flex-col justify-between ${
+          isCardHighlighted
+            ? 'border-2 border-blue-500 ring-4 ring-blue-500/80 shadow-2xl shadow-blue-500/25 bg-blue-50/80 dark:bg-blue-950/80 scale-[1.01]'
+            : item.popular
+            ? 'border-2 border-blue-500/80 shadow-xl shadow-blue-500/10 dark:shadow-blue-500/5'
+            : 'border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md'
         }`}
       >
-        <span>Get Free Quote</span>
-        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-      </button>
-    </motion.div>
-  );
+        {/* Invisible anchor elements for target alias IDs */}
+        {item.targetIds?.map((aliasId) => (
+          <span
+            key={aliasId}
+            id={aliasId}
+            className="absolute -top-24 left-0 w-0 h-0 pointer-events-none opacity-0"
+          />
+        ))}
+
+        {/* Target Highlight Floating Badge */}
+        {isCardHighlighted && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-[11px] font-black uppercase tracking-wider px-4 py-1 rounded-full shadow-xl z-30 flex items-center gap-1.5 animate-bounce"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+            <span>Target Package Selected</span>
+          </motion.div>
+        )}
+
+        {item.badge && !isCardHighlighted && (
+          <span className="absolute -top-3.5 right-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md">
+            {item.badge}
+          </span>
+        )}
+
+        <div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+              {item.icon}
+            </div>
+            <div>
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">
+                {item.category}
+              </span>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white leading-tight">
+                {item.title}
+              </h3>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 min-h-[36px]">
+            {item.description}
+          </p>
+
+          <div className="bg-slate-50 dark:bg-slate-950/70 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/80 mb-5">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold block mb-0.5">
+              Pricing
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                {item.price}
+              </span>
+              {item.period && (
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">
+                  {item.period}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2 mb-6">
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
+              Key Features Included:
+            </span>
+            <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+              {item.features.map((feat, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <span>{feat}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <button
+          onClick={() => onNavigateToContactWithItem(`Inquiry regarding ${item.title} (${item.price})`)}
+          className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 group ${
+            item.popular || isCardHighlighted
+              ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20'
+              : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100'
+          }`}
+        >
+          <span>Get Free Quote</span>
+          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+        </button>
+      </motion.div>
+    );
+  };
 
   return (
     <div className="space-y-12 pb-20">
@@ -838,7 +922,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
           {/* Website Development */}
           {searchedWeb.length > 0 && (
-            <div className="space-y-4">
+            <div
+              id="website-development"
+              className={`space-y-4 rounded-2xl transition-all duration-500 p-2 ${
+                highlightedId === 'website-development'
+                  ? 'ring-4 ring-blue-500/80 bg-blue-50/60 dark:bg-blue-950/60 shadow-lg'
+                  : ''
+              }`}
+            >
               <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
                 <Globe className="w-4 h-4 text-blue-500" />
                 <span>Website Development</span>
@@ -851,7 +942,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
           {/* Mobile Apps */}
           {searchedApps.length > 0 && (
-            <div className="space-y-4 pt-4">
+            <div
+              id="mobile-app-development"
+              className={`space-y-4 pt-4 rounded-2xl transition-all duration-500 p-2 ${
+                highlightedId === 'mobile-app-development'
+                  ? 'ring-4 ring-blue-500/80 bg-blue-50/60 dark:bg-blue-950/60 shadow-lg'
+                  : ''
+              }`}
+            >
               <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
                 <Smartphone className="w-4 h-4 text-purple-500" />
                 <span>Mobile Apps</span>
@@ -877,7 +975,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
           {/* Digital Marketing */}
           {searchedMkt.length > 0 && (
-            <div className="space-y-4 pt-4">
+            <div
+              id="digital-marketing"
+              className={`space-y-4 pt-4 rounded-2xl transition-all duration-500 p-2 ${
+                highlightedId === 'digital-marketing'
+                  ? 'ring-4 ring-blue-500/80 bg-blue-50/60 dark:bg-blue-950/60 shadow-lg'
+                  : ''
+              }`}
+            >
               <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
                 <Target className="w-4 h-4 text-amber-500" />
                 <span>Digital Marketing</span>
@@ -890,7 +995,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
           {/* Creative Branding */}
           {searchedCreative.length > 0 && (
-            <div className="space-y-4 pt-4">
+            <div
+              id="branding"
+              className={`space-y-4 pt-4 rounded-2xl transition-all duration-500 p-2 ${
+                highlightedId === 'branding'
+                  ? 'ring-4 ring-blue-500/80 bg-blue-50/60 dark:bg-blue-950/60 shadow-lg'
+                  : ''
+              }`}
+            >
               <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
                 <Palette className="w-4 h-4 text-pink-500" />
                 <span>Creative Branding</span>
@@ -903,7 +1015,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
           {/* Business Consulting */}
           {searchedConsulting.length > 0 && (
-            <div className="space-y-4 pt-4">
+            <div
+              id="it-consulting"
+              className={`space-y-4 pt-4 rounded-2xl transition-all duration-500 p-2 ${
+                highlightedId === 'it-consulting'
+                  ? 'ring-4 ring-blue-500/80 bg-blue-50/60 dark:bg-blue-950/60 shadow-lg'
+                  : ''
+              }`}
+            >
               <h3 className="text-sm font-extrabold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-emerald-500" />
                 <span>Business Consulting</span>
@@ -918,7 +1037,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
       {/* SECTION 5 – AUTOCAD DESIGN SERVICES */}
       {(activeTab === 'all' || activeTab === 'autocad') && (
-        <section id="autocad" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 pt-8">
+        <section
+          id="autocad"
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 pt-8 transition-all duration-500 rounded-3xl ${
+            highlightedId === 'autocad'
+              ? 'ring-4 ring-indigo-500/80 bg-indigo-50/40 dark:bg-indigo-950/40 p-4 shadow-xl'
+              : ''
+          }`}
+        >
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-[11px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
               Architectural & Engineering Drafting
@@ -937,59 +1063,89 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {searchedAutoCad.map((cad) => (
-                <motion.div
-                  key={cad.id}
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
-                        {cad.icon}
-                      </div>
-                      <h3 className="text-sm font-black text-slate-900 dark:text-white leading-tight">
-                        {cad.title}
-                      </h3>
-                    </div>
+              {searchedAutoCad.map((cad) => {
+                const isCadHighlighted =
+                  highlightedId === cad.id ||
+                  (cad.targetIds && cad.targetIds.includes(highlightedId ?? ''));
 
-                    <p className="text-xs text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
-                      {cad.description}
-                    </p>
-
-                    <div className="bg-slate-50 dark:bg-slate-950/70 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80 mb-3 flex items-baseline justify-between">
-                      <span className="text-[10px] uppercase font-bold text-slate-400">Cost:</span>
-                      <div className="text-right">
-                        <span className="text-base font-black text-slate-900 dark:text-white">
-                          {cad.price}
-                        </span>
-                        {cad.unit && (
-                          <span className="text-[10px] text-slate-500 ml-1">
-                            ({cad.unit})
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="space-y-1 mb-4">
-                      {cad.deliverables.map((del, i) => (
-                        <div key={i} className="flex items-center gap-1.5 text-[11px] text-slate-600 dark:text-slate-300">
-                          <Check className="w-3 h-3 text-indigo-500 shrink-0" />
-                          <span>{del}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => onNavigateToContactWithItem(`Inquiry regarding AutoCAD Service: ${cad.title} (${cad.price})`)}
-                    className="w-full py-2 px-3 bg-slate-100 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-slate-800 hover:text-white dark:text-slate-200 dark:hover:text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 group"
+                return (
+                  <motion.div
+                    key={cad.id}
+                    id={cad.id}
+                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                    className={`relative bg-white dark:bg-slate-900 rounded-2xl p-5 border shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${
+                      isCadHighlighted
+                        ? 'border-2 border-indigo-500 ring-4 ring-indigo-500/80 bg-indigo-50/80 dark:bg-indigo-950/80 scale-[1.01]'
+                        : 'border-slate-200/80 dark:border-slate-800'
+                    }`}
                   >
-                    <span>Order CAD Service</span>
-                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </motion.div>
-              ))}
+                    {cad.targetIds?.map((aliasId) => (
+                      <span
+                        key={aliasId}
+                        id={aliasId}
+                        className="absolute -top-24 left-0 w-0 h-0 pointer-events-none opacity-0"
+                      />
+                    ))}
+
+                    {isCadHighlighted && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-0.5 rounded-full shadow-lg z-30 flex items-center gap-1 animate-bounce"
+                      >
+                        <Sparkles className="w-3 h-3 text-cyan-300" />
+                        <span>Focused CAD Service</span>
+                      </motion.div>
+                    )}
+
+                    <div>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                          {cad.icon}
+                        </div>
+                        <h3 className="text-sm font-black text-slate-900 dark:text-white leading-tight">
+                          {cad.title}
+                        </h3>
+                      </div>
+
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mb-3 leading-relaxed">
+                        {cad.description}
+                      </p>
+
+                      <div className="bg-slate-50 dark:bg-slate-950/70 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80 mb-3 flex items-baseline justify-between">
+                        <span className="text-[10px] uppercase font-bold text-slate-400">Cost:</span>
+                        <div className="text-right">
+                          <span className="text-base font-black text-slate-900 dark:text-white">
+                            {cad.price}
+                          </span>
+                          {cad.unit && (
+                            <span className="text-[10px] text-slate-500 ml-1">
+                              ({cad.unit})
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 mb-4">
+                        {cad.deliverables.map((del, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-[11px] text-slate-600 dark:text-slate-300">
+                            <Check className="w-3 h-3 text-indigo-500 shrink-0" />
+                            <span>{del}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => onNavigateToContactWithItem(`Inquiry regarding AutoCAD Service: ${cad.title} (${cad.price})`)}
+                      className="w-full py-2 px-3 bg-slate-100 hover:bg-indigo-600 dark:bg-slate-800 dark:hover:bg-indigo-600 text-slate-800 hover:text-white dark:text-slate-200 dark:hover:text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 group"
+                    >
+                      <span>Order CAD Service</span>
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </section>
@@ -1034,10 +1190,17 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
               </p>
             </div>
 
-            <div className="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+            <div
+              id="cloud-services"
+              className={`bg-slate-950/70 p-4 rounded-2xl border transition-all duration-500 space-y-1.5 ${
+                highlightedId === 'cloud-services'
+                  ? 'border-blue-500 ring-4 ring-blue-500/80 bg-blue-950/90 scale-[1.02] shadow-xl'
+                  : 'border-slate-800'
+              }`}
+            >
               <div className="font-extrabold text-indigo-400 flex items-center gap-1.5">
                 <Server className="w-4 h-4" />
-                <span>Cloud Hosting</span>
+                <span>Cloud Hosting & Management</span>
               </div>
               <p className="text-slate-200 font-bold">Starts ₹3,000 / year</p>
               <p className="text-slate-400 leading-relaxed">
@@ -1045,35 +1208,56 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
               </p>
             </div>
 
-            <div className="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5">
+            <div
+              id="database-management"
+              className={`bg-slate-950/70 p-4 rounded-2xl border transition-all duration-500 space-y-1.5 ${
+                highlightedId === 'database-management'
+                  ? 'border-emerald-500 ring-4 ring-emerald-500/80 bg-emerald-950/90 scale-[1.02] shadow-xl'
+                  : 'border-slate-800'
+              }`}
+            >
               <div className="font-extrabold text-emerald-400 flex items-center gap-1.5">
                 <Smartphone className="w-4 h-4" />
-                <span>Developer Accounts</span>
+                <span>Developer Accounts & Databases</span>
               </div>
               <p className="text-slate-200 font-bold">Apple: $99/yr | Google: $25</p>
               <p className="text-slate-400 leading-relaxed">
-                Official store account fees paid directly to Apple & Google for iOS & Android app publishing.
+                Official store account fees and managed database architecture (Cloud SQL / Firestore / PostgreSQL).
               </p>
             </div>
 
-            <div className="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5 lg:col-span-2">
+            <div
+              id="api-development"
+              className={`bg-slate-950/70 p-4 rounded-2xl border transition-all duration-500 space-y-1.5 lg:col-span-2 ${
+                highlightedId === 'api-development'
+                  ? 'border-purple-500 ring-4 ring-purple-500/80 bg-purple-950/90 scale-[1.02] shadow-xl'
+                  : 'border-slate-800'
+              }`}
+            >
               <div className="font-extrabold text-purple-400 flex items-center gap-1.5">
                 <Key className="w-4 h-4" />
-                <span>Third Party APIs</span>
+                <span>API Development & Third Party APIs</span>
               </div>
               <p className="text-slate-400 leading-relaxed">
-                Services such as <strong className="text-slate-200">OpenAI, Twilio, Google Maps, Razorpay, WhatsApp API</strong> are billed at actual provider rates based on consumption.
+                Custom REST/GraphQL APIs plus integrations with <strong className="text-slate-200">OpenAI, Twilio, Google Maps, Razorpay, WhatsApp API</strong>.
               </p>
             </div>
 
-            <div className="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-1.5 lg:col-span-2">
+            <div
+              id="devops"
+              className={`bg-slate-950/70 p-4 rounded-2xl border transition-all duration-500 space-y-1.5 lg:col-span-2 ${
+                highlightedId === 'devops'
+                  ? 'border-cyan-500 ring-4 ring-cyan-500/80 bg-cyan-950/90 scale-[1.02] shadow-xl'
+                  : 'border-slate-800'
+              }`}
+            >
               <div className="font-extrabold text-cyan-400 flex items-center gap-1.5">
                 <Clock className="w-4 h-4" />
-                <span>Additional Development</span>
+                <span>DevOps, CI/CD & Additional Development</span>
               </div>
               <p className="text-slate-200 font-bold">₹800 – ₹2,500 / hour</p>
               <p className="text-slate-400 leading-relaxed">
-                Out-of-scope custom feature enhancements or ad-hoc developer hours outside retainer limits.
+                Automated CI/CD pipelines, Docker containerization, cloud infrastructure deployment, and feature enhancements.
               </p>
             </div>
           </div>
@@ -1082,7 +1266,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
       {/* SECTION 7 – MAINTENANCE PLANS */}
       {(activeTab === 'all' || activeTab === 'maintenance') && (
-        <section id="maintenance" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 pt-8">
+        <section
+          id="maintenance"
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 pt-8 transition-all duration-500 rounded-3xl ${
+            highlightedId === 'maintenance'
+              ? 'ring-4 ring-emerald-500/80 bg-emerald-50/40 dark:bg-emerald-950/40 p-4 shadow-xl'
+              : ''
+          }`}
+        >
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <span className="text-[11px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
               Post-Launch SLA Retainers

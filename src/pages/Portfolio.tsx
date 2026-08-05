@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PageId, ProjectItem } from '../types';
 import { INITIAL_PROJECTS } from '../data/projectsData';
+import { ClientSuccessStories } from '../components/ClientSuccessStories';
 import {
   Briefcase,
   FolderPlus,
@@ -61,17 +62,19 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
     'Cloud & IT Consulting'
   ];
 
-  const filteredProjects = projects.filter((item) => {
-    const matchesCategory =
-      selectedCategory === 'All' || item.category === selectedCategory;
-    const matchesSearch =
-      !searchQuery.trim() ||
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.techStack.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProjects = useMemo(() => {
+    return projects.filter((item) => {
+      const matchesCategory =
+        selectedCategory === 'All' || item.category === selectedCategory;
+      const matchesSearch =
+        !searchQuery.trim() ||
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.techStack.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesCategory && matchesSearch;
+    });
+  }, [projects, selectedCategory, searchQuery]);
 
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault();
@@ -293,6 +296,9 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
           </div>
         )}
       </section>
+
+      {/* Client Success Stories Carousel */}
+      <ClientSuccessStories onNavigate={onNavigate} />
 
       {/* Submit Future Project CTA Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

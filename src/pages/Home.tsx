@@ -5,6 +5,7 @@ import { FOUNDER_INFO } from '../data/galleryData';
 import { DynamicIcon } from '../components/DynamicIcon';
 import { EstimateCalculator } from '../components/EstimateCalculator';
 import { FeaturedProjects } from '../components/FeaturedProjects';
+import { ClientSuccessStories } from '../components/ClientSuccessStories';
 import { GlobalReach } from '../components/GlobalReach';
 import { Testimonials } from '../components/Testimonials';
 import {
@@ -392,6 +393,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <FeaturedProjects onNavigate={onNavigate} />
       </section>
 
+      {/* Client Success Stories Carousel Section */}
+      <ClientSuccessStories onNavigate={onNavigate} />
+
       {/* Global Reach Interactive Map Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlobalReach onNavigate={onNavigate} />
@@ -412,6 +416,8 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   <img
                     src={FOUNDER_INFO.image}
                     alt={FOUNDER_INFO.name}
+                    loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
                       e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';

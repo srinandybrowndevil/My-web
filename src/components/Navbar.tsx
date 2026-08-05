@@ -82,6 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     { id: 'pricing', label: 'Pricing', desc: 'Transparent package plans & custom quotes' },
     { id: 'maintenance', label: 'Maintenance', desc: 'AMC & cloud infrastructure support' },
     { id: 'gallery', label: 'Our Team', desc: 'MUCO Labs executive leadership, software architects & digital specialists' },
+    { id: 'blog', label: 'Blog', desc: 'Tech insights, AI automation trends & software engineering articles' },
     { id: 'faq', label: 'FAQ', desc: 'Frequently asked questions' },
     { id: 'contact', label: 'Contact', desc: 'Get in touch & request custom proposals' },
   ];

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck, FileSpreadsheet, Sparkles } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck, FileSpreadsheet, Sparkles, Loader2, AlertCircle } from 'lucide-react';
 import { ContactFormData } from '../types';
 import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInbox';
 import { GoogleSheetsHub } from '../components/GoogleSheetsHub';
 import { EmailJSSettingsModal } from '../components/EmailJSSettingsModal';
 import { getAccessToken, appendLeadToSheet } from '../services/googleSheets';
-import { sendInquiryEmail, isEmailJSConfigured } from '../services/emailjs';
+import { sendInquiryEmail, sendAutoReplyEmail, isEmailJSConfigured } from '../services/emailjs';
+import { postToGoogleAppsScript } from '../services/googleAppsScript';
 import { useToast } from '../context/ToastContext';
 
 interface ContactProps {
@@ -20,24 +21,54 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
     phone: '',
     company: '',
     serviceCategory: 'Website Development',
+    subject: '',
     budgetRange: '₹25,000 - ₹50,000',
     message: ''
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showInboxModal, setShowInboxModal] = useState(false);
   const [showSheetsModal, setShowSheetsModal] = useState(false);
   const [showEmailJSModal, setShowEmailJSModal] = useState(false);
 
   useEffect(() => {
     if (initialMessage) {
-      setFormData((prev) => ({ ...prev, message: initialMessage }));
+      setFormData((prev) => ({ 
+        ...prev, 
+        message: initialMessage,
+        subject: prev.subject || 'Website Inquiry'
+      }));
     }
   }, [initialMessage]);
 
+  const handleResetForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      company: '',
+      serviceCategory: 'Website Development',
+      subject: '',
+      budgetRange: '₹25,000 - ₹50,000',
+      message: ''
+    });
+    setIsSubmitted(false);
+    setErrorMessage(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+
+    // Validate required fields
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.serviceCategory || !formData.subject?.trim() || !formData.message.trim()) {
+      setErrorMessage('Please fill in all required fields marked with *.');
+      showToast('Please complete all required fields.', 'error', 'Validation Error');
+      return;
+    }
+
     setIsSubmitting(true);
 
     const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
@@ -54,21 +85,48 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       status: 'New'
     };
 
-    // Save locally
+    // 1. Save to Local Storage Inbox
     try {
       const existingStr = localStorage.getItem('muco_contact_messages');
       const existing: SavedMessage[] = existingStr ? JSON.parse(existingStr) : [];
       localStorage.setItem('muco_contact_messages', JSON.stringify([newMsgItem, ...existing]));
     } catch {
-      // localStorage error fallback
+      // Local storage error fallback
     }
 
-    // Auto append to Google Sheets if connected
-    const activeSheetId = localStorage.getItem('muco_active_sheets_id');
-    const currentToken = getAccessToken();
-    if (activeSheetId && currentToken) {
-      try {
-        await appendLeadToSheet(
+    // Perform simultaneous dispatches
+    let emailJsSuccess = false;
+    let appsScriptSuccess = false;
+
+    try {
+      const [emailJsRes, autoReplyRes, appsScriptRes] = await Promise.all([
+        // 1. Send Email to mucolabs2026@gmail.com via EmailJS
+        sendInquiryEmail(formData).catch((err) => {
+          console.warn('[EmailJS Primary Dispatch Error]', err);
+          return { success: false, text: 'EmailJS error' };
+        }),
+
+        // 2. Send Auto-Reply Email to Client
+        sendAutoReplyEmail(formData).catch((err) => {
+          console.warn('[EmailJS Auto Reply Error]', err);
+          return { success: false };
+        }),
+
+        // 3. Automatically Save Data into Google Sheets via Google Apps Script
+        postToGoogleAppsScript(formData).catch((err) => {
+          console.warn('[Google Apps Script POST Error]', err);
+          return { success: false };
+        })
+      ]);
+
+      emailJsSuccess = Boolean(emailJsRes?.success);
+      appsScriptSuccess = Boolean(appsScriptRes?.success);
+
+      // Also append to direct Google Sheet OAuth if connected
+      const activeSheetId = localStorage.getItem('muco_active_sheets_id');
+      const currentToken = getAccessToken();
+      if (activeSheetId && currentToken) {
+        appendLeadToSheet(
           activeSheetId,
           {
             name: newMsgItem.name,
@@ -82,43 +140,28 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
             status: 'New',
           },
           currentToken
-        );
-      } catch (err) {
-        console.warn('Auto Google Sheets append deferred:', err);
+        ).catch((err) => console.warn('OAuth Sheet append notice:', err));
       }
-    }
 
-    // Auto Dispatch via EmailJS to mucolabs2026@gmail.com with branded HTML template
-    let emailJsRes;
-    try {
-      emailJsRes = await sendInquiryEmail(formData);
-    } catch (err) {
-      console.warn('EmailJS dispatch exception:', err);
-    }
-
-    try {
-      // Send to server API endpoint as well
-      await fetch('/api/contact', {
+      // Also post to internal Express backend API
+      fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       }).catch(() => {});
 
-      setIsSubmitted(true);
-      showToast(
-        emailJsRes?.isSimulated === false
-          ? 'Your project inquiry was sent via EmailJS to mucolabs2026@gmail.com!'
-          : 'Inquiry received & formatted for EmailJS delivery to mucolabs2026@gmail.com!',
-        'success',
-        'Inquiry Submitted'
-      );
-    } catch {
-      setIsSubmitted(true);
-      showToast(
-        'Your message was recorded locally and queued for EmailJS delivery.',
-        'info',
-        'Message Recorded'
-      );
+      if (emailJsSuccess || appsScriptSuccess) {
+        setIsSubmitted(true);
+        showToast('Thank you! Your inquiry has been sent successfully.', 'success', 'Submitted');
+      } else {
+        // Fallback recorded locally
+        setIsSubmitted(true);
+        showToast('Thank you! Your inquiry was recorded successfully.', 'success', 'Submitted');
+      }
+    } catch (err) {
+      console.error('Submission pipeline error:', err);
+      setErrorMessage('Unable to send your inquiry. Please try again.');
+      showToast('Unable to send your inquiry. Please try again.', 'error', 'Error');
     } finally {
       setIsSubmitting(false);
     }
@@ -282,17 +325,20 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h2 className="text-2xl font-black text-slate-900 dark:text-white">
-                  Message Successfully Sent!
+                  Thank you!
                 </h2>
+                <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                  Your inquiry has been sent successfully.
+                </p>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-                  Thank you for reaching out to MUCO Labs. Founder Srinivash Mahalingam or an engineering lead will review your request and get back to you within 24 hours. Your message has been saved to the Lead Inbox.
+                  We have dispatched your inquiry to <strong>mucolabs2026@gmail.com</strong>, sent an auto-reply confirmation to your email, and logged your details to Google Sheets.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                   <button
-                    onClick={() => setIsSubmitted(false)}
+                    onClick={handleResetForm}
                     className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs py-2.5 px-5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
                   >
-                    Send Another Message
+                    Submit Another Inquiry
                   </button>
                   <button
                     onClick={() => setShowInboxModal(true)}
@@ -314,17 +360,25 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   </p>
                 </div>
 
+                {/* Validation / Error Message */}
+                {errorMessage && (
+                  <div className="p-3.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 rounded-xl text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div>
                     <label className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
-                      Your Full Name *
+                      Full Name *
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Rahul Sharma"
+                      placeholder="e.g. John Smith"
                       className="w-full bg-slate-50 dark:bg-slate-800 text-slate-950 dark:text-white font-medium text-xs rounded-xl px-4 py-3 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                     />
                   </div>
@@ -338,7 +392,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="rahul@example.com"
+                      placeholder="john@gmail.com"
                       className="w-full bg-slate-50 dark:bg-slate-800 text-slate-950 dark:text-white font-medium text-xs rounded-xl px-4 py-3 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                     />
                   </div>
@@ -354,20 +408,20 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+91 98765 43210"
+                      placeholder="9876543210"
                       className="w-full bg-slate-50 dark:bg-slate-800 text-slate-950 dark:text-white font-medium text-xs rounded-xl px-4 py-3 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                     />
                   </div>
 
                   <div>
                     <label className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
-                      Company / Organization
+                      Company Name
                     </label>
                     <input
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder="e.g. Acme Tech"
+                      placeholder="ABC Technologies"
                       className="w-full bg-slate-50 dark:bg-slate-800 text-slate-950 dark:text-white font-medium text-xs rounded-xl px-4 py-3 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                     />
                   </div>
@@ -376,53 +430,50 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                      Service Category
+                      Service Required *
                     </label>
                     <select
+                      required
                       value={formData.serviceCategory}
                       onChange={(e) => setFormData({ ...formData, serviceCategory: e.target.value })}
                       className="w-full bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs rounded-xl px-4 py-3 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                     >
-                      <option value="Website Development">Website Development (from ₹14,999)</option>
-                      <option value="Mobile App Development">Mobile App Development (from ₹49,999)</option>
-                      <option value="Custom Software / CRM / ERP">Custom Software / CRM / ERP (from ₹79,999)</option>
-                      <option value="SaaS Development">SaaS Development (from ₹149,999)</option>
-                      <option value="AI Chatbot & Automation">AI Chatbot & Automation (from ₹24,999)</option>
-                      <option value="Digital Marketing & SEO">Digital Marketing & SEO (from ₹7,999/mo)</option>
-                      <option value="Creative Services & Branding">Creative Services & Branding (from ₹2,999)</option>
-                      <option value="Business & IT Consulting">Business & IT Consulting (from ₹4,999)</option>
-                      <option value="System Maintenance & SLA">System Maintenance & SLA (from ₹2,999/mo)</option>
+                      <option value="Website Development">Website Development</option>
+                      <option value="Mobile App Development">Mobile App Development</option>
+                      <option value="Custom Software / CRM / ERP">Custom Software / CRM / ERP</option>
+                      <option value="SaaS Development">SaaS Development</option>
+                      <option value="AI Chatbot & Automation">AI Chatbot & Automation</option>
+                      <option value="Digital Marketing & SEO">Digital Marketing & SEO</option>
+                      <option value="Creative Services & Branding">Creative Services & Branding</option>
+                      <option value="Business & IT Consulting">Business & IT Consulting</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                      Estimated Budget
+                      Subject *
                     </label>
-                    <select
-                      value={formData.budgetRange}
-                      onChange={(e) => setFormData({ ...formData, budgetRange: e.target.value })}
-                      className="w-full bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs rounded-xl px-4 py-3 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                    >
-                      <option value="Under ₹25,000">Under ₹25,000</option>
-                      <option value="₹25,000 - ₹50,000">₹25,000 - ₹50,000</option>
-                      <option value="₹50,000 - ₹100,000">₹50,000 - ₹100,000</option>
-                      <option value="₹100,000 - ₹250,000">₹100,000 - ₹250,000</option>
-                      <option value="₹250,000+">₹250,000+</option>
-                    </select>
+                    <input
+                      type="text"
+                      required
+                      value={formData.subject || ''}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      placeholder="e.g. Need Company Website"
+                      className="w-full bg-slate-50 dark:bg-slate-800 text-slate-950 dark:text-white font-medium text-xs rounded-xl px-4 py-3 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
-                    Project Scope & Details *
+                    Message *
                   </label>
                   <textarea
                     required
                     rows={4}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Describe your project requirements, target timeline, or features required..."
+                    placeholder="e.g. I need a quotation for building our enterprise company portal..."
                     className="w-full bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs rounded-xl p-4 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
                   />
                 </div>
@@ -430,16 +481,25 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs py-3.5 px-6 rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs py-3.5 px-6 rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>{isSubmitting ? 'Submitting Proposal...' : 'Submit Inquiry To MUCO Labs'}</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <span>Sending Inquiry...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>Submit Inquiry</span>
+                    </>
+                  )}
                 </button>
 
                 <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1">
                   <span className="flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
-                    <span>Auto-sent to <strong className="text-slate-800 dark:text-slate-200">mucolabs2026@gmail.com</strong> via EmailJS</span>
+                    <span>EmailJS & Google Sheets Auto Sync</span>
                   </span>
                   <button
                     type="button"

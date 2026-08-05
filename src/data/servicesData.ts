@@ -101,6 +101,28 @@ export const CORE_SERVICES: DetailedService[] = [
     startingPrice: '₹24,999'
   },
   {
+    id: 'autocad-design',
+    title: 'AutoCAD Design & 2D/3D CAD Drafting',
+    tagline: 'Precision CAD drafting, 2D architectural blueprints, and 3D industrial mechanical modeling.',
+    category: 'Engineering Services',
+    description: 'Delivering architectural blueprints, MEP engineering drawings, 2D floor plans, and 3D industrial mechanical modeling. We convert sketches, PDFs, and point clouds into DWG/DXF files conforming to international standards.',
+    iconName: 'Layers',
+    highlights: [
+      'High-precision DWG / DXF vector drawings',
+      'Architectural 2D plans & elevation layouts',
+      'Industrial 3D mechanical component modeling',
+      'Fast turnaround with error-free dimensioning'
+    ],
+    deliverables: [
+      'Layered DWG & DXF Source Files',
+      'Print-ready Scaled PDF Drawings',
+      '3D STEP / IGES Mechanical Models',
+      'Bill of Materials (BOM) Schedules'
+    ],
+    technologies: ['AutoCAD', 'SolidWorks', 'Revit', 'Fusion 360', '3ds Max'],
+    startingPrice: '₹3,999'
+  },
+  {
     id: 'digital-marketing',
     title: 'Digital Marketing & Performance Ads',
     tagline: 'Data-driven SEO, Google Ads, Meta Ads, and Social Media growth campaigns.',

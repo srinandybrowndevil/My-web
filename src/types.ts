@@ -1,4 +1,4 @@
-export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets';
+export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets' | 'blog' | 'notfound';
 
 export interface ProjectItem {
   id: string;
@@ -66,6 +66,7 @@ export interface ContactFormData {
   phone: string;
   company?: string;
   serviceCategory: string;
+  subject?: string;
   budgetRange?: string;
   message: string;
 }
@@ -76,3 +77,30 @@ export interface TechStackItem {
   description: string;
   iconName: string;
 }
+
+export interface SuccessStory {
+  id: string;
+  clientName: string;
+  clientIndustry: string;
+  clientLocation: string;
+  projectTitle: string;
+  category: 'Web Development' | 'Mobile App' | 'SaaS Platform' | 'AI & Automation' | 'Enterprise ERP' | 'UI/UX & Branding';
+  summary: string;
+  challenge: string;
+  solution: string;
+  keyOutcomes: {
+    metric: string;
+    label: string;
+  }[];
+  testimonial?: {
+    quote: string;
+    author: string;
+    role: string;
+    avatar?: string;
+  };
+  techStack: string[];
+  image: string;
+  year: string;
+  featured?: boolean;
+}
+

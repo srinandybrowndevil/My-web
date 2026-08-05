@@ -23,6 +23,8 @@ const Gallery = lazy(() => import('./pages/Gallery').then((m) => ({ default: m.G
 const Contact = lazy(() => import('./pages/Contact').then((m) => ({ default: m.Contact })));
 const FAQ = lazy(() => import('./pages/FAQ').then((m) => ({ default: m.FAQ })));
 const GoogleSheetsManager = lazy(() => import('./pages/GoogleSheetsManager').then((m) => ({ default: m.GoogleSheetsManager })));
+const Blog = lazy(() => import('./pages/Blog').then((m) => ({ default: m.Blog })));
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('home');
@@ -43,19 +45,43 @@ export default function App() {
     restDelta: 0.001
   });
 
-  const handleNavigate = (page: PageId, customMsg?: string) => {
+  const handleNavigate = (page: PageId, customMsg?: string, hash?: string) => {
     if (customMsg) {
       setContactInitialMessage(customMsg);
     }
-    
+
+    if (hash) {
+      const cleanHash = hash.startsWith('#') ? hash : `#${hash}`;
+      window.location.hash = cleanHash;
+    } else {
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
+
     // Trigger brief luxury spinner overlay transition for smooth perceived performance
     if (page !== currentPage) {
       setIsNavigating(true);
       setTimeout(() => {
         setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (!hash) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         setTimeout(() => setIsNavigating(false), 250);
       }, 200);
+    } else if (hash) {
+      // If already on target page, scroll directly to target ID element
+      const targetId = hash.replace('#', '');
+      const el = document.getElementById(targetId);
+      if (el) {
+        const headerOffset = 95;
+        const elementPosition = el.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: Math.max(0, offsetPosition),
+          behavior: 'smooth'
+        });
+      }
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -132,13 +158,15 @@ export default function App() {
                 <Contact initialMessage={contactInitialMessage} />
               )}
               {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
+              {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
+              {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
             </motion.div>
           </AnimatePresence>
         </Suspense>
       </main>
 
       {/* Floating WhatsApp Action */}
-      <FloatingWhatsApp />
+      <FloatingWhatsApp currentPage={currentPage} />
 
       {/* Scroll To Top Action Button */}
       <ScrollToTopButton />

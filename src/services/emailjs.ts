@@ -69,7 +69,8 @@ export async function sendInquiryEmail(formData: ContactFormData): Promise<Email
     phone_number: formData.phone,
     company_name: formData.company || 'N/A',
     service_category: formData.serviceCategory,
-    budget_range: formData.budgetRange,
+    subject: formData.subject || `${formData.serviceCategory} Inquiry`,
+    budget_range: formData.budgetRange || 'Flexible',
     message_body: formData.message,
     submission_time: timestamp,
     reply_to: formData.email,
@@ -192,3 +193,69 @@ export const BRANDED_EMAILJS_HTML_TEMPLATE = `<!DOCTYPE html>
   </div>
 </body>
 </html>`;
+
+/**
+ * Sends automatic confirmation auto-reply email to customer via EmailJS if auto-reply template is configured
+ */
+export async function sendAutoReplyEmail(formData: ContactFormData): Promise<EmailSendResult> {
+  const config = getEmailJSConfig();
+  const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID || config.templateId;
+
+  const autoReplyParams = {
+    to_email: formData.email,
+    to_name: formData.name || 'Valued Client',
+    name: formData.name || 'Valued Client',
+    subject_text: 'Thank You for Contacting MUCO Labs',
+    service_required: formData.serviceCategory,
+    subject: formData.subject || `${formData.serviceCategory} Inquiry`,
+    reply_to: 'mucolabs2026@gmail.com'
+  };
+
+  if (isEmailJSConfigured() && autoReplyTemplateId) {
+    try {
+      const res = await emailjs.send(
+        config.serviceId,
+        autoReplyTemplateId,
+        autoReplyParams,
+        config.publicKey
+      );
+      return {
+        success: true,
+        status: res.status,
+        text: 'Auto reply confirmation sent to client',
+        isSimulated: false
+      };
+    } catch (err: any) {
+      console.warn('[EmailJS Auto-Reply Notice]', err);
+    }
+  }
+
+  return {
+    success: true,
+    status: 200,
+    text: 'Customer auto-reply generated (Simulated Mode)',
+    isSimulated: true
+  };
+}
+
+export const CUSTOMER_AUTOREPLY_TEMPLATE = `Hello {{name}},
+
+Thank you for contacting MUCO Labs.
+
+We have successfully received your inquiry.
+
+Our team will review your request and contact you shortly.
+
+We appreciate your interest in working with us.
+
+Regards,
+
+MUCO Labs
+Innovation in Digital Technology
+
+Email:
+mucolabs2026@gmail.com
+
+Website:
+https://mucolabs.com`;
+

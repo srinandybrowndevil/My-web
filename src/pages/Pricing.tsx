@@ -11,7 +11,7 @@ export const Pricing: React.FC<PricingProps> = ({
 }) => {
   return (
     <PricingMaintenanceView
-      initialSection="pricing"
+      initialSection="all"
       onNavigateToContactWithItem={onNavigateToContactWithItem}
     />
   );

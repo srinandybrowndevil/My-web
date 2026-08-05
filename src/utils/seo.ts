@@ -1,5 +1,6 @@
 import { PageId } from '../types';
 import { TeamMember } from '../data/galleryData';
+import { injectJsonLdSchema, getPageSchemaMarkup, getMemberSchemaMarkup } from './schemaMarkup';
 
 export interface PageMetadata {
   title: string;
@@ -36,72 +37,78 @@ export function setCanonicalUrl(url: string) {
   link.setAttribute('href', url);
 }
 
-export const PAGE_METADATA: Record<PageId, PageMetadata> = {
+export const PAGE_METADATA: Record<string, PageMetadata> = {
   home: {
-    title: 'MUCO Labs | Premier Enterprise Software Development & Cloud Solutions',
-    description: 'MUCO Labs delivers high-performance custom web applications, mobile apps, ERP systems, AI integrations, and cloud infrastructure for modern enterprises.',
-    keywords: 'MUCO Labs, software development, web apps, mobile app development, custom software, Cloud solutions, Erode software company',
+    title: 'MUCO Labs | AI, Software Development & Digital Transformation Company',
+    description: 'MUCO Labs is a leading software development and AI solutions company specializing in web development, mobile apps, cloud service management, AutoCAD design, SaaS platforms, CRM, ERP, UI/UX, and digital transformation for startups and enterprises.',
+    keywords: 'MUCO, MUCO Labs, MUCO Labs India, Software Development Company, Website Development, Web Design, Mobile App Development, Android App Development, AI Development, AI Chatbot Development, AI Automation, Cloud Service Management, Cloud Computing, AutoCAD Design, CAD Drafting, CRM Development, ERP Solutions, SaaS Development, UI UX Design, API Development, Digital Marketing, SEO Services, Branding, IT Consulting, Technical Support',
     ogImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
   },
   about: {
-    title: 'About Us | MUCO Labs Executive Board & Engineering HQ',
-    description: 'Discover MUCO Labs\' leadership, company vision, executive board members, and engineering HQ driving software excellence.',
-    keywords: 'MUCO Labs team, Srinivashni, Yogahariharan, software leaders, Erode technology HQ, company vision',
+    title: 'About MUCO Labs | Leadership, Vision & Software Engineering HQ India',
+    description: 'Learn about MUCO Labs, a premier software development company founded by Srinivash Mahalingam in Erode, Tamil Nadu, India. Discover our team, mission, and digital innovation values.',
+    keywords: 'MUCO Labs team, Srinivash Mahalingam, Erode software company, MUCO Labs India, software development company India, IT consulting Tamil Nadu',
     ogImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
   },
   services: {
-    title: 'Engineering & Software Development Services | MUCO Labs',
-    description: 'Explore MUCO Labs\' full-suite engineering services: full-stack web applications, cross-platform mobile apps, cloud DevOps, and enterprise ERPs.',
-    keywords: 'web development, React TypeScript, Node.js, mobile app development, cloud infrastructure, AMC services, enterprise ERP',
+    title: 'Software Development & AI Services | MUCO Labs',
+    description: 'Explore MUCO Labs\' full-suite engineering services: Website Development, Mobile App Development, AI Chatbots & Automation, Cloud Computing, AutoCAD Design, CRM & ERP Solutions, and Digital Marketing.',
+    keywords: 'Website Development, Mobile App Development, AI Development, Cloud Service Management, AutoCAD Design, CAD Drafting, CRM Development, ERP Solutions, SaaS Development, UI UX Design, Digital Marketing, SEO Services, IT Consulting',
     ogImage: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&q=80',
   },
   portfolio: {
-    title: 'Client Portfolio & Live Success Stories | MUCO Labs',
-    description: 'View case studies, live production apps, and client milestones built with precision by the MUCO Labs engineering team.',
-    keywords: 'software case studies, web app portfolio, client success stories, live software showcase, MUCO Labs projects',
+    title: 'Portfolio & Case Studies | MUCO Labs Web & Mobile Projects',
+    description: 'Browse MUCO Labs\' featured client portfolio, SaaS applications, custom mobile apps, and enterprise software engineering success stories.',
+    keywords: 'MUCO Labs portfolio, software case studies, web development showcase, mobile app portfolio, client success stories, SaaS case studies',
     ogImage: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80',
   },
   apps: {
-    title: 'App Store & Google Play Store Publishing | MUCO Labs',
-    description: 'Hassle-free iOS App Store and Google Play Store submission, compliance verification, policy audit, and app release management.',
-    keywords: 'App Store submission, Google Play publishing, mobile app deployment, iOS compliance, Android release manager',
+    title: 'App Store & Play Store Publishing Services | MUCO Labs',
+    description: 'Publish your iOS and Android mobile apps on Apple App Store and Google Play Store with MUCO Labs. Complete submission, policy compliance, and release management.',
+    keywords: 'App Store submission, Google Play publishing, Android App Development, iOS release management, mobile app deployment, MUCO Labs apps',
     ogImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80',
   },
   pricing: {
-    title: 'Transparent Project Pricing & Custom Quotes | MUCO Labs',
-    description: 'Compare transparent software development tiers, retainer options, AMC plans, and request custom project estimates.',
-    keywords: 'software development cost, app development pricing, web design quotes, IT maintenance plans, MUCO Labs pricing',
+    title: 'Software Development Pricing & Transparent Packages | MUCO Labs',
+    description: 'Affordable and transparent pricing packages for Web Development, Mobile Apps, AI Integrations, and Enterprise Software Development by MUCO Labs India.',
+    keywords: 'software development cost, website design pricing, app development estimate, MUCO Labs packages, IT consulting pricing India',
     ogImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&q=80',
   },
   maintenance: {
-    title: 'Annual Maintenance Contracts (AMC) & Cloud Ops | MUCO Labs',
-    description: '24/7 server health monitoring, security patch management, automated backups, and guaranteed SLA support for production systems.',
-    keywords: 'software AMC, server maintenance, cloud monitoring, IT support contract, DevOps management, SLA support',
+    title: 'Cloud Service Management & Annual Maintenance Contracts (AMC) | MUCO Labs',
+    description: 'Ensure 99.9% uptime with MUCO Labs\' Cloud Service Management, 24/7 server health monitoring, security updates, and IT technical support AMC plans.',
+    keywords: 'Cloud Service Management, Cloud Computing, software AMC, server maintenance, Technical Support, IT maintenance contract, DevOps management',
     ogImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
   },
   gallery: {
-    title: 'Executive Leadership Directory & Gallery | MUCO Labs',
-    description: 'Explore MUCO Labs\' order-wise executive directory and visual photo archives of our headquarters, engineering labs, and events.',
-    keywords: 'MUCO Labs executive team, team directory, tech workshop photos, HQ engineering lab, company culture',
+    title: 'Executive Roster & Photo Gallery | MUCO Labs India',
+    description: 'Explore MUCO Labs\' executive directory, team leadership, engineering labs, and company culture in Erode, Tamil Nadu, India.',
+    keywords: 'MUCO Labs executive team, team gallery, software engineering labs, MUCO Labs photo gallery, tech leadership India',
     ogImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
   },
   faq: {
     title: 'Frequently Asked Questions (FAQ) | MUCO Labs',
-    description: 'Answers to essential questions regarding project timelines, source code ownership, security guarantees, and payment structures.',
-    keywords: 'MUCO Labs FAQ, software development process, project timeline FAQ, IT consulting questions',
+    description: 'Find answers to common questions regarding MUCO Labs\' software development process, project timelines, code ownership, and technical support.',
+    keywords: 'MUCO Labs FAQ, software development questions, web app development process, project timeline FAQ, IT support FAQ',
     ogImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
   },
   contact: {
-    title: 'Contact MUCO Labs | Request Custom Proposal & Consultations',
-    description: 'Connect directly with MUCO Labs engineering leaders. Get custom project proposals, technical consultations, or schedule a callback.',
-    keywords: 'contact MUCO Labs, software consulting, request proposal, hire developers, Erode TN software office',
+    title: 'Contact MUCO Labs | Request Custom Quote & IT Consultation',
+    description: 'Get in touch with MUCO Labs for custom web development, mobile apps, AI automation, or AutoCAD projects. Email: mucolabs2026@gmail.com | Phone: +91 6381809844.',
+    keywords: 'contact MUCO Labs, hire software developers, software development company contact, IT consulting Erode, request proposal MUCO',
     ogImage: 'https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1200&q=80',
   },
   sheets: {
-    title: 'Google Sheets Integrator & Lead Exporter | MUCO Labs',
+    title: 'Google Sheets Integration & Lead Exporter | MUCO Labs',
     description: 'Connect Google Sheets to MUCO Labs to read, write, and export client inquiries and custom software proposals in real time.',
     keywords: 'Google Sheets integration, Google Drive API, export leads to sheets, MUCO Labs spreadsheet manager',
     ogImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+  },
+  blog: {
+    title: 'MUCO Labs Blog | Tech Insights, AI Trends & Software Engineering',
+    description: 'Read the latest industry insights, software architecture tutorials, AI automation trends, and digital transformation guides from MUCO Labs.',
+    keywords: 'MUCO Labs blog, software development blog, AI trends, cloud computing tutorials, web design articles, IT insights',
+    ogImage: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&q=80',
   },
 };
 
@@ -132,6 +139,14 @@ export function updatePageSEO(page: PageId) {
   setMetaTag('name', 'twitter:image', defaultOgImage);
 
   setCanonicalUrl(currentUrl);
+
+  // Inject Page JSON-LD Structured Schema Markup
+  try {
+    const schemas = getPageSchemaMarkup(page);
+    injectJsonLdSchema(schemas);
+  } catch (err) {
+    console.warn('Unable to inject page JSON-LD schema:', err);
+  }
 }
 
 /**
@@ -178,5 +193,13 @@ export function updateMemberSEO(member: TeamMember) {
   setMetaTag('name', 'twitter:image', member.image);
 
   setCanonicalUrl(profileUrl);
+
+  // Inject Team Member JSON-LD Structured Schema Markup
+  try {
+    const memberSchemas = getMemberSchemaMarkup(member);
+    injectJsonLdSchema(memberSchemas);
+  } catch (err) {
+    console.warn('Unable to inject team member JSON-LD schema:', err);
+  }
 }
 

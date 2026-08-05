@@ -11,7 +11,10 @@ import {
   Sparkles, 
   X,
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
+  Code,
+  Copy,
+  Check
 } from 'lucide-react';
 import { 
   googleSignIn, 
@@ -24,12 +27,75 @@ import {
   GoogleSheetFile,
   SheetRow
 } from '../services/googleSheets';
+import { getGoogleScriptUrl, saveGoogleScriptUrl } from '../services/googleAppsScript';
 
 interface GoogleSheetsHubProps {
   isOpen: boolean;
   onClose: () => void;
   onAutoSyncToggle?: (enabled: boolean) => void;
 }
+
+const APPS_SCRIPT_CODE = `function doPost(e) {
+  try {
+    var contents = {};
+    if (e.postData && e.postData.contents) {
+      contents = JSON.parse(e.postData.contents);
+    } else if (e.parameter) {
+      contents = e.parameter;
+    }
+
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["Timestamp", "Name", "Email", "Phone", "Company", "Service", "Subject", "Message", "Status"]);
+      sheet.getRange(1, 1, 1, 9).setFontWeight("bold").setBackground("#0f172a").setFontColor("#f8fafc");
+    }
+
+    var timestamp = contents.timestamp || new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+    var name = contents.name || "Valued Client";
+    var email = contents.email || "N/A";
+    var phone = contents.phone || "N/A";
+    var company = contents.company || "Individual / N/A";
+    var service = contents.service || contents.serviceCategory || "General Inquiry";
+    var subject = contents.subject || "Project Inquiry";
+    var message = contents.message || "";
+    var status = contents.status || "New";
+
+    sheet.appendRow([timestamp, name, email, phone, company, service, subject, message, status]);
+
+    if (email && email.indexOf("@") !== -1) {
+      try {
+        var autoReplySubject = "Thank You for Contacting MUCO Labs";
+        var autoReplyBody = "Hello " + name + ",\\n\\n" +
+          "Thank you for contacting MUCO Labs.\\n\\n" +
+          "We have successfully received your inquiry.\\n\\n" +
+          "Our team will review your request and contact you shortly.\\n\\n" +
+          "We appreciate your interest in working with us.\\n\\n" +
+          "Regards,\\n\\n" +
+          "MUCO Labs\\n" +
+          "Innovation in Digital Technology\\n\\n" +
+          "Email:\\nmucolabs2026@gmail.com\\n\\n" +
+          "Website:\\nhttps://mucolabs.com";
+
+        GmailApp.sendEmail(email, autoReplySubject, autoReplyBody, {
+          name: "MUCO Labs Team",
+          replyTo: "mucolabs2026@gmail.com"
+        });
+      } catch (emailErr) {
+        Logger.log("Auto reply notice: " + emailErr.toString());
+      }
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ "success": true, "message": "Lead appended successfully" }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ "success": false, "error": error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`;
 
 export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -38,10 +104,28 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
   const [userSheets, setUserSheets] = useState<GoogleSheetFile[]>([]);
   const [activeSheetId, setActiveSheetId] = useState<string>('');
   const [activeSheetUrl, setActiveSheetUrl] = useState<string>('');
+  const [scriptUrl, setScriptUrl] = useState<string>('');
   const [isCreatingSheet, setIsCreatingSheet] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
   const [customSheetName, setCustomSheetName] = useState('MUCO Labs - Client Inquiries 2026');
+  const [showCodeModal, setShowCodeModal] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+
+  useEffect(() => {
+    setScriptUrl(getGoogleScriptUrl());
+  }, []);
+
+  const handleSaveScriptUrl = () => {
+    saveGoogleScriptUrl(scriptUrl);
+    setStatusMessage({ type: 'success', text: 'Google Apps Script Web App URL updated successfully!' });
+  };
+
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(APPS_SCRIPT_CODE);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
 
   useEffect(() => {
     const unsubscribe = initAuth(
