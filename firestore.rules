@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Helper Functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Testimonial validation helper
+    function isValidTestimonial(data) {
+      return data.keys().hasAll(['clientName', 'clientRole', 'companyName', 'rating', 'content', 'projectCategory']) &&
+             data.clientName is string && data.clientName.size() >= 2 && data.clientName.size() <= 100 &&
+             data.clientRole is string && data.clientRole.size() >= 2 && data.clientRole.size() <= 100 &&
+             data.companyName is string && data.companyName.size() >= 2 && data.companyName.size() <= 100 &&
+             data.rating is number && data.rating >= 1 && data.rating <= 5 &&
+             data.content is string && data.content.size() >= 10 && data.content.size() <= 1000 &&
+             data.projectCategory is string && data.projectCategory.size() >= 2 && data.projectCategory.size() <= 50;
+    }
+
+    // Testimonials Collection Rules
+    match /testimonials/{testimonialId} {
+      // Anyone can read client feedback testimonials
+      allow read: if true;
+      
+      // Allow submitting feedback if payload meets validation schema
+      allow create: if isValidId(testimonialId) && isValidTestimonial(incoming());
+      
+      // Update and delete restricted
+      allow update, delete: if false;
+    }
+
+    // Default deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

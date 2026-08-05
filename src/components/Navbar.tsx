@@ -81,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     { id: 'apps', label: 'Publish Apps', desc: 'App Store & Play Store publishing' },
     { id: 'pricing', label: 'Pricing', desc: 'Transparent package plans & custom quotes' },
     { id: 'maintenance', label: 'Maintenance', desc: 'AMC & cloud infrastructure support' },
-    { id: 'gallery', label: 'Gallery', desc: 'MUCO Labs HQ, team roster & visual archives' },
+    { id: 'gallery', label: 'Our Team', desc: 'MUCO Labs executive leadership, software architects & digital specialists' },
     { id: 'faq', label: 'FAQ', desc: 'Frequently asked questions' },
     { id: 'contact', label: 'Contact', desc: 'Get in touch & request custom proposals' },
   ];
@@ -165,7 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             </button>
 
             {/* Desktop Nav Links */}
-            <nav className="hidden xl:flex items-center gap-1 bg-slate-900/80 dark:bg-slate-900/90 p-1.5 rounded-full border border-amber-500/20 backdrop-blur-md shadow-xl">
+            <nav className="hidden xl:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-full border border-slate-800 backdrop-blur-md shadow-xl">
               {navItems.map((item) => {
                 const isActive = currentPage === item.id;
                 return (
@@ -174,8 +174,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                     onClick={() => handleNavClick(item.id)}
                     className={`px-3 py-1.5 text-xs font-bold rounded-full transition-all duration-300 ${
                       isActive
-                        ? 'bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-slate-950 shadow-md shadow-amber-500/25 font-black'
-                        : 'text-slate-300 hover:text-amber-400 hover:bg-slate-800/80'
+                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30 font-black'
+                        : 'text-slate-300 hover:text-cyan-400 hover:bg-slate-800/80'
                     }`}
                   >
                     {item.label}
@@ -189,10 +189,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               {/* Search Button Trigger */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="flex items-center gap-2 bg-slate-100 dark:bg-slate-900/90 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-2 rounded-xl border border-slate-200 dark:border-amber-500/20 text-xs font-medium transition-all shadow-sm group"
+                className="flex items-center gap-2 bg-slate-100 dark:bg-slate-900/90 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-medium transition-all shadow-sm group"
                 title="Search services, portfolio & pages (Ctrl+K)"
               >
-                <Search className="w-3.5 h-3.5 text-amber-500 group-hover:scale-110 transition-transform" />
+                <Search className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
                 <span className="hidden md:inline font-semibold">Search...</span>
                 <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono font-bold bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded border border-slate-300 dark:border-slate-700">
                   <Command className="w-2.5 h-2.5" />K
@@ -201,10 +201,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
               <a
                 href="tel:+916381809844"
-                className="hidden lg:flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-amber-500 px-2.5 py-2 rounded-xl transition-colors"
+                className="hidden lg:flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-cyan-400 px-2.5 py-2 rounded-xl transition-colors"
                 title="Call MUCO Labs"
               >
-                <Phone className="w-3.5 h-3.5 text-amber-500" />
+                <Phone className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" />
                 <span>+91 6381809844</span>
               </a>
 
@@ -212,10 +212,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
               <button
                 onClick={() => handleNavClick('contact')}
-                className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-slate-950 font-black text-xs py-2.5 px-4 rounded-xl shadow-lg shadow-amber-500/20 transition-all duration-300 transform hover:-translate-y-0.5"
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs py-2.5 px-4.5 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 <span>Get Started</span>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-950" />
+                <ArrowRight className="w-3.5 h-3.5 text-white" />
               </button>
             </div>
 
@@ -223,7 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             <div className="flex items-center gap-2 lg:hidden">
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2.5 rounded-xl text-amber-500 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none"
+                className="p-2.5 rounded-xl text-blue-600 dark:text-cyan-400 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none"
                 aria-label="Open Search"
               >
                 <Search className="w-4 h-4" />

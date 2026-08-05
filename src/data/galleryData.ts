@@ -1,9 +1,9 @@
-import founderPortrait from '../assets/images/srinivash.png';
+import founderPortrait from '../assets/images/srinivashni.png';
 import advisorPortrait from '../assets/images/yogahari.png';
-import vinothPortrait from '../assets/images/vinoth_senior_dev_portrait_1785869920426.jpg';
-import chandruPortrait from '../assets/images/chandru_marketing_head_portrait_1785869936811.jpg';
-import marimuthuPortrait from '../assets/images/marimuthu_accounts_head_portrait_1785869947861.jpg';
-import venkateshPortrait from '../assets/images/venkatesh_hr_manager_portrait_1785869957512.jpg';
+import vinothPortrait from '../assets/images/vinotom.png';
+import chandruPortrait from '../assets/images/chandru.png';
+import marimuthuPortrait from '../assets/images/marimuthuapk.png';
+import venkateshPortrait from '../assets/images/venka.jpeg';
 
 export interface GalleryItem {
   id: string;
@@ -26,6 +26,12 @@ export interface TeamMember {
   image: string;
   bio: string;
   keyResponsibilities: string[];
+  skills: string[];
+  socialLinks: {
+    linkedin?: string;
+    twitter?: string;
+    email?: string;
+  };
   phone: string;
   email: string;
   location: string;
@@ -33,7 +39,7 @@ export interface TeamMember {
 }
 
 export const FOUNDER_INFO = {
-  name: 'Mr. Srinivash Mahalingam',
+  name: 'Srinivash Mahalingam (srinandy)',
   role: 'Founder & Chairman',
   company: 'MUCO Labs',
   foundedYear: '2026',
@@ -42,7 +48,8 @@ export const FOUNDER_INFO = {
   email: 'mucolabs2026@gmail.com',
   website: 'mucolabs.in',
   image: founderPortrait,
-  bio: 'Visionary software engineer and founder of MUCO Labs. Established in 2026 in Erode, Tamil Nadu to deliver world-class enterprise web applications, mobile apps, custom SaaS engines, AI chatbots, and IT consulting to global businesses with 100% upfront pricing and transparent engineering.'
+  quote: 'Technology is my tool. Innovation is my language. People are my purpose. MUCO Labs is my legacy.',
+  bio: 'Founder of MUCO Labs. Building multiple technology products, websites, Android applications, AI solutions, SaaS platforms, and business communities with a vision to make MUCO Labs one of India’s leading technology companies.'
 };
 
 export const ADVISOR_INFO = {
@@ -59,13 +66,19 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 'team-founder',
     orderNumber: 'Founder',
-    name: 'Mr. Srinivash Mahalingam',
+    name: 'Srinivash Mahalingam (srinandy)',
     titleRole: 'Founder & Chairman',
     affiliation: 'Founder of MUCO Labs',
     badgeTag: 'Founder & Chairman',
     image: founderPortrait,
     bio: 'Visionary software architect and founder of MUCO Labs. Leads full-stack web, mobile app development, Gemini AI integration, and company expansion across global markets.',
     keyResponsibilities: ['Architectural System Design', 'Product Engineering Leadership', 'Global Client Partnerships', 'Technology Strategy'],
+    skills: ['System Architecture', 'Full-Stack Web', 'Gemini AI', 'React & Node.js', 'Mobile App Dev', 'Cloud DevOps'],
+    socialLinks: {
+      linkedin: '#',
+      twitter: '#',
+      email: 'mailto:mucolabs2026@gmail.com'
+    },
     phone: '+91 6381809844',
     email: 'mucolabs2026@gmail.com',
     location: 'Erode, Tamil Nadu',
@@ -81,6 +94,12 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: advisorPortrait,
     bio: 'Founder of Way2Me and Managing Director & Company Advisor at MUCO Labs. Mentors high-level corporate growth, venture strategy, cross-border operations, and business advisories.',
     keyResponsibilities: ['Venture Strategy & Scale', 'Managing Director Advisories', 'Corporate Growth & Governance', 'Strategic Alliances'],
+    skills: ['Venture Strategy', 'Corporate Growth', 'Managing Director Advisories', 'Venture Capital', 'Product Scale'],
+    socialLinks: {
+      linkedin: '#',
+      twitter: '#',
+      email: 'mailto:advisor@mucolabs.in'
+    },
     phone: '+91 6381809844',
     email: 'advisor@mucolabs.in',
     location: 'Tamil Nadu, India'
@@ -95,6 +114,12 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: vinothPortrait,
     bio: 'Expert full-stack senior developer and 2D/3D AutoCAD design lead. Oversees complex web architectures, database schemas, industrial CAD drawings, and elevation modeling.',
     keyResponsibilities: ['Full-Stack Core Development', '2D/3D AutoCAD Blueprinting', 'Database Architecture', 'Code Quality & Security'],
+    skills: ['Full-Stack Core', 'AutoCAD 2D/3D', 'TypeScript', 'Database Architecture', 'System Security'],
+    socialLinks: {
+      linkedin: '#',
+      twitter: '#',
+      email: 'mailto:tech@mucolabs.in'
+    },
     phone: '+91 6381809844',
     email: 'tech@mucolabs.in',
     location: 'Erode, Tamil Nadu'
@@ -109,6 +134,12 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: chandruPortrait,
     bio: 'Drives performance digital marketing campaigns, SEO indexing, brand growth, social media strategy, and day-to-day company operations management at MUCO Labs.',
     keyResponsibilities: ['SEO & Organic Search Growth', 'Performance Marketing & Ads', 'Brand & Media Strategy', 'Company Operations Handling'],
+    skills: ['SEO & Indexing', 'Performance Ads', 'Brand & Media Strategy', 'Operations Handling', 'Social Marketing'],
+    socialLinks: {
+      linkedin: '#',
+      twitter: '#',
+      email: 'mailto:marketing@mucolabs.in'
+    },
     phone: '+91 6381809844',
     email: 'marketing@mucolabs.in',
     location: 'Erode, Tamil Nadu'
@@ -123,6 +154,12 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: marimuthuPortrait,
     bio: 'Manages enterprise client communications, telecalling operations, billing, invoicing, 100% transparent upfront pricing quotes, and financial accounts at MUCO Labs.',
     keyResponsibilities: ['Telecalling & Client Support', 'Corporate Financial Accounting', 'Upfront Invoice Audits', 'Billing & Retainers'],
+    skills: ['Corporate Accounting', 'Client Support', 'Invoicing & Audits', 'Upfront Pricing', 'Billing Systems'],
+    socialLinks: {
+      linkedin: '#',
+      twitter: '#',
+      email: 'mailto:accounts@mucolabs.in'
+    },
     phone: '+91 6381809844',
     email: 'accounts@mucolabs.in',
     location: 'Erode, Tamil Nadu'
@@ -137,6 +174,12 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: venkateshPortrait,
     bio: 'Leads talent acquisition, human resource development, internal engineering culture, campus outreach, and field marketing initiatives for MUCO Labs.',
     keyResponsibilities: ['Human Resources & Recruitment', 'Field Marketing & Outreach', 'Team Culture & Mentorship', 'Talent Onboarding'],
+    skills: ['Human Resources', 'Talent Acquisition', 'Field Marketing', 'Team Culture', 'Campus Outreach'],
+    socialLinks: {
+      linkedin: '#',
+      twitter: '#',
+      email: 'mailto:hr@mucolabs.in'
+    },
     phone: '+91 6381809844',
     email: 'hr@mucolabs.in',
     location: 'Erode, Tamil Nadu'

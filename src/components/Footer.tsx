@@ -22,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <MucoLogo variant="full" size="md" lightText={true} showTagline={true} />
 
             <p className="text-xs leading-relaxed text-slate-400 pr-4">
-              MUCO Labs is a premier full-stack software development and digital transformation agency. We engineer high-performance web applications, native mobile apps, custom SaaS products, enterprise AI automations, and strategic digital marketing engines.
+              MUCO Labs architectures intelligent software, cloud infrastructure, and AI automation engines for ambitious startups and enterprises worldwide. We turn bold ideas into high-performance, scalable digital reality.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-400">
@@ -49,7 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 { id: 'apps', label: 'Publish to Play/App Store' },
                 { id: 'pricing', label: 'Pricing Calculator' },
                 { id: 'maintenance', label: 'Maintenance Plans' },
-                { id: 'gallery', label: 'Photo Gallery & Life at MUCO' },
+                { id: 'gallery', label: 'Our Team & Leadership' },
                 { id: 'faq', label: 'Help & FAQ' },
                 { id: 'contact', label: 'Contact Us' }
               ].map((link) => (

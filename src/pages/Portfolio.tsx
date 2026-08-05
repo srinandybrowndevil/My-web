@@ -143,29 +143,37 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
 
       {/* Filter & Search Bar */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
           {/* Search Input */}
-          <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <div className="relative w-full lg:w-80 shrink-0">
+            <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by title, tech stack, or client..."
-              className="w-full bg-white dark:bg-slate-900 text-slate-950 dark:text-white font-medium text-xs rounded-xl pl-10 pr-4 py-2.5 border border-slate-300 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              placeholder="Search title, tech stack, client..."
+              className="w-full bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 font-medium text-xs rounded-xl pl-10 pr-8 py-2.5 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           {/* Category Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none w-full md:w-auto justify-start md:justify-end">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 scrollbar-none w-full lg:w-auto">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
                   selectedCategory === cat
-                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                    : 'bg-white/80 dark:bg-slate-900/80 text-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50'
+                    ? 'bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/25 font-black'
+                    : 'bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {cat}
@@ -178,22 +186,22 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
       {/* Projects Bento Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {filteredProjects.length === 0 ? (
-          <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3">
+          <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-sm">
             <Layers className="w-10 h-10 text-slate-400 mx-auto" />
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">No projects found matching criteria</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <h3 className="text-base font-extrabold text-slate-900 dark:text-white">No projects found matching criteria</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium">
               Try adjusting your search query or selected category filter.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="bg-white/80 dark:bg-slate-900/60 glass-light dark:glass rounded-3xl overflow-hidden border border-slate-200/80 dark:border-white/10 shadow-lg bento-card flex flex-col justify-between group hover:border-blue-500/40"
+                className="bg-white dark:bg-slate-900/95 rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800/90 shadow-md hover:shadow-2xl bento-card flex flex-col justify-between group transition-all duration-300 hover:border-blue-500/50"
               >
                 {/* Image Banner */}
-                <div className="relative h-48 overflow-hidden bg-slate-900">
+                <div className="relative h-48 overflow-hidden bg-slate-950">
                   <img
                     src={project.image}
                     alt={project.title}
@@ -205,47 +213,47 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
                     }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
                   
                   {/* Status Badge */}
                   <div className="absolute top-3 left-3">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider backdrop-blur-md ${
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-md ${
                         project.status === 'Completed & Live'
-                          ? 'bg-emerald-500/90 text-white'
+                          ? 'bg-emerald-600/90 text-white'
                           : project.status === 'In Active Development'
                           ? 'bg-blue-600/90 text-white'
-                          : 'bg-amber-500/90 text-white'
+                          : 'bg-amber-500/90 text-slate-950 font-black'
                       }`}
                     >
                       {project.status === 'Completed & Live' ? (
-                        <CheckCircle2 className="w-3 h-3" />
+                        <CheckCircle2 className="w-3 h-3 shrink-0" />
                       ) : (
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-3 h-3 shrink-0" />
                       )}
                       <span>{project.status}</span>
                     </span>
                   </div>
 
                   <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <span className="text-[10px] font-bold text-blue-300 uppercase tracking-widest block">
+                    <span className="text-[10px] font-black text-cyan-400 uppercase tracking-widest block drop-shadow">
                       {project.category} • {project.year}
                     </span>
-                    <h3 className="text-base font-black leading-tight drop-shadow-sm">
+                    <h3 className="text-base font-black leading-tight drop-shadow-md text-white">
                       {project.title}
                     </h3>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-5 space-y-4 flex-1 flex flex-col justify-between">
+                <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
-                      <span>Client / Sector:</span>
-                      <span className="font-bold text-slate-900 dark:text-slate-200">{project.client}</span>
+                    <div className="flex items-center justify-between text-xs font-semibold pb-1 border-b border-slate-100 dark:border-slate-800/80">
+                      <span className="text-slate-500 dark:text-slate-400">Client / Sector:</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100">{project.client}</span>
                     </div>
 
-                    <p className="text-xs text-slate-900 dark:text-slate-200 line-clamp-3 leading-relaxed font-normal">
+                    <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed font-normal">
                       {project.description}
                     </p>
 
@@ -254,7 +262,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
                       {project.techStack.map((tech, i) => (
                         <span
                           key={i}
-                          className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 font-bold text-[10px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700"
+                          className="bg-slate-100 dark:bg-slate-800/90 text-slate-800 dark:text-slate-200 font-bold text-[10px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700"
                         >
                           {tech}
                         </span>
@@ -263,18 +271,18 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
                   </div>
 
                   {/* Actions */}
-                  <div className="pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between gap-2">
+                  <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                      className="text-xs font-bold text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 hover:underline flex items-center gap-1 shrink-0"
                     >
-                      <span>View Specifications</span>
+                      <span>View Specs</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </button>
 
                     <button
                       onClick={() => onNavigate('contact', `Inquiry regarding project: ${project.title}`)}
-                      className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-900 dark:text-white font-bold text-[11px] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 transition-all"
+                      className="bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white font-bold text-[11px] px-3.5 py-2 rounded-xl border border-slate-800 dark:border-slate-700 transition-all shrink-0 whitespace-nowrap shadow-sm"
                     >
                       Request Similar App
                     </button>

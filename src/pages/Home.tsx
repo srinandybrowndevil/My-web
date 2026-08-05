@@ -6,6 +6,7 @@ import { DynamicIcon } from '../components/DynamicIcon';
 import { EstimateCalculator } from '../components/EstimateCalculator';
 import { FeaturedProjects } from '../components/FeaturedProjects';
 import { GlobalReach } from '../components/GlobalReach';
+import { Testimonials } from '../components/Testimonials';
 import {
   ArrowRight,
   Sparkles,
@@ -110,145 +111,145 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             {/* Right Bento Cards Matrix */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Web Development Bento Item */}
-              <div className="p-5 rounded-3xl bg-white/80 dark:bg-slate-900/60 glass-light dark:glass bento-card hover:border-blue-500/40 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between">
+              <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-blue-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
                       <Code2 className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-slate-400 tracking-wider uppercase">
+                    <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
                       WEB DEV
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-extrabold text-slate-900 dark:text-white mb-3">
+                  <h3 className="text-sm font-extrabold text-white mb-3">
                     Web Platforms & Apps
                   </h3>
 
                   <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Basic Business</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹14,999</span>
+                      <span className="font-bold text-white">₹14,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Business Pro</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹24,999</span>
+                      <span className="font-bold text-white">₹24,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-blue-700 dark:text-blue-400 font-medium">
+                    <div className="flex justify-between items-center text-blue-400 font-medium">
                       <span>E-Commerce Portal</span>
-                      <span className="font-bold text-blue-700 dark:text-blue-400">₹39,999</span>
+                      <span className="font-bold text-blue-400">₹39,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Custom Web App</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹59,999+</span>
+                      <span className="font-bold text-white">₹59,999+</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => onNavigate('pricing')}
-                  className="mt-4 text-left text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                  className="mt-4 text-left text-[11px] font-bold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
                 >
                   View details <ChevronRight className="w-3 h-3" />
                 </button>
               </div>
 
               {/* Mobile Apps Bento Item */}
-              <div className="p-5 rounded-3xl bg-white/80 dark:bg-slate-900/60 glass-light dark:glass bento-card hover:border-cyan-500/40 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between">
+              <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-cyan-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
                       <Cpu className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-slate-400 tracking-wider uppercase">
+                    <span className="text-[10px] font-black text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
                       MOBILE APPS
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-extrabold text-slate-900 dark:text-white mb-3">
+                  <h3 className="text-sm font-extrabold text-white mb-3">
                     iOS & Android Development
                   </h3>
 
                   <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Starter App MVP</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹49,999</span>
+                      <span className="font-bold text-white">₹49,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Business Native App</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹99,999</span>
+                      <span className="font-bold text-white">₹99,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-cyan-700 dark:text-cyan-400 font-medium">
+                    <div className="flex justify-between items-center text-cyan-400 font-medium">
                       <span>E-Commerce App</span>
-                      <span className="font-bold text-cyan-700 dark:text-cyan-400">₹149,999</span>
+                      <span className="font-bold text-cyan-400">₹149,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Enterprise Platform</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹249,999+</span>
+                      <span className="font-bold text-white">₹249,999+</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => onNavigate('pricing')}
-                  className="mt-4 text-left text-[11px] font-bold text-cyan-600 dark:text-cyan-400 hover:underline flex items-center gap-1"
+                  className="mt-4 text-left text-[11px] font-bold text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
                 >
                   View details <ChevronRight className="w-3 h-3" />
                 </button>
               </div>
 
               {/* AI & Automation Bento Item */}
-              <div className="p-5 rounded-3xl bg-white/80 dark:bg-slate-900/60 glass-light dark:glass bento-card hover:border-indigo-500/40 border border-slate-200/80 dark:border-white/10 flex flex-col justify-between">
+              <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-indigo-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20">
                       <Bot className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-slate-400 tracking-wider uppercase">
+                    <span className="text-[10px] font-black text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
                       AI & AUTOMATION
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-extrabold text-slate-900 dark:text-white mb-3">
+                  <h3 className="text-sm font-extrabold text-white mb-3">
                     AI Chatbots & Workflows
                   </h3>
 
                   <div className="space-y-2 text-xs">
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Smart AI Chatbot</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹24,999</span>
+                      <span className="font-bold text-white">₹24,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Process Automation</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹49,999</span>
+                      <span className="font-bold text-white">₹49,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-indigo-700 dark:text-indigo-400 font-medium">
+                    <div className="flex justify-between items-center text-indigo-400 font-medium">
                       <span>Advanced AI Suite</span>
-                      <span className="font-bold text-indigo-700 dark:text-indigo-400">₹99,999</span>
+                      <span className="font-bold text-indigo-400">₹99,999</span>
                     </div>
-                    <div className="flex justify-between items-center text-slate-900 dark:text-slate-300 font-medium">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Enterprise AI System</span>
-                      <span className="font-bold text-slate-950 dark:text-white">₹199,999+</span>
+                      <span className="font-bold text-white">₹199,999+</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => onNavigate('pricing')}
-                  className="mt-4 text-left text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                  className="mt-4 text-left text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1"
                 >
                   View details <ChevronRight className="w-3 h-3" />
                 </button>
               </div>
 
-              {/* Maintenance Plan Bento Item - Gradient Highlight */}
-              <div className="p-5 rounded-3xl accent-gradient bento-card text-white shadow-xl shadow-blue-500/20 flex flex-col justify-between">
+              {/* Maintenance Plan Bento Item */}
+              <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-emerald-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center">
-                      <ShieldCheck className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+                      <ShieldCheck className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-black text-white/80 tracking-wider uppercase">
+                    <span className="text-[10px] font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
                       MAINTENANCE & SLA
                     </span>
                   </div>
@@ -257,62 +258,62 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     Continuous Support Plans
                   </h3>
 
-                  <div className="space-y-2 text-xs text-white/95">
-                    <div className="flex justify-between items-center">
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Website (Basic)</span>
-                      <span className="font-bold">₹2,999/mo</span>
+                      <span className="font-bold text-white">₹2,999/mo</span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Web (Enterprise)</span>
-                      <span className="font-bold">₹9,999/mo</span>
+                      <span className="font-bold text-white">₹9,999/mo</span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center text-emerald-400 font-medium">
                       <span>Mobile App SLA</span>
-                      <span className="font-bold">₹14,999/mo</span>
+                      <span className="font-bold text-emerald-400">₹14,999/mo</span>
                     </div>
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center text-slate-300 font-medium">
                       <span>Cloud Infrastructure</span>
-                      <span className="font-bold">₹29,999/mo</span>
+                      <span className="font-bold text-white">₹29,999/mo</span>
                     </div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => onNavigate('maintenance')}
-                  className="mt-4 text-left text-[11px] font-bold text-white hover:underline flex items-center gap-1"
+                  className="mt-4 text-left text-[11px] font-bold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
                 >
                   View maintenance plans <ChevronRight className="w-3 h-3" />
                 </button>
               </div>
 
               {/* Wide Bento Banner Item (Span 2) */}
-              <div className="sm:col-span-2 p-4 sm:p-5 rounded-3xl bg-white/80 dark:bg-slate-900/60 glass-light dark:glass bento-card border border-slate-200/80 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="sm:col-span-2 p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-amber-500/50 border border-slate-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
-                  <span className="text-[10px] font-black text-slate-700 dark:text-slate-400 tracking-widest uppercase">
+                  <span className="text-[10px] font-black text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full tracking-widest uppercase">
                     CREATIVE & MARKETING
                   </span>
-                  <div className="flex flex-wrap gap-x-6 gap-y-2 mt-2">
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 mt-3">
                     <div className="flex flex-col">
-                      <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-300">Logo Design</span>
-                      <span className="font-extrabold text-xs text-blue-700 dark:text-blue-400">₹2,999</span>
+                      <span className="text-[11px] font-semibold text-slate-300">Logo Design</span>
+                      <span className="font-extrabold text-xs text-amber-400">₹2,999</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-300">Brand Identity</span>
-                      <span className="font-extrabold text-xs text-blue-700 dark:text-blue-400">₹14,999</span>
+                      <span className="text-[11px] font-semibold text-slate-300">Brand Identity</span>
+                      <span className="font-extrabold text-xs text-amber-400">₹14,999</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-300">Meta/Google Ads</span>
-                      <span className="font-extrabold text-xs text-blue-700 dark:text-blue-400">₹7,999</span>
+                      <span className="text-[11px] font-semibold text-slate-300">Meta/Google Ads</span>
+                      <span className="font-extrabold text-xs text-amber-400">₹7,999</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-300">SEO Retainer</span>
-                      <span className="font-extrabold text-xs text-blue-700 dark:text-blue-400">₹7,999/mo</span>
+                      <span className="text-[11px] font-semibold text-slate-300">SEO Retainer</span>
+                      <span className="font-extrabold text-xs text-amber-400">₹7,999/mo</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-blue-600/10 p-3 rounded-2xl border border-blue-500/20 shrink-0 text-right">
-                  <p className="text-[10px] leading-tight text-blue-800 dark:text-blue-300 font-extrabold uppercase tracking-wider">
+                <div className="bg-amber-500/10 p-3 rounded-2xl border border-amber-500/20 shrink-0 text-right">
+                  <p className="text-[10px] leading-tight text-amber-300 font-extrabold uppercase tracking-wider">
                     Enterprise Grade<br />Software Architecture
                   </p>
                 </div>
@@ -395,6 +396,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <GlobalReach onNavigate={onNavigate} />
       </section>
+
+      {/* Client Testimonials Section */}
+      <Testimonials />
 
       {/* Founder & Company Profile Spotlight */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck, FileSpreadsheet } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck, FileSpreadsheet, Sparkles } from 'lucide-react';
 import { ContactFormData } from '../types';
 import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInbox';
 import { GoogleSheetsHub } from '../components/GoogleSheetsHub';
+import { EmailJSSettingsModal } from '../components/EmailJSSettingsModal';
 import { getAccessToken, appendLeadToSheet } from '../services/googleSheets';
+import { sendInquiryEmail, isEmailJSConfigured } from '../services/emailjs';
 import { useToast } from '../context/ToastContext';
 
 interface ContactProps {
@@ -26,6 +28,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showInboxModal, setShowInboxModal] = useState(false);
   const [showSheetsModal, setShowSheetsModal] = useState(false);
+  const [showEmailJSModal, setShowEmailJSModal] = useState(false);
 
   useEffect(() => {
     if (initialMessage) {
@@ -85,8 +88,16 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       }
     }
 
+    // Auto Dispatch via EmailJS to mucolabs2026@gmail.com with branded HTML template
+    let emailJsRes;
     try {
-      // Send to server API
+      emailJsRes = await sendInquiryEmail(formData);
+    } catch (err) {
+      console.warn('EmailJS dispatch exception:', err);
+    }
+
+    try {
+      // Send to server API endpoint as well
       await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,14 +106,16 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
       setIsSubmitted(true);
       showToast(
-        'Your project inquiry was received! We will reach out within 2-4 business hours.',
+        emailJsRes?.isSimulated === false
+          ? 'Your project inquiry was sent via EmailJS to mucolabs2026@gmail.com!'
+          : 'Inquiry received & formatted for EmailJS delivery to mucolabs2026@gmail.com!',
         'success',
         'Inquiry Submitted'
       );
     } catch {
       setIsSubmitted(true);
       showToast(
-        'Your message was recorded locally and queued for MUCO engineering review.',
+        'Your message was recorded locally and queued for EmailJS delivery.',
         'info',
         'Message Recorded'
       );
@@ -119,6 +132,9 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
       {/* Google Sheets Lead Hub Modal */}
       <GoogleSheetsHub isOpen={showSheetsModal} onClose={() => setShowSheetsModal(false)} />
 
+      {/* EmailJS Settings & Template Hub Modal */}
+      <EmailJSSettingsModal isOpen={showEmailJSModal} onClose={() => setShowEmailJSModal(false)} />
+
       {/* Header Banner */}
       <section className="text-center max-w-3xl mx-auto px-4 pt-8 space-y-3">
         <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-semibold text-xs">
@@ -134,8 +150,16 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
           Reach out directly to founder Srinivash Mahalingam and our software engineering team in Erode, Tamil Nadu.
         </p>
 
-        {/* View Submitted Messages Inbox & Google Sheets Hub */}
+        {/* View Submitted Messages Inbox & Google Sheets & EmailJS Hub */}
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <button
+            onClick={() => setShowEmailJSModal(true)}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-blue-400/40 transition-all"
+          >
+            <Sparkles className="w-4 h-4 text-cyan-300" />
+            <span>EmailJS Setup & HTML Template</span>
+          </button>
+
           <button
             onClick={() => setShowInboxModal(true)}
             className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-500 font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-slate-700 dark:border-blue-500/40 transition-all"
@@ -411,6 +435,20 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   <Send className="w-4 h-4" />
                   <span>{isSubmitting ? 'Submitting Proposal...' : 'Submit Inquiry To MUCO Labs'}</span>
                 </button>
+
+                <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
+                    <span>Auto-sent to <strong className="text-slate-800 dark:text-slate-200">mucolabs2026@gmail.com</strong> via EmailJS</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setShowEmailJSModal(true)}
+                    className="text-blue-600 dark:text-cyan-400 hover:underline font-bold"
+                  >
+                    View HTML Template
+                  </button>
+                </div>
               </form>
             )}
           </div>

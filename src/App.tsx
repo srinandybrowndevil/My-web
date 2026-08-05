@@ -4,9 +4,12 @@ import { PageId } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
+import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { LuxurySpinner } from './components/LuxurySpinner';
 import { ToastProvider } from './context/ToastContext';
 import { updatePageSEO } from './utils/seo';
+import { usePageViewLogger } from './hooks/usePageViewLogger';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -25,6 +28,9 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [contactInitialMessage, setContactInitialMessage] = useState<string>('');
   const [isNavigating, setIsNavigating] = useState<boolean>(false);
+
+  // Log page view events on route changes
+  usePageViewLogger(currentPage);
 
   useEffect(() => {
     updatePageSEO(currentPage);
@@ -133,6 +139,12 @@ export default function App() {
 
       {/* Floating WhatsApp Action */}
       <FloatingWhatsApp />
+
+      {/* Scroll To Top Action Button */}
+      <ScrollToTopButton />
+
+      {/* Internal Web Vitals Performance Monitor */}
+      <PerformanceMonitor />
 
       {/* Footer */}
       <Footer onNavigate={handleNavigate} />
