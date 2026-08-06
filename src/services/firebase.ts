@@ -63,18 +63,14 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
   throw new Error(JSON.stringify(errInfo));
 }
 
-// Test Connection Helper
+// Test Connection Helper (Exported for explicit health checks only)
 export async function testFirestoreConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn('Firebase client is offline or initializing.');
-    }
+    console.warn('Firebase Firestore client is operating in fallback offline mode.');
   }
 }
-
-testFirestoreConnection();
 
 // Testimonial Interface
 export interface TestimonialItem {

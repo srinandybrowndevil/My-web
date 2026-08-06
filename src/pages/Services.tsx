@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PageId } from '../types';
-import { CORE_SERVICES } from '../data/servicesData';
+import { CORE_SERVICES, DetailedService } from '../data/servicesData';
 import { DynamicIcon } from '../components/DynamicIcon';
-import { ArrowRight, CheckCircle2, Sparkles, Layers, Cpu, Globe, MessageCircle } from 'lucide-react';
+import { ServiceQuickView } from '../components/ServiceQuickView';
+import { ArrowRight, CheckCircle2, Sparkles, Layers, Eye, MessageCircle } from 'lucide-react';
 import { openWhatsApp } from '../utils/whatsapp';
 import { LeadCaptureForm } from '../components/LeadCaptureForm';
 
 interface ServicesProps {
-  onNavigate: (page: PageId) => void;
+  onNavigate: (page: PageId, customMsg?: string) => void;
 }
 
 export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
+  const [selectedService, setSelectedService] = useState<DetailedService | null>(null);
+
   return (
     <div className="space-y-16 pb-16">
+      {/* Service Quick View Modal */}
+      <ServiceQuickView
+        service={selectedService}
+        onClose={() => setSelectedService(null)}
+        onNavigate={onNavigate}
+      />
+
       {/* Header Banner */}
       <motion.section 
         initial={{ opacity: 0, y: -20 }}
@@ -52,15 +62,19 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Details */}
               <div className="lg:col-span-7 space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/20">
+                <div
+                  onClick={() => setSelectedService(srv)}
+                  className="flex items-center gap-3 cursor-pointer group/title"
+                  title="Click to view full summary"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/20 group-hover/title:bg-cyan-500 transition-colors">
                     <DynamicIcon name={srv.iconName} className="w-6 h-6" />
                   </div>
                   <div>
                     <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider block">
                       {srv.category}
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white group-hover/title:text-cyan-500 transition-colors">
                       {srv.title}
                     </h2>
                   </div>
@@ -116,21 +130,30 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={() => setSelectedService(srv)}
+                      className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 font-extrabold text-xs py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 transition-all"
+                      title="Quick summary view"
+                    >
+                      <Eye className="w-4 h-4 text-cyan-500" />
+                      <span>Quick View</span>
+                    </button>
+
                     <button
                       onClick={() => openWhatsApp({ serviceName: srv.title })}
                       className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-md transition-all"
                       title={`Inquire about ${srv.title} via WhatsApp`}
                     >
                       <MessageCircle className="w-4 h-4 fill-current" />
-                      <span>WhatsApp Inquiry</span>
+                      <span>WhatsApp</span>
                     </button>
 
                     <button
                       onClick={() => onNavigate('pricing')}
                       className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 px-3.5 rounded-xl shadow-md transition-all"
                     >
-                      <span>Pricing Cards</span>
+                      <span>Pricing</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>

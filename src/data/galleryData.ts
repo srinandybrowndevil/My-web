@@ -1,5 +1,4 @@
 import founderPortrait from '../assets/images/srinivashni.png';
-import advisorPortrait from '../assets/images/yogahari.png';
 import vinothPortrait from '../assets/images/vinotom.png';
 import chandruPortrait from '../assets/images/chandru.png';
 import marimuthuPortrait from '../assets/images/marimuthuapk.png';
@@ -52,16 +51,6 @@ export const FOUNDER_INFO = {
   bio: 'Founder of MUCO Labs. Building multiple technology products, websites, Android applications, AI solutions, SaaS platforms, and business communities with a vision to make MUCO Labs one of India’s leading technology companies.'
 };
 
-export const ADVISOR_INFO = {
-  name: 'Mr. Yogahariharan',
-  role: 'Managing Director & Company Advisor',
-  company: 'Way2Me & MUCO Labs',
-  founderOf: 'Way2Me',
-  location: 'Tamil Nadu, India',
-  image: advisorPortrait,
-  bio: 'Strategic business leader and Founder of Way2Me. Serving as Managing Director & Company Advisor at MUCO Labs, Yogahariharan guides enterprise growth, tech venture scalability, product strategy, and key corporate advisories.'
-};
-
 export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 'team-founder',
@@ -83,26 +72,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
     email: 'mucolabs2026@gmail.com',
     location: 'Erode, Tamil Nadu',
     isFounder: true
-  },
-  {
-    id: 'team-1',
-    orderNumber: '1st',
-    name: 'Mr. Yogahariharan',
-    titleRole: 'MD & Company Advisor',
-    affiliation: 'Founder of Way2Me & Advisor at MUCO Labs',
-    badgeTag: 'Managing Director & Company Advisor',
-    image: advisorPortrait,
-    bio: 'Founder of Way2Me and Managing Director & Company Advisor at MUCO Labs. Mentors high-level corporate growth, venture strategy, cross-border operations, and business advisories.',
-    keyResponsibilities: ['Venture Strategy & Scale', 'Managing Director Advisories', 'Corporate Growth & Governance', 'Strategic Alliances'],
-    skills: ['Venture Strategy', 'Corporate Growth', 'Managing Director Advisories', 'Venture Capital', 'Product Scale'],
-    socialLinks: {
-      linkedin: '#',
-      twitter: '#',
-      email: 'mailto:advisor@mucolabs.in'
-    },
-    phone: '+91 6381809844',
-    email: 'advisor@mucolabs.in',
-    location: 'Tamil Nadu, India'
   },
   {
     id: 'team-2',

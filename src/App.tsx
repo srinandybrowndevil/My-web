@@ -29,7 +29,7 @@ const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [contactInitialMessage, setContactInitialMessage] = useState<string>('');
-  const [isNavigating, setIsNavigating] = useState<boolean>(false);
+  const [isScrolledPastHero, setIsScrolledPastHero] = useState<boolean>(false);
 
   // Log page view events on route changes
   usePageViewLogger(currentPage);
@@ -37,6 +37,23 @@ export default function App() {
   useEffect(() => {
     updatePageSEO(currentPage);
   }, [currentPage]);
+
+  // Scroll listener to detect when user scrolls past the Home Hero section
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroThreshold = 350; // threshold in pixels for Home Hero section
+      if (window.scrollY > heroThreshold) {
+        setIsScrolledPastHero(true);
+      } else {
+        setIsScrolledPastHero(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -59,16 +76,12 @@ export default function App() {
       }
     }
 
-    // Trigger brief luxury spinner overlay transition for smooth perceived performance
+    // Instant page transition without artificial delays or preloader overlays
     if (page !== currentPage) {
-      setIsNavigating(true);
-      setTimeout(() => {
-        setCurrentPage(page);
-        if (!hash) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        setTimeout(() => setIsNavigating(false), 250);
-      }, 200);
+      setCurrentPage(page);
+      if (!hash) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } else if (hash) {
       // If already on target page, scroll directly to target ID element
       const targetId = hash.replace('#', '');
@@ -94,40 +107,35 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-amber-500 selection:text-slate-950 relative overflow-x-hidden">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden">
       {/* Luxury Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 z-[100] origin-left shadow-[0_0_12px_rgba(245,158,11,0.8)]"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
         style={{ scaleX }}
       />
 
       {/* Luxury Ambient Radial Overlays */}
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_top_right,_#78350f_0%,_transparent_35%)] opacity-0 dark:opacity-25 pointer-events-none z-0" />
-      <div className="fixed top-1/4 left-0 w-[500px] h-[500px] bg-[radial-gradient(circle,_#1e1b4b_0%,_transparent_70%)] opacity-0 dark:opacity-30 pointer-events-none z-0 blur-3xl" />
-      <div className="fixed bottom-0 right-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_bottom_right,_#451a03_0%,_transparent_60%)] opacity-0 dark:opacity-20 pointer-events-none z-0" />
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_top_left,_#0369a1_0%,_transparent_35%)] opacity-0 dark:opacity-20 pointer-events-none z-0" />
+      <div className="fixed top-1/4 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,_#1e1b4b_0%,_transparent_70%)] opacity-0 dark:opacity-25 pointer-events-none z-0 blur-3xl" />
+      <div className="fixed bottom-0 left-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_bottom_left,_#0f172a_0%,_transparent_60%)] opacity-0 dark:opacity-20 pointer-events-none z-0" />
 
-      {/* Sticky Navigation */}
+      {/* Floating Navigation & Header Controls */}
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
 
-      {/* Luxury Page Transition Loading Overlay */}
-      <AnimatePresence>
-        {isNavigating && (
-          <LuxurySpinner fullScreenOverlay label="Loading MUCO Architecture..." />
-        )}
-      </AnimatePresence>
-
-      {/* Main Page Area with AnimatePresence luxury transition and Suspense fallback */}
-      <main className="flex-1 relative z-10">
-        <Suspense fallback={<LuxurySpinner fullScreenOverlay label="Loading MUCO Architecture..." />}>
+      {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
+      <main className="flex-1 relative z-10 lg:pl-64 pt-16 lg:pt-0 transition-all duration-300">
+        <Suspense fallback={null}>
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
-              initial={{ opacity: 0, y: 14, scale: 0.995 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.995 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             >
-              {currentPage === 'home' && <Home onNavigate={handleNavigate} />}
+              {currentPage === 'home' && (
+                <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
+              )}
               {currentPage === 'about' && <About onNavigate={handleNavigate} />}
               {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
               {currentPage === 'pricing' && (
@@ -175,7 +183,9 @@ export default function App() {
       <PerformanceMonitor />
 
       {/* Footer */}
-      <Footer onNavigate={handleNavigate} />
+      <div className="lg:pl-64 transition-all duration-300">
+        <Footer onNavigate={handleNavigate} />
+      </div>
     </div>
     </ToastProvider>
   );
