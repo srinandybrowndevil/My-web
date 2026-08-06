@@ -7,6 +7,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { LuxurySpinner } from './components/LuxurySpinner';
+import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ToastProvider } from './context/ToastContext';
 import { updatePageSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
@@ -114,10 +115,8 @@ export default function App() {
         style={{ scaleX }}
       />
 
-      {/* Luxury Ambient Radial Overlays */}
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_top_left,_#0369a1_0%,_transparent_35%)] opacity-0 dark:opacity-20 pointer-events-none z-0" />
-      <div className="fixed top-1/4 right-0 w-[500px] h-[500px] bg-[radial-gradient(circle,_#1e1b4b_0%,_transparent_70%)] opacity-0 dark:opacity-25 pointer-events-none z-0 blur-3xl" />
-      <div className="fixed bottom-0 left-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_bottom_left,_#0f172a_0%,_transparent_60%)] opacity-0 dark:opacity-20 pointer-events-none z-0" />
+      {/* Global Futuristic Enterprise Background Layer */}
+      <GlobalBackgroundLayer />
 
       {/* Floating Navigation & Header Controls */}
       <Navbar currentPage={currentPage} onNavigate={handleNavigate} />

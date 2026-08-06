@@ -20,7 +20,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
   defaultService = 'Website Development',
   onSuccess,
   title = 'Quick Project Lead & Scope Inquiry',
-  subtitle = 'Submit your requirements below to log your inquiry directly into our Google Sheets pipeline and receive an instant response.',
+  subtitle = 'Submit your requirements below to receive a custom project roadmap and instant quote.',
   className = ''
 }) => {
   const { showToast } = useToast();
@@ -197,7 +197,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           <div className="space-y-1.5 border-b border-slate-100 dark:border-slate-800/80 pb-4">
             <div className="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 font-bold text-[10px] uppercase tracking-wider bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-md border border-blue-200/60 dark:border-blue-800/60">
               <Sparkles className="w-3 h-3 text-amber-500" />
-              <span>Automated Google Sheets Lead Sync</span>
+              <span>Direct Founder & Tech Consultation</span>
             </div>
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
               {title}
@@ -338,12 +338,12 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>Logging Lead to Google Sheets...</span>
+                <span>Sending Inquiry...</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Submit Lead to Google Sheets</span>
+                <span>Submit Project Inquiry</span>
               </>
             )}
           </button>
@@ -351,11 +351,11 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 pt-1">
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Instant Google Sheets Log & Toast Alert</span>
+              <span>SSL Encrypted • Direct Founder Response</span>
             </span>
             <span className="flex items-center gap-1 font-bold text-slate-700 dark:text-slate-300">
-              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Google Sheets Sync</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
+              <span>24h Turnaround</span>
             </span>
           </div>
         </form>

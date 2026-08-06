@@ -10,6 +10,8 @@ import { ClientSuccessStories } from '../components/ClientSuccessStories';
 import { GlobalReach } from '../components/GlobalReach';
 import { Testimonials } from '../components/Testimonials';
 import { MucoLogo } from '../components/MucoLogo';
+import { BeforeAfterTransformation } from '../components/BeforeAfterTransformation';
+import { AuthenticCompanyVisuals } from '../components/AuthenticCompanyVisuals';
 import {
   ArrowRight,
   Sparkles,
@@ -384,8 +386,18 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
           <FeaturedProjects onNavigate={onNavigate} />
         </section>
 
+        {/* BEFORE & AFTER DIGITAL TRANSFORMATION SHOWCASE */}
+        <section className="max-w-7xl mx-auto">
+          <BeforeAfterTransformation />
+        </section>
+
         {/* Client Success Stories Carousel Section */}
         <ClientSuccessStories onNavigate={onNavigate} />
+
+        {/* AUTHENTIC COMPANY VISUALS & BEHIND THE SCENES */}
+        <section className="max-w-7xl mx-auto">
+          <AuthenticCompanyVisuals />
+        </section>
 
         {/* Global Reach Interactive Map Section */}
         <section className="max-w-7xl mx-auto">

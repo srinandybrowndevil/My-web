@@ -192,33 +192,6 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
         <p className="text-sm text-slate-900 dark:text-slate-200 font-medium">
           Reach out directly to founder Srinivash Mahalingam and our software engineering team in Erode, Tamil Nadu.
         </p>
-
-        {/* View Submitted Messages Inbox & Google Sheets & EmailJS Hub */}
-        <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-          <button
-            onClick={() => setShowEmailJSModal(true)}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-blue-400/40 transition-all"
-          >
-            <Sparkles className="w-4 h-4 text-cyan-300" />
-            <span>EmailJS Setup & HTML Template</span>
-          </button>
-
-          <button
-            onClick={() => setShowInboxModal(true)}
-            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-500 font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-slate-700 dark:border-blue-500/40 transition-all"
-          >
-            <Inbox className="w-4 h-4 text-emerald-400" />
-            <span>View Received Messages Inbox</span>
-          </button>
-
-          <button
-            onClick={() => setShowSheetsModal(true)}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs px-5 py-2.5 rounded-2xl shadow-lg border border-emerald-500/40 transition-all"
-          >
-            <FileSpreadsheet className="w-4 h-4 text-emerald-200" />
-            <span>Google Sheets Lead Sync</span>
-          </button>
-        </div>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -499,19 +472,45 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1">
                   <span className="flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
-                    <span>EmailJS & Google Sheets Auto Sync</span>
+                    <span>256-bit Encrypted • Direct Founder Response</span>
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => setShowEmailJSModal(true)}
-                    className="text-blue-600 dark:text-cyan-400 hover:underline font-bold"
-                  >
-                    View HTML Template
-                  </button>
+                  <span className="text-[10px] text-slate-400 font-medium">Fast 24h Inquiry Guarantee</span>
                 </div>
               </form>
             )}
           </div>
+        </div>
+      </section>
+
+      {/* Discrete Admin / Internal Lead Hub Footer Bar */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-200/40 dark:border-slate-800/40 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-3">
+        <span className="text-[11px] font-medium text-slate-400">
+          MUCO Labs Client Pipeline & Communications Engine
+        </span>
+        <div className="flex items-center gap-3 text-[11px]">
+          <button
+            onClick={() => setShowInboxModal(true)}
+            className="text-slate-400 hover:text-cyan-400 transition-colors font-medium flex items-center gap-1"
+          >
+            <Inbox className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Messages Inbox</span>
+          </button>
+          <span>•</span>
+          <button
+            onClick={() => setShowSheetsModal(true)}
+            className="text-slate-400 hover:text-cyan-400 transition-colors font-medium flex items-center gap-1"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Google Sheets Sync</span>
+          </button>
+          <span>•</span>
+          <button
+            onClick={() => setShowEmailJSModal(true)}
+            className="text-slate-400 hover:text-cyan-400 transition-colors font-medium flex items-center gap-1"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>EmailJS Setup</span>
+          </button>
         </div>
       </section>
     </div>
