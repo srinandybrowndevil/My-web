@@ -9,7 +9,7 @@ export function getGoogleScriptUrl(): string {
   } catch {
     // localStorage fallback
   }
-  return stored || import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
+  return stored || import.meta.env.VITE_GOOGLE_SHEETS_ENDPOINT || import.meta.env.VITE_GOOGLE_SCRIPT_URL || '';
 }
 
 export function saveGoogleScriptUrl(url: string) {

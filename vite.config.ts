@@ -21,16 +21,24 @@ export default defineConfig(() => {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom')) {
+              if (
+                id.includes('/node_modules/react/') ||
+                id.includes('/node_modules/react-dom/') ||
+                id.includes('/node_modules/scheduler/')
+              ) {
                 return 'vendor-react';
               }
-              if (id.includes('motion')) {
+              if (
+                id.includes('/node_modules/framer-motion/') ||
+                id.includes('/node_modules/motion/') ||
+                id.includes('/node_modules/motion-dom/')
+              ) {
                 return 'vendor-motion';
               }
-              if (id.includes('lucide-react')) {
+              if (id.includes('/node_modules/lucide-react/')) {
                 return 'vendor-icons';
               }
-              if (id.includes('firebase')) {
+              if (id.includes('/node_modules/firebase/')) {
                 return 'vendor-firebase';
               }
               return 'vendor-libs';

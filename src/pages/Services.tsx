@@ -1,10 +1,11 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { PageId } from '../types';
 import { CORE_SERVICES } from '../data/servicesData';
 import { DynamicIcon } from '../components/DynamicIcon';
 import { ArrowRight, CheckCircle2, Sparkles, Layers, Cpu, Globe, MessageCircle } from 'lucide-react';
 import { openWhatsApp } from '../utils/whatsapp';
+import { LeadCaptureForm } from '../components/LeadCaptureForm';
 
 interface ServicesProps {
   onNavigate: (page: PageId) => void;
@@ -139,6 +140,21 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
           </motion.div>
         ))}
       </section>
+
+      {/* Direct Google Sheets Lead Capture Form */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        <LeadCaptureForm
+          defaultService="Website Development"
+          title="Direct Lead Capture & Proposal Request"
+          subtitle="Submit your project details below. Leads are instantly logged to Google Sheets and our team will prepare a formal estimate."
+        />
+      </motion.section>
 
       {/* CTA section with scroll reveal */}
       <motion.section 

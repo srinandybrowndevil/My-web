@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Check, Copy, X, Key, Sparkles, Send, ShieldCheck, ExternalLink, Code2 } from 'lucide-react';
 import { getEmailJSConfig, saveEmailJSConfig, isEmailJSConfigured, sendInquiryEmail, BRANDED_EMAILJS_HTML_TEMPLATE } from '../services/emailjs';
 import { useToast } from '../context/ToastContext';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { ProjectItem, PageId } from '../types';
 import { 

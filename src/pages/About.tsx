@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { PageId } from '../types';
 import { FOUNDER_INFO } from '../data/galleryData';
 import {

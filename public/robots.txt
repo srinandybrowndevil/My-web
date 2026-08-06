@@ -3,6 +3,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-# Official Sitemap Location
+# Official Sitemap XML Locations
 Sitemap: https://mucolabs.com/sitemap.xml
 Sitemap: https://mucolabs.in/sitemap.xml

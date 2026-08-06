@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Gauge, Zap, Cpu, HardDrive, RefreshCw, X, ChevronUp, ChevronDown, CheckCircle2, AlertTriangle, Info, Terminal } from 'lucide-react';
 
 export interface WebVitalsData {

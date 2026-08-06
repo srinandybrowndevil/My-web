@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { TEAM_MEMBERS, GALLERY_ITEMS, GalleryItem, TeamMember } from '../data/galleryData';
 import { PageId } from '../types';
 import { updateMemberSEO } from '../utils/seo';
