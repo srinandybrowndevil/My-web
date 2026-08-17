@@ -304,21 +304,14 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   Your inquiry has been sent successfully.
                 </p>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-                  We have dispatched your inquiry to <strong>mucolabs2026@gmail.com</strong>, sent an auto-reply confirmation to your email, and logged your details to Google Sheets.
+                  Your inquiry has been delivered directly to <strong>mucolabs2026@gmail.com</strong>. Our team will review your project details and respond within 24 hours.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                   <button
                     onClick={handleResetForm}
-                    className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs py-2.5 px-5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                    className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs py-2.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all"
                   >
                     Submit Another Inquiry
-                  </button>
-                  <button
-                    onClick={() => setShowInboxModal(true)}
-                    className="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs py-2.5 px-5 rounded-xl shadow-md transition-all flex items-center gap-2"
-                  >
-                    <Inbox className="w-4 h-4 text-emerald-300" />
-                    <span>View In Client Lead Inbox</span>
                   </button>
                 </div>
               </div>
@@ -343,10 +336,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                   <div>
-                    <label className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    <label htmlFor="contact-name" className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
                       Full Name *
                     </label>
                     <input
+                      id="contact-name"
+                      name="name"
                       type="text"
                       required
                       value={formData.name}
@@ -357,10 +352,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    <label htmlFor="contact-email" className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
                       Email Address *
                     </label>
                     <input
+                      id="contact-email"
+                      name="email"
                       type="email"
                       required
                       value={formData.email}
@@ -373,10 +370,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    <label htmlFor="contact-phone" className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
                       Phone Number *
                     </label>
                     <input
+                      id="contact-phone"
+                      name="phone"
                       type="tel"
                       required
                       value={formData.phone}
@@ -387,10 +386,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    <label htmlFor="contact-company" className="block text-[11px] font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider mb-1">
                       Company Name
                     </label>
                     <input
+                      id="contact-company"
+                      name="company"
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
@@ -402,10 +403,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                    <label htmlFor="contact-service" className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                       Service Required *
                     </label>
                     <select
+                      id="contact-service"
+                      name="service"
                       required
                       value={formData.serviceCategory}
                       onChange={(e) => setFormData({ ...formData, serviceCategory: e.target.value })}
@@ -423,10 +426,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                    <label htmlFor="contact-subject" className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                       Subject *
                     </label>
                     <input
+                      id="contact-subject"
+                      name="subject"
                       type="text"
                       required
                       value={formData.subject || ''}
@@ -438,10 +443,12 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
+                  <label htmlFor="contact-message" className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Message *
                   </label>
                   <textarea
+                    id="contact-message"
+                    name="message"
                     required
                     rows={4}
                     value={formData.message}

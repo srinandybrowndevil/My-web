@@ -8,6 +8,7 @@ import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { LuxurySpinner } from './components/LuxurySpinner';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
 import { updatePageSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
@@ -39,21 +40,44 @@ export default function App() {
     updatePageSEO(currentPage);
   }, [currentPage]);
 
-  // Scroll listener to detect when user scrolls past the Home Hero section
+  // Optimized scroll listener & IntersectionObserver to detect when user scrolls past Home Hero
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+    let observer: IntersectionObserver | null = null;
+
+    // Debounced scroll handler to prevent excessive re-renders during high-frequency scrolling
     const handleScroll = () => {
-      const heroThreshold = 350; // threshold in pixels for Home Hero section
-      if (window.scrollY > heroThreshold) {
-        setIsScrolledPastHero(true);
-      } else {
-        setIsScrolledPastHero(false);
-      }
+      if (timeoutId !== null) return;
+      timeoutId = setTimeout(() => {
+        timeoutId = null;
+        const heroThreshold = 350;
+        const isPast = window.scrollY > heroThreshold;
+        setIsScrolledPastHero((prev) => (prev !== isPast ? isPast : prev));
+      }, 40); // 40ms throttle/debounce frame
     };
+
+    // IntersectionObserver for efficient viewport detection when hero element exists
+    const heroElement = document.getElementById('hero-section') || document.querySelector('main section');
+    if (heroElement && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          const isPast = !entry.isIntersecting;
+          setIsScrolledPastHero((prev) => (prev !== isPast ? isPast : prev));
+        },
+        { root: null, rootMargin: '-300px 0px 0px 0px', threshold: 0 }
+      );
+      observer.observe(heroElement);
+    }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (timeoutId !== null) clearTimeout(timeoutId);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   const { scrollYProgress } = useScroll();
@@ -123,53 +147,55 @@ export default function App() {
 
       {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
       <main className="flex-1 relative z-10 lg:pl-64 pt-16 lg:pt-0 transition-all duration-300">
-        <Suspense fallback={null}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentPage}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {currentPage === 'home' && (
-                <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
-              )}
-              {currentPage === 'about' && <About onNavigate={handleNavigate} />}
-              {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
-              {currentPage === 'pricing' && (
-                <Pricing
-                  onNavigateToContactWithItem={handleNavigateToContactWithItem}
-                  onNavigateToMaintenance={() => handleNavigate('maintenance')}
-                />
-              )}
-              {currentPage === 'portfolio' && (
-                <Portfolio onNavigate={handleNavigate} />
-              )}
-              {currentPage === 'apps' && (
-                <AppStudio
-                  onNavigateToContactWithItem={handleNavigateToContactWithItem}
-                  onNavigate={handleNavigate}
-                />
-              )}
-              {currentPage === 'maintenance' && (
-                <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
-              )}
-              {currentPage === 'gallery' && (
-                <Gallery onNavigate={handleNavigate} />
-              )}
-              {currentPage === 'sheets' && (
-                <GoogleSheetsManager />
-              )}
-              {currentPage === 'contact' && (
-                <Contact initialMessage={contactInitialMessage} />
-              )}
-              {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
-              {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
-              {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
-            </motion.div>
-          </AnimatePresence>
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={null}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentPage}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {currentPage === 'home' && (
+                  <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
+                )}
+                {currentPage === 'about' && <About onNavigate={handleNavigate} />}
+                {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
+                {currentPage === 'pricing' && (
+                  <Pricing
+                    onNavigateToContactWithItem={handleNavigateToContactWithItem}
+                    onNavigateToMaintenance={() => handleNavigate('maintenance')}
+                  />
+                )}
+                {currentPage === 'portfolio' && (
+                  <Portfolio onNavigate={handleNavigate} />
+                )}
+                {currentPage === 'apps' && (
+                  <AppStudio
+                    onNavigateToContactWithItem={handleNavigateToContactWithItem}
+                    onNavigate={handleNavigate}
+                  />
+                )}
+                {currentPage === 'maintenance' && (
+                  <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
+                )}
+                {currentPage === 'gallery' && (
+                  <Gallery onNavigate={handleNavigate} />
+                )}
+                {currentPage === 'sheets' && (
+                  <GoogleSheetsManager />
+                )}
+                {currentPage === 'contact' && (
+                  <Contact initialMessage={contactInitialMessage} />
+                )}
+                {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
+                {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
+                {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
+              </motion.div>
+            </AnimatePresence>
+          </Suspense>
+        </ErrorBoundary>
       </main>
 
       {/* Floating WhatsApp Action */}

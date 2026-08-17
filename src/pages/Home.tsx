@@ -35,7 +35,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
     <div className="space-y-16 sm:space-y-24 pb-16">
       {/* DEDICATED HOME HERO SECTION */}
       <section
-        className={`relative min-h-[calc(100vh-4rem)] lg:min-h-screen flex flex-col items-center justify-center pt-6 sm:pt-10 pb-12 sm:pb-16 px-4 sm:px-6 overflow-hidden text-center transition-all duration-700 ease-out ${
+        className={`relative min-h-[calc(100vh-4rem)] lg:min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-12 pb-16 sm:pb-20 px-4 sm:px-6 overflow-hidden text-center transition-all duration-700 ease-out ${
           isScrolledPastHero
             ? 'opacity-15 scale-95 blur-xs pointer-events-none'
             : 'opacity-100 scale-100 blur-none'
@@ -46,19 +46,19 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[650px] h-[350px] sm:h-[650px] bg-blue-600/15 dark:bg-blue-500/20 rounded-full blur-[100px] sm:blur-[140px] pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] bg-blue-600/15 dark:bg-blue-500/20 rounded-full blur-[120px] pointer-events-none"
         />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, delay: 0.2 }}
-          className="absolute top-1/3 left-1/3 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/15 rounded-full blur-[80px] sm:blur-[120px] pointer-events-none"
+          className="absolute top-1/3 left-1/3 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/15 rounded-full blur-[90px] pointer-events-none"
         />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.4, delay: 0.4 }}
-          className="absolute bottom-1/4 right-1/4 w-52 sm:w-80 h-52 sm:h-80 bg-amber-500/10 rounded-full blur-[70px] sm:blur-[100px] pointer-events-none"
+          className="absolute bottom-1/4 right-1/4 w-52 sm:w-80 h-52 sm:h-80 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none"
         />
 
         {/* Subtle grid pattern backdrop */}
@@ -75,10 +75,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[10px] sm:text-xs font-black uppercase tracking-widest backdrop-blur-md shadow-lg shadow-blue-500/10 text-center"
+            className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 dark:bg-slate-900/80 border border-cyan-500/30 text-cyan-400 text-[10px] sm:text-xs font-black uppercase tracking-widest backdrop-blur-md shadow-lg shadow-cyan-500/10 text-center"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-            <span>Digital Engineering Studio</span>
+            <span>AI & Digital Engineering Firm • Est. 2026</span>
           </motion.div>
 
           {/* LARGE PREMIUM MUCO LABS LOGO IN CENTER */}
@@ -86,10 +86,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative my-1 sm:my-2 p-4 sm:p-8 rounded-3xl bg-slate-900/60 dark:bg-slate-950/80 border border-cyan-500/30 shadow-[0_0_80px_rgba(6,182,212,0.25)] backdrop-blur-2xl group hover:border-cyan-400/60 transition-all duration-500 transform hover:scale-[1.02] flex items-center justify-center shrink-0"
+            className="relative my-1 sm:my-2 p-5 sm:p-8 rounded-3xl bg-slate-900/80 dark:bg-[#080d1a]/90 border border-cyan-500/40 shadow-[0_0_80px_rgba(6,182,212,0.3)] backdrop-blur-2xl group hover:border-cyan-400/80 transition-all duration-500 transform hover:scale-[1.03] flex items-center justify-center shrink-0"
           >
             {/* Radial backlight aura */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-cyan-500/25 to-amber-500/20 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/25 via-cyan-500/30 to-amber-500/25 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity pointer-events-none" />
             
             <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 flex items-center justify-center">
               <MucoLogo variant="mark" size="custom" customSize={120} className="w-full h-full" />
@@ -101,7 +101,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white text-center leading-none"
+            className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white text-center leading-none"
           >
             MUCO <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-amber-400 bg-clip-text text-transparent">LABS</span>
           </motion.h1>
@@ -111,9 +111,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-[10px] sm:text-base md:text-xl font-extrabold tracking-[0.12em] sm:tracking-[0.28em] uppercase bg-gradient-to-r from-cyan-400 via-blue-400 to-amber-400 bg-clip-text text-transparent px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-slate-900/40 border border-white/10 backdrop-blur-md shadow-lg text-center max-w-full leading-normal"
+            className="text-[11px] sm:text-base md:text-xl font-extrabold tracking-[0.15em] sm:tracking-[0.28em] uppercase bg-gradient-to-r from-cyan-300 via-blue-400 to-amber-300 bg-clip-text text-transparent px-4 sm:px-6 py-2 rounded-full bg-slate-900/60 dark:bg-slate-900/60 border border-white/10 backdrop-blur-md shadow-lg text-center max-w-full leading-normal"
           >
-            AI • Cloud • Digital Engineering
+            AI • Cloud Architecture • Full-Stack Software
           </motion.div>
 
           {/* PROFESSIONAL TAGLINE */}
@@ -123,29 +123,54 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-slate-600 dark:text-slate-300 text-xs sm:text-base md:text-lg max-w-2xl leading-relaxed font-normal px-2 text-center"
           >
-            Engineering intelligent software platforms, enterprise cloud architectures, and high-performance digital solutions built for global enterprise scale.
+            Architecting intelligent enterprise software platforms, production-ready AI models, robust cloud infrastructures, and high-performance mobile applications.
           </motion.p>
+
+          {/* LIVE TRUST & METRICS BAR */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full max-w-2xl pt-2"
+          >
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 dark:bg-slate-900/60 border border-slate-800 backdrop-blur-md text-center">
+              <span className="block text-sm font-black text-cyan-400">99.9%</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Uptime SLA</span>
+            </div>
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 dark:bg-slate-900/60 border border-slate-800 backdrop-blur-md text-center">
+              <span className="block text-sm font-black text-amber-400">&lt; 15ms</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">API Latency</span>
+            </div>
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 dark:bg-slate-900/60 border border-slate-800 backdrop-blur-md text-center">
+              <span className="block text-sm font-black text-blue-400">100+</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Deliveries</span>
+            </div>
+            <div className="p-2.5 rounded-2xl bg-slate-900/70 dark:bg-slate-900/60 border border-slate-800 backdrop-blur-md text-center">
+              <span className="block text-sm font-black text-emerald-400">24/7</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Live Support</span>
+            </div>
+          </motion.div>
 
           {/* HERO ACTION BUTTONS */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
+            className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
           >
             <button
               onClick={() => onNavigate('services')}
-              className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700 hover:from-blue-500 hover:to-cyan-600 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-cyan-500/25 transition-all transform hover:-translate-y-0.5"
+              className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700 hover:from-blue-500 hover:to-cyan-600 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-cyan-500/25 transition-all transform hover:-translate-y-0.5"
             >
               <span>Explore Services</span>
               <ArrowRight className="w-4 h-4 text-white" />
             </button>
 
             <button
-              onClick={() => onNavigate('contact')}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900/90 dark:bg-slate-900 text-white hover:bg-slate-800 font-extrabold text-xs sm:text-sm border border-white/15 shadow-lg transition-all transform hover:-translate-y-0.5"
+              onClick={() => onNavigate('pricing')}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-slate-900/90 dark:bg-slate-900 text-slate-200 hover:text-white hover:bg-slate-850 font-extrabold text-xs sm:text-sm border border-slate-700/80 shadow-lg transition-all transform hover:-translate-y-0.5"
             >
-              <span>Get Custom Quote</span>
+              <span>View Pricing Plans</span>
             </button>
           </motion.div>
         </motion.div>

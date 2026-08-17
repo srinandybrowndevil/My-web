@@ -30,7 +30,8 @@ import {
   Send, 
   Layers, 
   ShieldCheck,
-  UserCheck
+  UserCheck,
+  Download
 } from 'lucide-react';
 import { LuxurySpinner } from '../components/LuxurySpinner';
 import { useToast } from '../context/ToastContext';
@@ -287,6 +288,52 @@ export const GoogleSheetsManager: React.FC = () => {
 
     return [headers, ...matchingData];
   }, [sheetData, searchTerm]);
+
+  // CSV Export Trigger
+  const handleExportCSV = () => {
+    if (!sheetData || !sheetData.values || sheetData.values.length === 0) {
+      showToast('No lead data available in the current sheet to export.', 'error', 'Export Failed');
+      return;
+    }
+
+    try {
+      const dataToExport = filteredRows.length > 0 ? filteredRows : sheetData.values;
+      const csvContent = dataToExport
+        .map((row) =>
+          row
+            .map((cell) => {
+              const strVal = String(cell ?? '');
+              if (strVal.includes(',') || strVal.includes('"') || strVal.includes('\n')) {
+                return `"${strVal.replace(/"/g, '""')}"`;
+              }
+              return strVal;
+            })
+            .join(',')
+        )
+        .join('\r\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const rawTitle = selectedSheetMeta?.name || 'MUCO_Labs_Leads';
+      const cleanTitle = rawTitle.replace(/[^a-zA-Z0-9_-]/g, '_');
+      const filename = `${cleanTitle}_${new Date().toISOString().slice(0, 10)}.csv`;
+
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      const count = dataToExport.length > 1 ? dataToExport.length - 1 : dataToExport.length;
+      showToast(`Successfully exported ${count} lead entry(s) to ${filename}`, 'success', 'CSV Downloaded');
+      setStatusMessage({ type: 'success', text: `Downloaded CSV export file: "${filename}" (${count} records)` });
+    } catch (err: any) {
+      console.error('Failed to export CSV:', err);
+      showToast('Error generating CSV export file.', 'error', 'Export Error');
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -586,6 +633,16 @@ export const GoogleSheetsManager: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={handleExportCSV}
+                    disabled={!sheetData || !sheetData.values || sheetData.values.length === 0}
+                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-md border border-emerald-400/40 transition-all flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                    title="Download current lead data as a CSV file for reporting"
+                  >
+                    <Download className="w-3.5 h-3.5 text-emerald-200" />
+                    <span>Export CSV</span>
+                  </button>
+
                   {selectedSheetMeta?.webViewLink && (
                     <a
                       href={selectedSheetMeta.webViewLink}
@@ -674,11 +731,27 @@ export const GoogleSheetsManager: React.FC = () => {
 
               {/* Sheet Stats Footer */}
               {sheetData && sheetData.values && (
-                <div className="pt-2 flex items-center justify-between text-[11px] text-slate-500">
-                  <span>
-                    Loaded {sheetData.values.length} rows (including header)
-                  </span>
-                  <span className="font-mono text-amber-500 font-bold">Range: {sheetData.range}</span>
+                <div className="pt-2 flex flex-wrap items-center justify-between text-[11px] text-slate-500 gap-2">
+                  <div className="flex items-center gap-2">
+                    <span>
+                      Loaded {sheetData.values.length} rows (including header)
+                    </span>
+                    {searchTerm && (
+                      <span className="text-amber-500 font-bold">
+                        • {filteredRows.length - 1} matching query
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-amber-500 font-bold">Range: {sheetData.range}</span>
+                    <button
+                      onClick={handleExportCSV}
+                      className="text-emerald-500 hover:text-emerald-400 font-bold underline flex items-center gap-1 transition-colors"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download CSV</span>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

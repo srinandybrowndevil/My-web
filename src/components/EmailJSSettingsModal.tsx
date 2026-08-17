@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Check, Copy, X, Key, Sparkles, Send, ShieldCheck, ExternalLink, Code2 } from 'lucide-react';
-import { getEmailJSConfig, saveEmailJSConfig, isEmailJSConfigured, sendInquiryEmail, BRANDED_EMAILJS_HTML_TEMPLATE } from '../services/emailjs';
+import { getEmailJSConfig, saveEmailJSConfig, isEmailJSConfigured, sendInquiryEmail, BRANDED_EMAILJS_HTML_TEMPLATE, PLAIN_TEXT_EMAILJS_TEMPLATE } from '../services/emailjs';
 import { useToast } from '../context/ToastContext';
 
 interface EmailJSSettingsModalProps {
@@ -220,35 +220,46 @@ export const EmailJSSettingsModal: React.FC<EmailJSSettingsModalProps> = ({ isOp
         {/* TAB 2: BRANDED HTML TEMPLATE */}
         {activeTab === 'template_code' && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <p className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                MUCO Labs Branded Email Template HTML (Copy & Paste to EmailJS Template Editor)
+                MUCO Labs Email Templates (Copy & Paste into EmailJS Dashboard)
               </p>
-              <button
-                onClick={handleCopyTemplate}
-                className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs px-3.5 py-1.5 rounded-xl shadow-sm transition-all"
-              >
-                {copiedTemplate ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedTemplate ? 'Copied HTML!' : 'Copy HTML Template'}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleCopyTemplate}
+                  className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-black text-xs px-3 py-1.5 rounded-xl shadow-sm transition-all"
+                >
+                  {copiedTemplate ? <Check className="w-3.5 h-3.5 text-emerald-300" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedTemplate ? 'Copied HTML!' : 'Copy HTML Template'}</span>
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(PLAIN_TEXT_EMAILJS_TEMPLATE);
+                    showToast('Plain Text template copied!', 'success', 'Copied');
+                  }}
+                  className="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-3 py-1.5 rounded-xl border border-slate-700 transition-all"
+                >
+                  <Copy className="w-3.5 h-3.5 text-blue-400" />
+                  <span>Copy Plain Text</span>
+                </button>
+              </div>
             </div>
 
             <div className="bg-slate-950 rounded-2xl p-4 border border-slate-800 text-slate-300 font-mono text-[11px] h-64 overflow-y-auto leading-relaxed scrollbar-thin">
               <pre>{BRANDED_EMAILJS_HTML_TEMPLATE}</pre>
             </div>
 
-            <div className="p-3 bg-slate-100 dark:bg-slate-800/80 rounded-2xl text-[11px] text-slate-600 dark:text-slate-400 space-y-1 border border-slate-200 dark:border-slate-700">
-              <span className="font-bold text-slate-900 dark:text-white block">Template Variables Handled:</span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 font-mono text-[10px] text-blue-600 dark:text-cyan-400">
-                <span>{"{{from_name}}"}</span>
-                <span>{"{{from_email}}"}</span>
-                <span>{"{{phone_number}}"}</span>
-                <span>{"{{company_name}}"}</span>
-                <span>{"{{service_category}}"}</span>
-                <span>{"{{budget_range}}"}</span>
-                <span>{"{{message_body}}"}</span>
-                <span>{"{{submission_time}}"}</span>
-                <span>{"{{to_email}}"}</span>
+            <div className="p-3.5 bg-slate-100 dark:bg-slate-800/80 rounded-2xl text-[11px] text-slate-600 dark:text-slate-400 space-y-1.5 border border-slate-200 dark:border-slate-700">
+              <span className="font-bold text-slate-900 dark:text-white block">Template Variables Provided (100% Compatible):</span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 font-mono text-[10px] text-blue-600 dark:text-cyan-400">
+                <span>{"{{name}}"} / {"{{from_name}}"}</span>
+                <span>{"{{email}}"} / {"{{from_email}}"}</span>
+                <span>{"{{phone}}"} / {"{{phone_number}}"}</span>
+                <span>{"{{company}}"} / {"{{company_name}}"}</span>
+                <span>{"{{service}}"} / {"{{service_category}}"}</span>
+                <span>{"{{subject}}"}</span>
+                <span>{"{{message}}"} / {"{{message_body}}"}</span>
+                <span>{"{{date}}"} / {"{{submission_time}}"}</span>
               </div>
             </div>
           </div>

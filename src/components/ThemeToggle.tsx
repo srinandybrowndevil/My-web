@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Sparkles } from 'lucide-react';
 
 export const ThemeToggle: React.FC = () => {
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       return document.documentElement.classList.contains('dark') ||
-        localStorage.getItem('theme') === 'dark';
+        localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
-    return false;
+    return true;
   });
 
   useEffect(() => {
@@ -24,15 +25,19 @@ export const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={() => setIsDark(!isDark)}
-      className="p-2.5 rounded-full transition-all duration-200 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-      title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+      className="relative group p-2 rounded-xl transition-all duration-300 bg-slate-900/90 dark:bg-slate-900 border border-slate-700/80 hover:border-cyan-500/50 text-slate-300 hover:text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/40 flex items-center justify-center overflow-hidden"
+      title={isDark ? 'Switch to Titanium Light Theme' : 'Switch to Obsidian Dark Theme'}
       aria-label="Toggle Theme"
     >
-      {isDark ? (
-        <Sun className="w-4 h-4 text-amber-400" />
-      ) : (
-        <Moon className="w-4 h-4 text-slate-700" />
-      )}
+      <div className="relative z-10 flex items-center justify-center">
+        {isDark ? (
+          <Sun className="w-4 h-4 text-amber-400 transform group-hover:rotate-45 transition-transform duration-300" />
+        ) : (
+          <Moon className="w-4 h-4 text-cyan-400 transform group-hover:-rotate-12 transition-transform duration-300" />
+        )}
+      </div>
+      <span className="sr-only">Toggle theme</span>
     </button>
   );
 };
+

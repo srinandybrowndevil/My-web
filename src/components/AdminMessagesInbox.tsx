@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, RefreshCw, Trash2, CheckCircle, Search, Clock, User, Phone, Building, DollarSign, X, ExternalLink, ShieldCheck, Inbox } from 'lucide-react';
+import { Mail, RefreshCw, Trash2, CheckCircle, Search, Clock, User, Phone, Building, DollarSign, X, ExternalLink, ShieldCheck, Inbox, Download, FileSpreadsheet } from 'lucide-react';
+import { GoogleSheetsHub } from './GoogleSheetsHub';
 
 export interface SavedMessage {
   id: string;
@@ -25,6 +26,34 @@ export const AdminMessagesInbox: React.FC<AdminMessagesInboxProps> = ({ isOpen, 
   const [search, setSearch] = useState<string>('');
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [selectedMessage, setSelectedMessage] = useState<SavedMessage | null>(null);
+  const [showSheetsModal, setShowSheetsModal] = useState<boolean>(false);
+
+  const handleExportCSV = () => {
+    if (!messages || messages.length === 0) return;
+    const headers = ['ID', 'Timestamp', 'Name', 'Email', 'Phone', 'Company', 'Service Category', 'Budget Range', 'Message', 'Status'];
+    const rows = messages.map(m => [
+      m.id,
+      `"${(m.timestamp || '').replace(/"/g, '""')}"`,
+      `"${(m.name || '').replace(/"/g, '""')}"`,
+      `"${(m.email || '').replace(/"/g, '""')}"`,
+      `"${(m.phone || '').replace(/"/g, '""')}"`,
+      `"${(m.company || '').replace(/"/g, '""')}"`,
+      `"${(m.serviceCategory || '').replace(/"/g, '""')}"`,
+      `"${(m.budgetRange || '').replace(/"/g, '""')}"`,
+      `"${(m.message || '').replace(/"/g, '""')}"`,
+      `"${(m.status || 'New').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `MUCO_Labs_Client_Leads_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const fetchMessages = async () => {
     setLoading(true);
@@ -151,18 +180,37 @@ export const AdminMessagesInbox: React.FC<AdminMessagesInboxProps> = ({ isOpen, 
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleExportCSV}
+              disabled={messages.length === 0}
+              className="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-emerald-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Export all client leads to a CSV file"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export CSV</span>
+            </button>
+
+            <button
+              onClick={() => setShowSheetsModal(true)}
+              className="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-blue-600/20"
+              title="Open Google Sheets Hub to sync lead data"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span>Google Sheets Sync</span>
+            </button>
+
             <button
               onClick={fetchMessages}
               disabled={loading}
-              className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all"
+              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all"
               title="Refresh Messages"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all"
+              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all"
             >
               <X className="w-5 h-5" />
             </button>
@@ -296,14 +344,27 @@ export const AdminMessagesInbox: React.FC<AdminMessagesInboxProps> = ({ isOpen, 
             <span>Encrypted Lead Processing • MUCO Labs Internal Dashboard</span>
           </div>
 
-          <button
-            onClick={onClose}
-            className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-black text-xs rounded-xl transition-all"
-          >
-            Close Inbox
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={handleExportCSV}
+              disabled={messages.length === 0}
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-emerald-600/20 disabled:opacity-50"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Download CSV</span>
+            </button>
+
+            <button
+              onClick={onClose}
+              className="w-full sm:w-auto px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-black text-xs rounded-xl transition-all"
+            >
+              Close Inbox
+            </button>
+          </div>
         </div>
       </div>
+
+      <GoogleSheetsHub isOpen={showSheetsModal} onClose={() => setShowSheetsModal(false)} />
     </div>
   );
 };
