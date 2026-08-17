@@ -1,0 +1,7 @@
+# MUCO Labs Robots.txt - Search Engine Optimization & Crawler Directives
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Official Sitemap XML Locations
+Sitemap: https://mucolabs.com/sitemap.xml
