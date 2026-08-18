@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { fetchTestimonials, addTestimonial, DEFAULT_TESTIMONIALS, TestimonialItem } from '../services/firebase';
 import { useToast } from '../context/ToastContext';
+import { Image } from './Image';
 
 export const Testimonials: React.FC = () => {
   const { showToast } = useToast();
@@ -331,13 +332,12 @@ export const Testimonials: React.FC = () => {
                   <div className="pt-4 mt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-3 relative z-10">
                     <div className="flex items-center gap-3">
                       {item.companyLogo ? (
-                        <img
+                        <Image
                           src={item.companyLogo}
                           alt={item.companyName}
-                          referrerPolicy="no-referrer"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=120&q=80';
-                          }}
+                          width={40}
+                          height={40}
+                          fallbackSrc="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=120&q=80"
                           className="w-10 h-10 rounded-xl object-cover border border-slate-200 dark:border-slate-800 bg-slate-950 shrink-0"
                         />
                       ) : (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
+import { Image } from './Image';
 import { 
   FileSpreadsheet, 
   CheckCircle2, 
@@ -359,7 +360,13 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
             <div className="flex items-center justify-between gap-4 p-3 bg-slate-900 rounded-xl border border-slate-700">
               <div className="flex items-center gap-3">
                 {user.photoURL ? (
-                  <img src={user.photoURL} alt={user.displayName || 'User'} className="w-8 h-8 rounded-full border border-amber-500/40" />
+                  <Image
+                    src={user.photoURL}
+                    alt={user.displayName || 'User'}
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 rounded-full border border-amber-500/40"
+                  />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center">
                     {user.email?.[0].toUpperCase()}

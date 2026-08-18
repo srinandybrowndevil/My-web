@@ -10,7 +10,7 @@ interface FloatingWhatsAppProps {
   currentPage: PageId;
 }
 
-type ButtonTheme = 'emerald' | 'cyan' | 'amber' | 'indigo';
+type ButtonTheme = 'emerald' | 'cyan' | 'amber' | 'indigo' | 'glass';
 
 export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
   const [theme, setTheme] = useState<ButtonTheme>(() => {
     try {
       const saved = localStorage.getItem('muco_whatsapp_theme');
-      if (saved && ['emerald', 'cyan', 'amber', 'indigo'].includes(saved)) {
+      if (saved && ['emerald', 'cyan', 'amber', 'indigo', 'glass'].includes(saved)) {
         return saved as ButtonTheme;
       }
     } catch (e) {
@@ -130,6 +130,15 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
       accentBg: 'bg-indigo-50 dark:bg-indigo-950/40',
       border: 'border-indigo-200 dark:border-indigo-800/80',
       btnSubmit: 'bg-indigo-600 hover:bg-indigo-500 shadow-indigo-500/20'
+    },
+    glass: {
+      bg: 'bg-cyan-500/80 backdrop-blur-xl border border-white/40 hover:bg-cyan-400/90',
+      shadow: 'hover:shadow-cyan-500/50 shadow-lg',
+      badge: 'bg-cyan-300',
+      text: 'text-cyan-400',
+      accentBg: 'bg-cyan-500/15 backdrop-blur-md',
+      border: 'border-cyan-400/40',
+      btnSubmit: 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-cyan-500/30'
     }
   };
 
@@ -231,19 +240,19 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                     <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                       Button Theme Accent:
                     </p>
-                    <div className="grid grid-cols-4 gap-1.5">
-                      {(['emerald', 'cyan', 'amber', 'indigo'] as ButtonTheme[]).map((t) => (
+                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
+                      {(['emerald', 'cyan', 'amber', 'indigo', 'glass'] as ButtonTheme[]).map((t) => (
                         <button
                           key={t}
                           onClick={() => setTheme(t)}
-                          className={`py-1.5 px-2 rounded-xl text-[10px] font-bold capitalize flex items-center justify-center gap-1 border transition-all ${
+                          className={`py-1.5 px-1.5 rounded-xl text-[10px] font-bold capitalize flex items-center justify-center gap-1 border transition-all ${
                             theme === t
                               ? 'bg-white dark:bg-slate-900 border-slate-900 dark:border-white shadow-sm text-slate-900 dark:text-white'
                               : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
                           }`}
                         >
                           {theme === t && <Check className="w-3 h-3 text-emerald-500" />}
-                          <span>{t}</span>
+                          <span>{t === 'glass' ? '✨ Glass' : t}</span>
                         </button>
                       ))}
                     </div>

@@ -12,6 +12,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
 import { updatePageSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
+import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -203,6 +204,9 @@ export default function App() {
 
       {/* Scroll To Top Action Button */}
       <ScrollToTopButton />
+
+      {/* Real-world Web Vitals & Performance Telemetry Tracker */}
+      <PagePerformanceTracker currentPage={currentPage} />
 
       {/* Internal Web Vitals Performance Monitor */}
       <PerformanceMonitor />

@@ -13,10 +13,10 @@ export const PricingCard: React.FC<PricingCardProps> = ({ item, onSelect }) => {
 
   return (
     <div
-      className={`relative rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between bento-card ${
+      className={`relative rounded-3xl p-6 transition-all duration-300 flex flex-col justify-between glass-morphism-card glass-card-hover ${
         isPopular
-          ? 'bg-slate-900/90 border-2 border-blue-500 shadow-xl shadow-blue-500/20 ring-1 ring-blue-400/30 glass'
-          : 'bg-slate-900/80 glass border border-slate-800 hover:border-blue-500/50 shadow-lg'
+          ? 'border-2 border-blue-500 shadow-xl shadow-blue-500/25 ring-1 ring-blue-400/30'
+          : 'shadow-lg'
       }`}
     >
       {/* Popular Badge */}

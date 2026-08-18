@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User } from 'firebase/auth';
+import { Image } from '../components/Image';
 import { 
   initAuth, 
   googleSignIn, 
@@ -357,7 +358,13 @@ export const GoogleSheetsManager: React.FC = () => {
             {user ? (
               <div className="flex items-center gap-3 bg-slate-900/90 border border-amber-500/40 px-4 py-2 rounded-2xl">
                 {user.photoURL ? (
-                  <img src={user.photoURL} alt={user.displayName || 'User'} className="w-8 h-8 rounded-full border border-amber-400" />
+                  <Image
+                    src={user.photoURL}
+                    alt={user.displayName || 'User'}
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 rounded-full border border-amber-400"
+                  />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black flex items-center justify-center text-xs">
                     {user.email?.charAt(0).toUpperCase()}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Image } from './Image';
 import {
   Building2,
   Users,
@@ -151,15 +152,10 @@ export const AuthenticCompanyVisuals: React.FC = () => {
           >
             {/* Top Image Container */}
             <div className="relative h-56 overflow-hidden bg-slate-950">
-              <img
+              <Image
                 src={visual.image}
                 alt={visual.title}
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80';
-                }}
+                fallbackSrc="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
               />
 

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { PageId, SuccessStory } from '../types';
 import { CLIENT_SUCCESS_STORIES } from '../data/successStoriesData';
+import { Image } from './Image';
 
 interface ClientSuccessStoriesProps {
   onNavigate: (page: PageId, customMsg?: string) => void;
@@ -204,7 +205,7 @@ export const ClientSuccessStories: React.FC<ClientSuccessStoriesProps> = ({
                 initial="enter"
                 animate="center"
                 exit="exit"
-                className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0"
+                className="glass-morphism-card glass-card-hover rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0"
               >
                 {/* Left Side: Client & Project Info with Hero Banner */}
                 <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
@@ -241,13 +242,11 @@ export const ClientSuccessStories: React.FC<ClientSuccessStoriesProps> = ({
 
                     {/* Project Image Banner */}
                     <div className="relative rounded-2xl overflow-hidden h-48 sm:h-56 group border border-slate-200/60 dark:border-slate-800">
-                      <img
+                      <Image
                         src={currentStory.image}
                         alt={currentStory.projectTitle}
-                        loading="lazy"
-                        decoding="async"
+                        fallbackSrc="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent flex items-end p-4">
                         <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed drop-shadow-md">
@@ -359,13 +358,13 @@ export const ClientSuccessStories: React.FC<ClientSuccessStoriesProps> = ({
 
                         <div className="flex items-center gap-3 pt-2 border-t border-slate-100 dark:border-slate-800/80">
                           {currentStory.testimonial.avatar && (
-                            <img
+                            <Image
                               src={currentStory.testimonial.avatar}
                               alt={currentStory.testimonial.author}
-                              loading="lazy"
-                              decoding="async"
+                              width={36}
+                              height={36}
+                              fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
                               className="w-9 h-9 rounded-full object-cover ring-2 ring-blue-500/30"
-                              referrerPolicy="no-referrer"
                             />
                           )}
                           <div>

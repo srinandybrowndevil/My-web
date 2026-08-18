@@ -4,6 +4,7 @@ import { TEAM_MEMBERS, GALLERY_ITEMS, GalleryItem, TeamMember } from '../data/ga
 import { PageId } from '../types';
 import { updateMemberSEO } from '../utils/seo';
 import { useToast } from '../context/ToastContext';
+import { Image } from '../components/Image';
 import { 
   Users, 
   Award, 
@@ -300,15 +301,10 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                       <div className="flex items-start gap-4 pt-1">
                         <div className="relative shrink-0">
                           <div className="relative rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700/80 group-hover:border-blue-500/50 transition-colors shadow-md bg-slate-950 w-24 h-28 sm:w-26 sm:h-32">
-                            <img
+                            <Image
                               src={member.image}
                               alt={member.name}
-                              loading="lazy"
-                              decoding="async"
-                              referrerPolicy="no-referrer"
-                              onError={(e) => {
-                                e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';
-                              }}
+                              fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
                               className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                             />
                           </div>
@@ -483,18 +479,16 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                 className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group flex flex-col justify-between"
               >
                 <div className="relative h-52 overflow-hidden bg-slate-950">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.title}
-                    loading="lazy"
-                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
                   <div className="absolute top-3 left-3 bg-blue-600/90 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-md">
                     {item.category}
                   </div>
-                  <div className="absolute top-3 right-3 p-2 bg-slate-900/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-3 right-3 p-2 bg-slate-950/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                     <Maximize2 className="w-4 h-4" />
                   </div>
                 </div>
@@ -538,9 +532,12 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
               </button>
 
               <div className="flex items-start gap-4 pr-8">
-                <img
+                <Image
                   src={activeMember.image}
                   alt={activeMember.name}
+                  width={96}
+                  height={112}
+                  priority={true}
                   className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 shrink-0"
                 />
                 <div className="space-y-1">
@@ -638,9 +635,10 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
               </button>
 
               <div className="relative h-64 sm:h-80 bg-slate-950">
-                <img
+                <Image
                   src={activeGalleryItem.image}
                   alt={activeGalleryItem.title}
+                  priority={true}
                   className="w-full h-full object-cover"
                 />
               </div>

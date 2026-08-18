@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { ProjectItem, PageId } from '../types';
+import { Image } from './Image';
 import { 
   Sparkles, 
   ArrowRight, 
@@ -118,19 +119,14 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
             whileHover={{ y: -6, transition: { duration: 0.25 } }}
             onMouseEnter={() => setHoveredProjectId(project.id)}
             onMouseLeave={() => setHoveredProjectId(null)}
-            className="group relative bg-gradient-to-b from-slate-900/90 to-slate-950/95 rounded-3xl border border-slate-800/80 hover:border-amber-500/40 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+            className="group relative glass-morphism-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between"
           >
             {/* Card Image Header with Overlay */}
             <div className="relative h-52 w-full overflow-hidden bg-slate-950">
-              <img
+              <Image
                 src={project.image}
                 alt={project.title}
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80';
-                }}
+                fallbackSrc="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
                 className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
               />
 

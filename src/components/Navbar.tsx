@@ -361,10 +361,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-2xl bg-slate-900 border border-white/15 rounded-3xl shadow-2xl shadow-blue-950/80 overflow-hidden z-10 flex flex-col max-h-[80vh]"
+              className="relative w-full max-w-2xl bg-slate-900/90 dark:bg-slate-950/90 backdrop-blur-2xl border border-white/20 dark:border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-950/40 overflow-hidden z-10 flex flex-col max-h-[80vh]"
             >
+              {/* Top Specular Line */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent pointer-events-none" />
+
               {/* Search Header Input */}
-              <div className="p-4 sm:p-5 border-b border-white/10 flex items-center gap-3">
+              <div className="p-4 sm:p-5 border-b border-white/10 dark:border-slate-800/80 flex items-center gap-3">
                 <Search className="w-5 h-5 text-cyan-400 shrink-0" />
                 <input
                   ref={searchInputRef}

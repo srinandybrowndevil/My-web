@@ -71,7 +71,7 @@ export const ServiceQuickView: React.FC<ServiceQuickViewProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl shadow-blue-950/50 overflow-hidden z-10 max-h-[90vh] flex flex-col"
+          className="relative w-full max-w-3xl glass-morphism-card rounded-3xl shadow-2xl shadow-cyan-950/50 overflow-hidden z-10 max-h-[90vh] flex flex-col"
         >
           {/* Top Bar / Header */}
           <div className="relative p-6 sm:p-8 bg-gradient-to-r from-slate-900 via-slate-950 to-blue-950 text-white border-b border-slate-800 flex items-start justify-between shrink-0">

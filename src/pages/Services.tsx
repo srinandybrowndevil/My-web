@@ -57,7 +57,7 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
               ease: [0.21, 0.45, 0.27, 0.9],
             }}
             whileHover={{ y: -4 }}
-            className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800/80 shadow-md hover:shadow-xl transition-all duration-300"
+            className="glass-morphism-card glass-card-hover rounded-3xl p-6 sm:p-8 transition-all duration-300"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Details */}

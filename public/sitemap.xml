@@ -1,269 +1,298 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        xmlns:xsi="http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://mucolabs.com/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#about</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#pricing</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#apps</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#maintenance</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#gallery</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.75</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#blog</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#faq</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#contact</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#sheets</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=web-dev</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=mobile-dev</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=custom-software</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=ai-solutions</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=autocad-design</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=digital-marketing</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=creative-branding</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#services?id=business-consulting</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-web-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-web-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-web-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-mobile-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-mobile-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-mobile-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-saas-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-saas-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-saas-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-ai-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-ai-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-ai-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-mktg-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-mktg-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-mktg-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-brand-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-brand-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-brand-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-consult-1</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-consult-2</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#portfolio?id=proj-consult-3</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#blog?slug=ai-automation-for-enterprises-2026</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#blog?slug=web-development-trends-react-vite-2026</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
     <loc>https://mucolabs.com/#blog?slug=cloud-service-management-and-amc-guide</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://mucolabs.com/#gallery?member=team-founder</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mucolabs.com/#gallery?member=team-vinoth</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mucolabs.com/#gallery?member=team-chandru</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mucolabs.com/#gallery?member=team-marimuthu</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mucolabs.com/#gallery?member=team-venkatesh</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

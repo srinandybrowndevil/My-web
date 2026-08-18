@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { PageId, ProjectItem } from '../types';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { ClientSuccessStories } from '../components/ClientSuccessStories';
+import { Image } from '../components/Image';
 import {
   Briefcase,
   FolderPlus,
@@ -201,19 +202,14 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="bg-white dark:bg-slate-900/95 rounded-3xl overflow-hidden border border-slate-200/90 dark:border-slate-800/90 shadow-md hover:shadow-2xl bento-card flex flex-col justify-between group transition-all duration-300 hover:border-blue-500/50"
+                className="glass-morphism-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between group"
               >
                 {/* Image Banner */}
                 <div className="relative h-48 overflow-hidden bg-slate-950">
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
-                    }}
+                    fallbackSrc="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
@@ -333,7 +329,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
       {/* Project Detail Modal with Full Case Study Storytelling */}
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto relative custom-scrollbar">
+          <div className="glass-morphism-card rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto relative custom-scrollbar">
             <button
               onClick={() => setSelectedProject(null)}
               className="absolute top-4 right-4 bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white p-2 rounded-full border border-slate-200 dark:border-slate-700 transition-all z-10"
@@ -358,15 +354,11 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
 
             {/* Case Study Featured Banner */}
             <div className="relative h-60 sm:h-72 rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-inner">
-              <img
+              <Image
                 src={selectedProject.image}
                 alt={selectedProject.title}
-                loading="lazy"
-                decoding="async"
-                referrerPolicy="no-referrer"
-                onError={(e) => {
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
-                }}
+                priority={true}
+                fallbackSrc="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
@@ -470,7 +462,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
       {/* Add New Project Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto relative">
+          <div className="glass-morphism-card rounded-3xl max-w-xl w-full p-6 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto relative">
             <button
               onClick={() => setShowAddModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white p-2"

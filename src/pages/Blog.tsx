@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BookOpen, Calendar, Clock, User, ArrowRight, Sparkles, Tag, Search, Share2, Check } from 'lucide-react';
 import { BLOG_POSTS, BlogPost } from '../data/blogData';
 import { PageId } from '../types';
+import { Image } from '../components/Image';
 
 interface BlogProps {
   onNavigate: (page: PageId, customMsg?: string, hash?: string) => void;
@@ -100,11 +101,11 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
 
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center gap-3">
-                <img
+                <Image
                   src={activePost.author.avatar}
                   alt={activePost.author.name}
-                  loading="lazy"
-                  decoding="async"
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full object-cover border border-amber-500/40"
                 />
                 <div>
@@ -128,11 +129,10 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
           </header>
 
           <div className="relative rounded-2xl overflow-hidden aspect-video border border-slate-200 dark:border-slate-800">
-            <img
+            <Image
               src={activePost.image}
               alt={activePost.title}
-              loading="lazy"
-              decoding="async"
+              priority={true}
               className="w-full h-full object-cover"
             />
           </div>
@@ -183,11 +183,10 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
               className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group cursor-pointer"
             >
               <div className="relative aspect-video overflow-hidden">
-                <img
+                <Image
                   src={post.image}
                   alt={post.title}
-                  loading="lazy"
-                  decoding="async"
+                  aspectRatio="16/9"
                   title={post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -221,11 +220,11 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
 
                 <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <img
+                    <Image
                       src={post.author.avatar}
                       alt={post.author.name}
-                      loading="lazy"
-                      decoding="async"
+                      width={24}
+                      height={24}
                       className="w-6 h-6 rounded-full object-cover"
                     />
                     <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">

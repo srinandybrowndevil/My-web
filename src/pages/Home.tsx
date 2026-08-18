@@ -13,6 +13,7 @@ import { TrustIndicatorsStrip } from '../components/TrustIndicatorsStrip';
 import { MucoLogo } from '../components/MucoLogo';
 import { BeforeAfterTransformation } from '../components/BeforeAfterTransformation';
 import { AuthenticCompanyVisuals } from '../components/AuthenticCompanyVisuals';
+import { Image } from '../components/Image';
 import {
   ArrowRight,
   Sparkles,
@@ -185,7 +186,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
         <section className="relative">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Web Dev Bento Card */}
-            <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-blue-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
+            <div className="p-5 rounded-3xl text-white glass-morphism-card glass-card-hover flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
@@ -225,7 +226,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             </div>
 
             {/* Mobile Apps Bento Card */}
-            <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-cyan-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
+            <div className="p-5 rounded-3xl text-white glass-morphism-card glass-card-hover flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
@@ -265,7 +266,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             </div>
 
             {/* AI & Automation Bento Card */}
-            <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-indigo-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
+            <div className="p-5 rounded-3xl text-white glass-morphism-card glass-card-hover flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20">
@@ -305,7 +306,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             </div>
 
             {/* Maintenance Bento Card */}
-            <div className="p-5 rounded-3xl bg-slate-900 text-white bento-card hover:border-emerald-500/50 border border-slate-800 shadow-xl flex flex-col justify-between">
+            <div className="p-5 rounded-3xl text-white glass-morphism-card glass-card-hover flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
@@ -364,7 +365,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             {CORE_SERVICES.map((srv) => (
               <div
                 key={srv.id}
-                className="bg-white dark:bg-slate-900/90 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-xl hover:border-blue-500/40 transition-all duration-300 flex flex-col justify-between group"
+                className="glass-morphism-card glass-card-hover rounded-3xl p-6 flex flex-col justify-between group"
               >
                 <div>
                   <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 border border-blue-100 dark:border-blue-900/40">
@@ -445,15 +446,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
                 <div className="relative group w-full max-w-[240px]">
                   <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-40 group-hover:opacity-80 transition duration-300" />
                   <div className="relative rounded-2xl overflow-hidden border-2 border-blue-500/50 shadow-xl bg-slate-950">
-                    <img
+                    <Image
                       src={FOUNDER_INFO.image}
                       alt={FOUNDER_INFO.name}
-                      loading="lazy"
-                      decoding="async"
-                      referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80';
-                      }}
+                      fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
                       className="w-full h-64 object-cover object-top"
                     />
                     <div className="p-3 bg-slate-950/90 text-center border-t border-slate-800">
