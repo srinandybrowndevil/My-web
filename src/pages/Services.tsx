@@ -4,6 +4,7 @@ import { PageId } from '../types';
 import { CORE_SERVICES, DetailedService } from '../data/servicesData';
 import { DynamicIcon } from '../components/DynamicIcon';
 import { ServiceQuickView } from '../components/ServiceQuickView';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ArrowRight, CheckCircle2, Sparkles, Layers, Eye, MessageCircle } from 'lucide-react';
 import { openWhatsApp } from '../utils/whatsapp';
 import { LeadCaptureForm } from '../components/LeadCaptureForm';
@@ -16,7 +17,16 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
   const [selectedService, setSelectedService] = useState<DetailedService | null>(null);
 
   return (
-    <div className="space-y-16 pb-16">
+    <div className="space-y-12 pb-16">
+      {/* Top Breadcrumb Trail */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs
+          currentPage="services"
+          subItem={selectedService ? selectedService.title : undefined}
+          onNavigate={onNavigate}
+        />
+      </div>
+
       {/* Service Quick View Modal */}
       <ServiceQuickView
         service={selectedService}
@@ -29,7 +39,7 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center max-w-4xl mx-auto px-4 pt-10"
+        className="text-center max-w-4xl mx-auto px-4 space-y-3"
       >
         <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-semibold text-xs mb-4">
           <Layers className="w-4 h-4 text-blue-600 dark:text-blue-400" />

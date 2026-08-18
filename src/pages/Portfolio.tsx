@@ -3,6 +3,7 @@ import { PageId, ProjectItem } from '../types';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { ClientSuccessStories } from '../components/ClientSuccessStories';
 import { Image } from '../components/Image';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import {
   Briefcase,
   FolderPlus,
@@ -17,7 +18,8 @@ import {
   PlusCircle,
   X,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Cpu
 } from 'lucide-react';
 
 interface PortfolioProps {
@@ -27,6 +29,7 @@ interface PortfolioProps {
 export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
   const [projects, setProjects] = useState<ProjectItem[]>(INITIAL_PROJECTS);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedTech, setSelectedTech] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
@@ -63,19 +66,36 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
     'Cloud & IT Consulting'
   ];
 
+  const popularTechStacks = [
+    'All',
+    'Next.js',
+    'React',
+    'TypeScript',
+    'React Native',
+    'Flutter',
+    'Node.js',
+    'Python',
+    'AI / LLM',
+    'PostgreSQL',
+    'Firebase'
+  ];
+
   const filteredProjects = useMemo(() => {
     return projects.filter((item) => {
       const matchesCategory =
         selectedCategory === 'All' || item.category === selectedCategory;
+      const matchesTech =
+        selectedTech === 'All' ||
+        item.techStack.some((t) => t.toLowerCase().includes(selectedTech.toLowerCase()));
       const matchesSearch =
         !searchQuery.trim() ||
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.techStack.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesTech && matchesSearch;
     });
-  }, [projects, selectedCategory, searchQuery]);
+  }, [projects, selectedCategory, selectedTech, searchQuery]);
 
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,8 +131,13 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
 
   return (
     <div className="space-y-12 pb-16">
+      {/* Top Breadcrumb Trail */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs currentPage="portfolio" onNavigate={onNavigate} />
+      </div>
+
       {/* Header Banner */}
-      <section className="text-center max-w-4xl mx-auto px-4 pt-6 space-y-4">
+      <section className="text-center max-w-4xl mx-auto px-4 space-y-4">
         <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-extrabold text-xs">
           <Briefcase className="w-4 h-4 text-blue-600 dark:text-blue-400" />
           <span>MUCO Labs Portfolio & Future Roadmap</span>
@@ -146,7 +171,7 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
       </section>
 
       {/* Filter & Search Bar */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-white dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
           {/* Search Input */}
           <div className="relative w-full lg:w-80 shrink-0">
@@ -184,6 +209,39 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Tech Stack Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto py-1 px-1 text-xs scrollbar-none">
+          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 flex items-center gap-1">
+            <Cpu className="w-3.5 h-3.5 text-blue-500" />
+            Stack:
+          </span>
+          {popularTechStacks.map((tech) => (
+            <button
+              key={tech}
+              onClick={() => setSelectedTech(tech)}
+              className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                selectedTech === tech
+                  ? 'bg-amber-500/20 border border-amber-500 text-amber-600 dark:text-amber-300 font-bold'
+                  : 'bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+              }`}
+            >
+              {tech}
+            </button>
+          ))}
+          {(selectedCategory !== 'All' || selectedTech !== 'All' || searchQuery) && (
+            <button
+              onClick={() => {
+                setSelectedCategory('All');
+                setSelectedTech('All');
+                setSearchQuery('');
+              }}
+              className="text-[11px] text-red-500 hover:underline font-semibold ml-2 shrink-0"
+            >
+              Clear Filters
+            </button>
+          )}
         </div>
       </section>
 

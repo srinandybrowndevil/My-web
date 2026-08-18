@@ -37,11 +37,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
     <div className="space-y-16 sm:space-y-24 pb-16">
       {/* DEDICATED HOME HERO SECTION */}
       <section
-        className={`relative min-h-[calc(100vh-4rem)] lg:min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-12 pb-16 sm:pb-20 px-4 sm:px-6 overflow-hidden text-center transition-all duration-700 ease-out ${
-          isScrolledPastHero
-            ? 'opacity-15 scale-95 blur-xs pointer-events-none'
-            : 'opacity-100 scale-100 blur-none'
-        }`}
+        className="relative min-h-[calc(100vh-4rem)] lg:min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-12 pb-16 sm:pb-20 px-4 sm:px-6 overflow-hidden text-center"
       >
         {/* Animated ambient background glows */}
         <motion.div

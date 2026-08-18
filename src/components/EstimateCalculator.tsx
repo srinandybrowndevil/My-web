@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Calculator, Check, MessageSquare, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { Calculator, Check, MessageSquare, ArrowRight, ShieldCheck, Sparkles, Printer, Copy, CheckCheck, Download } from 'lucide-react';
 import { PageId } from '../types';
+import { useToast } from '../context/ToastContext';
 
 interface EstimateCalculatorProps {
   onNavigateToContact: (customMessage?: string) => void;
@@ -38,7 +39,9 @@ const ESTIMATE_OPTIONS: SelectableOption[] = [
 ];
 
 export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNavigateToContact }) => {
+  const { showToast } = useToast();
   const [selectedIds, setSelectedIds] = useState<string[]>(['opt-web-biz', 'opt-ai-bot']);
+  const [copied, setCopied] = useState<boolean>(false);
 
   const toggleOption = (id: string) => {
     setSelectedIds((prev) =>
@@ -62,8 +65,116 @@ export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNaviga
 
   const generateEstimateText = () => {
     if (selectedOptions.length === 0) return '';
-    const names = selectedOptions.map((o) => `${o.name} (${formatRupee(o.baseCost)}${o.period || ''})`).join(', ');
-    return `Hi MUCO Labs! I calculated an estimate on your website for: ${names}. Total One-time: ${formatRupee(totalOneTime)}, Monthly: ${formatRupee(totalMonthly)}/mo. Please provide a formal quote.`;
+    const names = selectedOptions.map((o) => `• ${o.name} (${formatRupee(o.baseCost)}${o.period || ''})`).join('\n');
+    return `MUCO LABS - PROJECT ESTIMATE\n----------------------------\nSelected Services:\n${names}\n\nEstimated One-Time: ${formatRupee(totalOneTime)}\nEstimated Recurring: ${formatRupee(totalMonthly)}/mo\nDate: ${new Date().toLocaleDateString('en-IN')}\n\nReach out to MUCO Labs (Erode, TN) at +91 6381809844 or mucolabs2026@gmail.com`;
+  };
+
+  const handleCopyBreakdown = () => {
+    const text = generateEstimateText();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      showToast('Itemized estimate copied to clipboard!', 'success', 'Copied');
+      setTimeout(() => setCopied(false), 2500);
+    });
+  };
+
+  const handlePrintQuote = () => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      window.print();
+      return;
+    }
+
+    const itemsHtml = selectedOptions
+      .map(
+        (o) => `
+      <tr>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${o.name}</td>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; color: #64748b;">${o.category}</td>
+        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 700;">${formatRupee(o.baseCost)}${o.period || ''}</td>
+      </tr>
+    `
+      )
+      .join('');
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>MUCO Labs - Quotation Estimate</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 40px; color: #0f172a; max-width: 800px; margin: auto; }
+          .header { display: flex; justify-content: space-between; border-bottom: 2px solid #0f172a; padding-bottom: 20px; margin-bottom: 30px; }
+          .logo { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; color: #0f172a; }
+          .badge { background: #f1f5f9; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+          th { text-align: left; padding: 12px; background: #f8fafc; border-bottom: 2px solid #cbd5e1; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+          .totals { background: #f8fafc; border-radius: 12px; padding: 20px; margin-bottom: 30px; }
+          .total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 16px; }
+          .grand-total { font-size: 20px; font-weight: 800; border-top: 1px solid #cbd5e1; padding-top: 10px; margin-top: 6px; }
+          .footer { font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 20px; text-align: center; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <div>
+            <div class="logo">MUCO LABS</div>
+            <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Software • Web • AI • Cloud Engineering</div>
+            <div style="font-size: 12px; color: #64748b;">Erode, Tamil Nadu, India | +91 6381809844</div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge">OFFICIAL ESTIMATE</span>
+            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">Ref: ML-EST-${Date.now().toString().slice(-6)}</div>
+            <div style="font-size: 12px; color: #64748b;">Date: ${new Date().toLocaleDateString('en-IN')}</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Selected Module / Service</th>
+              <th>Category</th>
+              <th style="text-align: right;">Estimated Investment</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <div class="total-row">
+            <span>One-Time Project Delivery:</span>
+            <strong>${formatRupee(totalOneTime)}</strong>
+          </div>
+          ${
+            totalMonthly > 0
+              ? `
+          <div class="total-row">
+            <span>Recurring AMC & Cloud Support:</span>
+            <strong>${formatRupee(totalMonthly)}/month</strong>
+          </div>
+          `
+              : ''
+          }
+          <div class="total-row grand-total">
+            <span>Estimated Total:</span>
+            <span>${formatRupee(totalOneTime)} ${totalMonthly > 0 ? `+ ${formatRupee(totalMonthly)}/mo` : ''}</span>
+          </div>
+        </div>
+
+        <div class="footer">
+          This estimate is for planning purposes based on client requirements. Official SLA and scope document will be provided upon onboarding.<br/>
+          <strong>MUCO Labs</strong> &bull; mucolabs2026@gmail.com &bull; mucolabs.com
+        </div>
+        <script>
+          window.onload = function() { window.print(); }
+        </script>
+      </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   const handleWhatsApp = () => {
@@ -167,19 +278,40 @@ export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNaviga
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end">
+            <button
+              onClick={handleCopyBreakdown}
+              disabled={selectedOptions.length === 0}
+              title="Copy estimate breakdown to clipboard"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-slate-700/80 hover:bg-slate-700 disabled:opacity-50 text-slate-200 font-bold text-xs py-3 px-3.5 rounded-xl transition-all border border-slate-600"
+            >
+              {copied ? <CheckCheck className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+              <span className="hidden sm:inline">{copied ? 'Copied' : 'Copy'}</span>
+            </button>
+
+            <button
+              onClick={handlePrintQuote}
+              disabled={selectedOptions.length === 0}
+              title="Download or print formal quotation PDF"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 bg-slate-700/80 hover:bg-slate-700 disabled:opacity-50 text-slate-200 font-bold text-xs py-3 px-3.5 rounded-xl transition-all border border-slate-600"
+            >
+              <Printer className="w-4 h-4 text-blue-400" />
+              <span>Print / PDF</span>
+            </button>
+
             <button
               onClick={handleWhatsApp}
               disabled={selectedOptions.length === 0}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs py-3 px-4 rounded-xl transition-all shadow-md active:scale-95"
             >
               <MessageSquare className="w-4 h-4 fill-current" />
-              WhatsApp Estimate
+              <span>WhatsApp</span>
             </button>
+
             <button
               onClick={handleSendToForm}
               disabled={selectedOptions.length === 0}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md active:scale-95"
             >
               <span>Submit Formal RFP</span>
               <ArrowRight className="w-4 h-4" />

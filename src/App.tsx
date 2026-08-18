@@ -13,6 +13,8 @@ import { ToastProvider } from './context/ToastContext';
 import { updatePageSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
+import { MobileQuickActionBar } from './components/MobileQuickActionBar';
+import { ScheduleCallModal } from './components/ScheduleCallModal';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -33,6 +35,51 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [contactInitialMessage, setContactInitialMessage] = useState<string>('');
   const [isScrolledPastHero, setIsScrolledPastHero] = useState<boolean>(false);
+  const [isScheduleCallOpen, setIsScheduleCallOpen] = useState<boolean>(false);
+
+  // Parse valid page from hash
+  const parsePageFromHash = (hash: string): PageId | null => {
+    const raw = hash.replace(/^#\/?/, '').split('/')[0].toLowerCase();
+    const validPages: PageId[] = [
+      'home',
+      'about',
+      'services',
+      'pricing',
+      'portfolio',
+      'apps',
+      'maintenance',
+      'gallery',
+      'contact',
+      'faq',
+      'sheets',
+      'blog'
+    ];
+    return validPages.includes(raw as PageId) ? (raw as PageId) : null;
+  };
+
+  // Sync initial URL hash on mount & listen to popstate (browser back/forward)
+  useEffect(() => {
+    if (window.location.hash) {
+      const parsed = parsePageFromHash(window.location.hash);
+      if (parsed) {
+        setCurrentPage(parsed);
+      }
+    }
+
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && e.state.page) {
+        setCurrentPage(e.state.page);
+      } else if (window.location.hash) {
+        const parsed = parsePageFromHash(window.location.hash);
+        if (parsed) setCurrentPage(parsed);
+      } else {
+        setCurrentPage('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Log page view events on route changes
   usePageViewLogger(currentPage);
@@ -93,13 +140,11 @@ export default function App() {
       setContactInitialMessage(customMsg);
     }
 
-    if (hash) {
-      const cleanHash = hash.startsWith('#') ? hash : `#${hash}`;
-      window.location.hash = cleanHash;
-    } else {
-      if (window.location.hash) {
-        history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
+    const targetHash = hash ? (hash.startsWith('#') ? hash : `#${hash}`) : `#${page}`;
+    try {
+      window.history.pushState({ page }, '', targetHash);
+    } catch {
+      window.location.hash = targetHash;
     }
 
     // Instant page transition without artificial delays or preloader overlays
@@ -133,7 +178,7 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
       {/* Luxury Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
@@ -198,6 +243,20 @@ export default function App() {
           </Suspense>
         </ErrorBoundary>
       </main>
+
+      {/* Mobile Sticky Quick Action Bar */}
+      <MobileQuickActionBar
+        currentPage={currentPage}
+        onNavigate={handleNavigate}
+        onOpenSchedule={() => setIsScheduleCallOpen(true)}
+      />
+
+      {/* Schedule 1-on-1 Discovery Call Modal */}
+      <ScheduleCallModal
+        isOpen={isScheduleCallOpen}
+        onClose={() => setIsScheduleCallOpen(false)}
+        currentPage={currentPage}
+      />
 
       {/* Floating WhatsApp Action */}
       <FloatingWhatsApp currentPage={currentPage} />
