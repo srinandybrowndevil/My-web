@@ -7,16 +7,22 @@ import { ServiceQuickView } from '../components/ServiceQuickView';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ProjectDeliveryRoadmap } from '../components/ProjectDeliveryRoadmap';
 import { RoiCalculator } from '../components/RoiCalculator';
-import { ArrowRight, CheckCircle2, Sparkles, Layers, Eye, MessageCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Sparkles, Layers, Eye, MessageCircle, GraduationCap } from 'lucide-react';
 import { openWhatsApp } from '../utils/whatsapp';
 import { LeadCaptureForm } from '../components/LeadCaptureForm';
+import { ServicesSkeleton } from '../components/skeletons/ServicesSkeleton';
 
 interface ServicesProps {
   onNavigate: (page: PageId, customMsg?: string) => void;
+  isLoading?: boolean;
 }
 
-export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
+export const Services: React.FC<ServicesProps> = ({ onNavigate, isLoading = false }) => {
   const [selectedService, setSelectedService] = useState<DetailedService | null>(null);
+
+  if (isLoading) {
+    return <ServicesSkeleton />;
+  }
 
   return (
     <div className="space-y-12 pb-16">
@@ -53,6 +59,24 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
         <p className="text-sm sm:text-base text-slate-900 dark:text-slate-200 mt-3 leading-relaxed font-medium">
           From custom software architecture and AI chatbots to search engine optimization and corporate branding, MUCO Labs delivers end-to-end digital capabilities.
         </p>
+
+        {/* Way2Me Academy Courses Discovery Banner */}
+        <div className="mt-6 inline-flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-r from-indigo-900/40 via-blue-900/40 to-slate-900/60 border border-indigo-500/30 px-5 py-3 rounded-2xl text-left shadow-sm">
+          <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/30">
+            <GraduationCap className="w-5 h-5" />
+          </div>
+          <div className="text-xs">
+            <span className="font-bold text-white block">Want to learn and build these solutions yourself?</span>
+            <span className="text-slate-300">All services are taught as practical masterclasses with 1-on-1 mentorship by Way2Me Founder Yogahariharan.</span>
+          </div>
+          <button
+            onClick={() => onNavigate('courses')}
+            className="sm:ml-auto whitespace-nowrap px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5"
+          >
+            <span>Explore Courses</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </motion.section>
 
       {/* Services List - Scroll Triggered Cards */}

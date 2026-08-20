@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookOpen, Calendar, Clock, User, ArrowRight, Sparkles, Tag, Search, Share2, Check } from 'lucide-react';
 import { BLOG_POSTS, BlogPost } from '../data/blogData';
 import { PageId } from '../types';
 import { Image } from '../components/Image';
+import { updateBlogPostSEO, updatePageSEO } from '../utils/seo';
 
 interface BlogProps {
   onNavigate: (page: PageId, customMsg?: string, hash?: string) => void;
@@ -13,6 +14,33 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
   const [activePost, setActivePost] = useState<BlogPost | null>(null);
   const [copiedUrl, setCopiedUrl] = useState(false);
 
+  // Check URL query parameters for deep linking: /#blog?post=slug
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash.includes('?')) {
+      const queryStr = window.location.hash.split('?')[1];
+      const params = new URLSearchParams(queryStr);
+      const postSlug = params.get('post');
+      if (postSlug) {
+        const found = BLOG_POSTS.find((p) => p.slug === postSlug);
+        if (found) {
+          setActivePost(found);
+          updateBlogPostSEO(found);
+        }
+      }
+    }
+  }, []);
+
+  const handleSelectPost = (post: BlogPost | null) => {
+    setActivePost(post);
+    if (post) {
+      updateBlogPostSEO(post);
+      window.history.replaceState(null, '', `#blog?post=${encodeURIComponent(post.slug)}`);
+    } else {
+      updatePageSEO('blog');
+      window.history.replaceState(null, '', '#blog');
+    }
+  };
+
   const categories = ['All', 'AI & Automation', 'Web Development', 'Cloud Computing'];
 
   const filteredPosts = selectedCategory === 'All' 
@@ -20,7 +48,8 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
     : BLOG_POSTS.filter((p) => p.category === selectedCategory);
 
   const handleShare = (post: BlogPost) => {
-    const shareUrl = `${window.location.origin}/#blog?post=${post.slug}`;
+    updateBlogPostSEO(post);
+    const shareUrl = `${window.location.origin}/#blog?post=${encodeURIComponent(post.slug)}`;
     if (navigator.share) {
       navigator.share({
         title: `${post.title} | MUCO Labs Blog`,
@@ -74,7 +103,7 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
       {activePost ? (
         <article className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 animate-fadeIn">
           <button
-            onClick={() => setActivePost(null)}
+            onClick={() => handleSelectPost(null)}
             className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1.5"
           >
             ← Back to all articles
@@ -179,7 +208,7 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
           {filteredPosts.map((post) => (
             <article
               key={post.id}
-              onClick={() => setActivePost(post)}
+              onClick={() => handleSelectPost(post)}
               className="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group cursor-pointer"
             >
               <div className="relative aspect-video overflow-hidden">

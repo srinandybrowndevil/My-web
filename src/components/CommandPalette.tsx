@@ -18,10 +18,12 @@ import {
   Command,
   CornerDownLeft,
   Activity,
-  MessageCircle
+  MessageCircle,
+  GraduationCap
 } from 'lucide-react';
 import { PageId } from '../types';
 import { CORE_SERVICES } from '../data/servicesData';
+import { COURSES_DATA } from '../data/coursesData';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { FAQ_DATA } from '../data/faqData';
 import { BLOG_POSTS } from '../data/blogData';
@@ -35,7 +37,7 @@ interface CommandPaletteProps {
 interface SearchResultItem {
   id: string;
   title: string;
-  category: 'Service' | 'Portfolio Project' | 'Navigation Page' | 'Pricing & Plan' | 'Blog & Insights' | 'FAQ' | 'Diagnostic Tool' | 'Direct Contact';
+  category: 'Service' | 'Mastery Course' | 'Portfolio Project' | 'Navigation Page' | 'Pricing & Plan' | 'Blog & Insights' | 'FAQ' | 'Diagnostic Tool' | 'Direct Contact';
   description: string;
   icon: React.ReactNode;
   action: () => void;
@@ -90,6 +92,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     const pages: { id: PageId; name: string; desc: string }[] = [
       { id: 'home', name: 'Home - MUCO Labs Overview', desc: 'Main landing page, technology capabilities & client showcase' },
       { id: 'services', name: 'Services & Enterprise Solutions', desc: 'Web apps, mobile apps, SaaS ERP, AI agents & cloud systems' },
+      { id: 'courses', name: 'Mastery Courses & Bootcamps (Way2Me)', desc: 'Full-stack, Mobile, AI, AutoCAD & Design courses by Yogahariharan' },
       { id: 'portfolio', name: 'Client Case Studies & Portfolio', desc: 'Live deployments, architecture breakdowns & performance metrics' },
       { id: 'pricing', name: 'Transparent Pricing & Cost Calculator', desc: 'Fixed-price packages, custom software estimates & AMC tiers' },
       { id: 'apps', name: 'App Studio & Play Store Deployments', desc: 'Published Android applications, APK builds & store listings' },
@@ -114,7 +117,22 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       });
     });
 
-    // 2. Services
+    // 2. Mastery Courses (Way2Me & MUCO Labs)
+    COURSES_DATA.forEach((c) => {
+      items.push({
+        id: `course-${c.id}`,
+        title: c.title,
+        category: 'Mastery Course',
+        description: `${c.duration} • ${c.tagline} • Contact Yogahariharan for Fees`,
+        icon: <GraduationCap className="w-4 h-4 text-purple-400" />,
+        action: () => {
+          onNavigate('courses', undefined, `#${c.id}`);
+          onClose();
+        }
+      });
+    });
+
+    // 3. Services
     CORE_SERVICES.forEach((s) => {
       items.push({
         id: `service-${s.id}`,

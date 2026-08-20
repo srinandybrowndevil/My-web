@@ -18,11 +18,14 @@ import { ScheduleCallModal } from './components/ScheduleCallModal';
 import { CommandPalette } from './components/CommandPalette';
 import { WhatsAppDiagnosticsModal } from './components/WhatsAppDiagnosticsModal';
 import { openWhatsApp } from './utils/whatsapp';
+import { ServicesSkeleton } from './components/skeletons/ServicesSkeleton';
+import { PortfolioSkeleton } from './components/skeletons/PortfolioSkeleton';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })));
 const Services = lazy(() => import('./pages/Services').then((m) => ({ default: m.Services })));
+const Courses = lazy(() => import('./pages/Courses').then((m) => ({ default: m.Courses })));
 const Pricing = lazy(() => import('./pages/Pricing').then((m) => ({ default: m.Pricing })));
 const Portfolio = lazy(() => import('./pages/Portfolio').then((m) => ({ default: m.Portfolio })));
 const AppStudio = lazy(() => import('./pages/AppStudio').then((m) => ({ default: m.AppStudio })));
@@ -68,6 +71,7 @@ export default function App() {
       'home',
       'about',
       'services',
+      'courses',
       'pricing',
       'portfolio',
       'apps',
@@ -200,6 +204,22 @@ export default function App() {
     handleNavigate('contact');
   };
 
+  // Suspense fallback tailored per active page
+  const getPageSuspenseFallback = (page: PageId) => {
+    switch (page) {
+      case 'services':
+        return <ServicesSkeleton />;
+      case 'portfolio':
+        return <PortfolioSkeleton />;
+      default:
+        return (
+          <div className="min-h-[50vh] flex items-center justify-center p-8">
+            <LuxurySpinner label="Loading MUCO Architecture..." size="md" />
+          </div>
+        );
+    }
+  };
+
   return (
     <ToastProvider>
       <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
@@ -218,7 +238,7 @@ export default function App() {
       {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
       <main className="flex-1 relative z-10 lg:pl-64 pt-16 lg:pt-0 transition-all duration-300">
         <ErrorBoundary>
-          <Suspense fallback={null}>
+          <Suspense fallback={getPageSuspenseFallback(currentPage)}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentPage}
@@ -232,6 +252,7 @@ export default function App() {
                 )}
                 {currentPage === 'about' && <About onNavigate={handleNavigate} />}
                 {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
+                {currentPage === 'courses' && <Courses onNavigate={handleNavigate} />}
                 {currentPage === 'pricing' && (
                   <Pricing
                     onNavigateToContactWithItem={handleNavigateToContactWithItem}

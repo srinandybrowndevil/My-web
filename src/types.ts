@@ -1,4 +1,83 @@
-export type PageId = 'home' | 'about' | 'services' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets' | 'blog' | 'notfound';
+export type PageId = 'home' | 'about' | 'services' | 'courses' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets' | 'blog' | 'locations' | 'notfound';
+
+export type LocationId = 
+  | 'erode' 
+  | 'perundurai' 
+  | 'bhavani' 
+  | 'gobichettipalayam' 
+  | 'sathyamangalam' 
+  | 'kodumudi' 
+  | 'modakurichi' 
+  | 'chennimalai';
+
+export interface LocalIndustryData {
+  name: string;
+  description: string;
+  solutionsNeeded: string[];
+}
+
+export interface LocalFaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface LocationData {
+  id: LocationId;
+  name: string;
+  district: string;
+  state: string;
+  pincode: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  headline: string;
+  tagline: string;
+  overview: string;
+  majorIndustries: LocalIndustryData[];
+  keyCommercialHubs: string[];
+  localChallenges: string[];
+  recommendedServices: {
+    serviceId: string;
+    serviceName: string;
+    description: string;
+    pricingEstimate: string;
+  }[];
+  faqs: LocalFaqItem[];
+  nearbyAreas: {
+    id: LocationId;
+    name: string;
+    distance: string;
+  }[];
+  heroImage: string;
+}
+
+export interface ServiceLocationCombo {
+  id: string; // e.g. 'website-development-erode'
+  serviceId: string; // e.g. 'web-dev'
+  serviceSlug: string; // e.g. 'website-development'
+  serviceName: string; // e.g. 'Website Development'
+  locationId: LocationId;
+  locationName: string;
+  seoTitle: string;
+  metaDescription: string;
+  h1: string;
+  localizedSummary: string;
+  localBusinessContext: string;
+  targetIndustries: string[];
+  keyDeliverables: string[];
+  localCaseScenario: {
+    title: string;
+    clientSector: string;
+    challenge: string;
+    solutionDelivered: string;
+    impact: string;
+  };
+  technologies: string[];
+  startingPrice: string;
+  timeline: string;
+  faqs: LocalFaqItem[];
+}
 
 export interface ProjectItem {
   id: string;

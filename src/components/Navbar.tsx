@@ -4,10 +4,12 @@ import { PageId } from '../types';
 import { ThemeToggle } from './ThemeToggle';
 import { CORE_SERVICES } from '../data/servicesData';
 import { INITIAL_PROJECTS } from '../data/projectsData';
+import { COURSES_DATA } from '../data/coursesData';
 import {
   Home,
   Building,
   Layers,
+  GraduationCap,
   Layout,
   Smartphone,
   Tag,
@@ -80,11 +82,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Main 11 Sidebar Navigation Routes requested by user
+  // Main Sidebar Navigation Routes
   const mainSidebarNav: { id: PageId; label: string; icon: React.ElementType }[] = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About', icon: Building },
     { id: 'services', label: 'Services', icon: Layers },
+    { id: 'courses', label: 'Courses & Learn', icon: GraduationCap },
     { id: 'portfolio', label: 'Portfolio', icon: Layout },
     { id: 'apps', label: 'Publish Apps', icon: Smartphone },
     { id: 'pricing', label: 'Pricing', icon: Tag },
@@ -106,6 +109,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     tags: s.technologies
   }));
 
+  const indexedCourses: SearchItem[] = COURSES_DATA.map((c) => ({
+    id: `course-${c.id}`,
+    type: 'service',
+    title: c.title,
+    subtitle: `${c.duration} • ${c.tagline}`,
+    category: `Course (${c.category})`,
+    targetPage: 'courses',
+    tags: c.technologies
+  }));
+
   const indexedProjects: SearchItem[] = INITIAL_PROJECTS.map((p) => ({
     id: `project-${p.id}`,
     type: 'portfolio',
@@ -125,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     targetPage: n.id
   }));
 
-  const allSearchItems = [...indexedServices, ...indexedProjects, ...indexedPages];
+  const allSearchItems = [...indexedServices, ...indexedCourses, ...indexedProjects, ...indexedPages];
 
   const filteredSearchItems = allSearchItems.filter((item) => {
     const matchesFilter =

@@ -22,12 +22,14 @@ import {
   ChevronRight,
   Cpu
 } from 'lucide-react';
+import { PortfolioSkeleton } from '../components/skeletons/PortfolioSkeleton';
 
 interface PortfolioProps {
   onNavigate: (page: PageId, customMsg?: string) => void;
+  isLoading?: boolean;
 }
 
-export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
+export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate, isLoading = false }) => {
   const [projects, setProjects] = useState<ProjectItem[]>(INITIAL_PROJECTS);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedTech, setSelectedTech] = useState<string>('All');
@@ -129,6 +131,10 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate }) => {
       image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80'
     });
   };
+
+  if (isLoading) {
+    return <PortfolioSkeleton />;
+  }
 
   return (
     <div className="space-y-12 pb-16">

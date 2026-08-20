@@ -13,6 +13,7 @@ const PAGE_NAMES: Record<PageId, string> = {
   home: 'Home',
   about: 'About Us',
   services: 'Services & Solutions',
+  courses: 'Mastery Courses & Bootcamps',
   pricing: 'Pricing & Plans',
   portfolio: 'Client Portfolio',
   apps: 'App Studio & Play Store',
