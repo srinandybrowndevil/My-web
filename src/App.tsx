@@ -16,6 +16,8 @@ import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 import { MobileQuickActionBar } from './components/MobileQuickActionBar';
 import { ScheduleCallModal } from './components/ScheduleCallModal';
 import { CommandPalette } from './components/CommandPalette';
+import { WhatsAppDiagnosticsModal } from './components/WhatsAppDiagnosticsModal';
+import { openWhatsApp } from './utils/whatsapp';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -38,13 +40,26 @@ export default function App() {
   const [isScrolledPastHero, setIsScrolledPastHero] = useState<boolean>(false);
   const [isScheduleCallOpen, setIsScheduleCallOpen] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
+  const [isWhatsAppDiagOpen, setIsWhatsAppDiagOpen] = useState<boolean>(false);
 
-  // Listen to global openSearchModal events (e.g. from MobileQuickActionBar or Navbar)
+  // Listen to global events
   useEffect(() => {
     const handleOpenSearch = () => setIsCommandPaletteOpen(true);
+    const handleOpenWhatsAppDiag = () => setIsWhatsAppDiagOpen(true);
+    const handleOpenWhatsAppChat = () => {
+      openWhatsApp({ pageName: currentPage });
+    };
+
     window.addEventListener('openSearchModal', handleOpenSearch);
-    return () => window.removeEventListener('openSearchModal', handleOpenSearch);
-  }, []);
+    window.addEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
+    window.addEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
+
+    return () => {
+      window.removeEventListener('openSearchModal', handleOpenSearch);
+      window.removeEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
+      window.removeEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
+    };
+  }, [currentPage]);
 
   // Parse valid page from hash
   const parsePageFromHash = (hash: string): PageId | null => {
@@ -272,6 +287,12 @@ export default function App() {
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={handleNavigate}
+      />
+
+      {/* Global WhatsApp Diagnostics Modal */}
+      <WhatsAppDiagnosticsModal
+        isOpen={isWhatsAppDiagOpen}
+        onClose={() => setIsWhatsAppDiagOpen(false)}
       />
 
       {/* Floating WhatsApp Action */}

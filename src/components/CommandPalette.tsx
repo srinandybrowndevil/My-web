@@ -16,7 +16,9 @@ import {
   Mail,
   Sparkles,
   Command,
-  CornerDownLeft
+  CornerDownLeft,
+  Activity,
+  MessageCircle
 } from 'lucide-react';
 import { PageId } from '../types';
 import { CORE_SERVICES } from '../data/servicesData';
@@ -33,7 +35,7 @@ interface CommandPaletteProps {
 interface SearchResultItem {
   id: string;
   title: string;
-  category: 'Service' | 'Portfolio Project' | 'Navigation Page' | 'Pricing & Plan' | 'Blog & Insights' | 'FAQ';
+  category: 'Service' | 'Portfolio Project' | 'Navigation Page' | 'Pricing & Plan' | 'Blog & Insights' | 'FAQ' | 'Diagnostic Tool' | 'Direct Contact';
   description: string;
   icon: React.ReactNode;
   action: () => void;
@@ -170,6 +172,31 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
           onClose();
         }
       });
+    });
+
+    // 6. Quick Utilities & Developer Diagnostics
+    items.push({
+      id: 'tool-whatsapp-diag',
+      title: 'WhatsApp Error Logger & Deep-Link Diagnostics',
+      category: 'Diagnostic Tool',
+      description: 'View real-time WhatsApp error logs, URL length tests, and error feedback',
+      icon: <Activity className="w-4 h-4 text-emerald-400" />,
+      action: () => {
+        onClose();
+        window.dispatchEvent(new CustomEvent('muco:open_whatsapp_diag'));
+      }
+    });
+
+    items.push({
+      id: 'tool-whatsapp-chat',
+      title: 'Chat Directly on WhatsApp (+91 6381809844)',
+      category: 'Direct Contact',
+      description: 'Instant technical consultation with Founder Srinivash Mahalingam',
+      icon: <MessageCircle className="w-4 h-4 text-emerald-400" />,
+      action: () => {
+        onClose();
+        window.dispatchEvent(new CustomEvent('muco:open_whatsapp_chat'));
+      }
     });
 
     return items;

@@ -42,6 +42,30 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [removeToast]
   );
 
+  React.useEffect(() => {
+    const handleGlobalToast = (e: Event) => {
+      const customEvent = e as CustomEvent<{
+        message: string;
+        type?: ToastType;
+        title?: string;
+        duration?: number;
+      }>;
+      if (customEvent.detail && customEvent.detail.message) {
+        showToast(
+          customEvent.detail.message,
+          customEvent.detail.type || 'info',
+          customEvent.detail.title,
+          customEvent.detail.duration
+        );
+      }
+    };
+
+    window.addEventListener('muco:toast', handleGlobalToast);
+    return () => {
+      window.removeEventListener('muco:toast', handleGlobalToast);
+    };
+  }, [showToast]);
+
   return (
     <ToastContext.Provider value={{ showToast, removeToast }}>
       {children}

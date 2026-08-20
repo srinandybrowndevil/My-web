@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Sparkles, Settings2, Check, Phone, Calendar } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, Settings2, Check, Phone, Calendar, Activity } from 'lucide-react';
 import { PageId } from '../types';
 import { openWhatsApp, WHATSAPP_NUMBER } from '../utils/whatsapp';
 import { useEngagementNudge } from '../hooks/useEngagementNudge';
 import { ScheduleCallModal } from './ScheduleCallModal';
+import { WhatsAppDiagnosticsModal } from './WhatsAppDiagnosticsModal';
 
 interface FloatingWhatsAppProps {
   currentPage: PageId;
@@ -16,6 +17,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
   const [isOpen, setIsOpen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showDiagnosticsModal, setShowDiagnosticsModal] = useState(false);
   const [customText, setCustomText] = useState('');
 
   // Dwell-time engagement hook: triggers after 45s on high-intent pages ('pricing' & 'contact')
@@ -276,6 +278,21 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                       />
                     </button>
                   </div>
+
+                  {/* Diagnostics & Error Log Viewer */}
+                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <button
+                      onClick={() => {
+                        setShowSettings(false);
+                        setIsOpen(false);
+                        setShowDiagnosticsModal(true);
+                      }}
+                      className="w-full py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 text-[11px] font-bold border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
+                    >
+                      <Activity className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>WhatsApp Link Diagnostics & Error Logs</span>
+                    </button>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -479,6 +496,12 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
         isOpen={showScheduleModal}
         onClose={() => setShowScheduleModal(false)}
         currentPage={currentPage}
+      />
+
+      {/* WhatsApp Error Logging & Deep-Link Diagnostics Modal */}
+      <WhatsAppDiagnosticsModal
+        isOpen={showDiagnosticsModal}
+        onClose={() => setShowDiagnosticsModal(false)}
       />
     </motion.div>
   );
