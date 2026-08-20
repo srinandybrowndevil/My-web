@@ -47,7 +47,7 @@ export function getOrganizationSchema() {
       name: 'Srinivash Mahalingam',
       jobTitle: 'Founder & Managing Director',
       telephone: '+91 6381809844',
-      email: 'mucolabs2026@gmail.com'
+      email: 'contact@mucolabs.com'
     },
     address: {
       '@type': 'PostalAddress',
@@ -62,7 +62,7 @@ export function getOrganizationSchema() {
         '@type': 'ContactPoint',
         telephone: '+91 6381809844',
         contactType: 'customer service',
-        email: 'mucolabs2026@gmail.com',
+        email: 'contact@mucolabs.com',
         areaServed: 'Worldwide',
         availableLanguage: ['English', 'Tamil']
       }
@@ -253,7 +253,7 @@ export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>
             name: 'MUCO Labs Headquarters',
             image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
             telephone: '+91 6381809844',
-            email: 'mucolabs2026@gmail.com',
+            email: 'contact@mucolabs.com',
             priceRange: '₹₹',
             address: {
               '@type': 'PostalAddress',

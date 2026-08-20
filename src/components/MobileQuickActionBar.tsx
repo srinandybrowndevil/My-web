@@ -24,14 +24,7 @@ export const MobileQuickActionBar: React.FC<MobileQuickActionBarProps> = ({
   };
 
   const handleSearchClick = () => {
-    // Trigger the Cmd+K event
-    window.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'k',
-        metaKey: true,
-        bubbles: true
-      })
-    );
+    window.dispatchEvent(new CustomEvent('openSearchModal'));
   };
 
   const triggerScheduleModal = onOpenSchedule || onOpenScheduleCall;

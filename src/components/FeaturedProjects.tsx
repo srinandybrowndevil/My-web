@@ -234,7 +234,7 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
         onNavigateToContact={(msg) => {
           setSelectedModalProject(null);
           if (onNavigate) {
-            onNavigate('contact');
+            onNavigate('contact', msg);
           }
         }}
       />

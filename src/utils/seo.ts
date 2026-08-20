@@ -94,7 +94,7 @@ export const PAGE_METADATA: Record<string, PageMetadata> = {
   },
   contact: {
     title: 'Contact MUCO Labs | Request Custom Quote & IT Consultation',
-    description: 'Get in touch with MUCO Labs for custom web development, mobile apps, AI automation, or AutoCAD projects. Email: mucolabs2026@gmail.com | Phone: +91 6381809844.',
+    description: 'Get in touch with MUCO Labs for custom web development, mobile apps, AI automation, or AutoCAD projects. Email: contact@mucolabs.com | Phone: +91 6381809844.',
     keywords: 'contact MUCO Labs, hire software developers, software development company contact, IT consulting Erode, request proposal MUCO',
     ogImage: 'https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1200&q=80',
   },

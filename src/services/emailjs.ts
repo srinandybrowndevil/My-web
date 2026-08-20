@@ -54,7 +54,7 @@ export interface EmailSendResult {
 }
 
 /**
- * Sends form inquiry to MUCO Labs business email (mucolabs2026@gmail.com) via EmailJS.
+ * Sends form inquiry to MUCO Labs business email (contact@mucolabs.com) via EmailJS.
  * Sends ALL variable aliases so any EmailJS template (standard or custom) renders non-empty values.
  */
 export async function sendInquiryEmail(formData: ContactFormData): Promise<EmailSendResult> {
@@ -118,7 +118,7 @@ export async function sendInquiryEmail(formData: ContactFormData): Promise<Email
 
     budget_range: budgetVal,
 
-    to_email: 'mucolabs2026@gmail.com',
+    to_email: 'contact@mucolabs.com',
     to_name: 'MUCO Labs Team',
     site_url: typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com'
   };
@@ -157,7 +157,7 @@ export async function sendInquiryEmail(formData: ContactFormData): Promise<Email
   return {
     success: true,
     status: 200,
-    text: 'Form inquiry formatted and sent to mucolabs2026@gmail.com (Simulated EmailJS Mode)',
+    text: 'Form inquiry formatted and sent to contact@mucolabs.com (Simulated EmailJS Mode)',
     isSimulated: true,
     paramsUsed: templateParams
   };
@@ -245,7 +245,7 @@ export const BRANDED_EMAILJS_HTML_TEMPLATE = `<!DOCTYPE html>
 
     <div class="footer">
       Official Enquiry Notification • <a href="{{site_url}}">mucolabs.com</a><br>
-      Direct Founder Line: +91 6381809844 | Email: mucolabs2026@gmail.com<br>
+      Direct Founder Line: +91 6381809844 | Email: contact@mucolabs.com<br>
       MUCO Labs Headquarters, Erode, Tamil Nadu, India
     </div>
   </div>
@@ -298,7 +298,7 @@ export async function sendAutoReplyEmail(formData: ContactFormData): Promise<Ema
     subject_text: 'Thank You for Contacting MUCO Labs',
     service_required: formData.serviceCategory,
     subject: formData.subject || `${formData.serviceCategory} Inquiry`,
-    reply_to: 'mucolabs2026@gmail.com'
+    reply_to: 'contact@mucolabs.com'
   };
 
   if (isEmailJSConfigured() && autoReplyTemplateId) {
@@ -344,7 +344,7 @@ MUCO Labs
 Innovation in Digital Technology
 
 Email:
-mucolabs2026@gmail.com
+contact@mucolabs.com
 
 Website:
 https://mucolabs.com`;

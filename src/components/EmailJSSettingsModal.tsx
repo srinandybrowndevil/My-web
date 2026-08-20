@@ -35,7 +35,7 @@ export const EmailJSSettingsModal: React.FC<EmailJSSettingsModalProps> = ({ isOp
     setIsTesting(true);
     const testResult = await sendInquiryEmail({
       name: 'Test Client (EmailJS Verification)',
-      email: 'mucolabs2026@gmail.com',
+      email: 'contact@mucolabs.com',
       phone: '+91 6381809844',
       company: 'MUCO Labs Verification Suite',
       serviceCategory: 'Website Development',
@@ -47,8 +47,8 @@ export const EmailJSSettingsModal: React.FC<EmailJSSettingsModalProps> = ({ isOp
     if (testResult.success) {
       showToast(
         testResult.isSimulated
-          ? 'Simulated EmailJS test payload generated and verified for mucolabs2026@gmail.com!'
-          : 'Live EmailJS test email successfully dispatched to mucolabs2026@gmail.com!',
+          ? 'Simulated EmailJS test payload generated and verified for contact@mucolabs.com!'
+          : 'Live EmailJS test email successfully dispatched to contact@mucolabs.com!',
         'success',
         testResult.isSimulated ? 'EmailJS Payload Verified' : 'Live Email Sent'
       );
@@ -99,7 +99,7 @@ export const EmailJSSettingsModal: React.FC<EmailJSSettingsModalProps> = ({ isOp
               )}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              Inquiries automatically route to <strong className="text-slate-800 dark:text-slate-200">mucolabs2026@gmail.com</strong> with MUCO Labs branded HTML styling.
+              Inquiries automatically route to <strong className="text-slate-800 dark:text-slate-200">contact@mucolabs.com</strong> with MUCO Labs branded HTML styling.
             </p>
           </div>
         </div>
@@ -271,7 +271,7 @@ export const EmailJSSettingsModal: React.FC<EmailJSSettingsModalProps> = ({ isOp
             <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
               <h4 className="font-bold text-slate-900 dark:text-white">EmailJS Dispatch Diagnostics</h4>
               <p className="text-slate-600 dark:text-slate-300 text-xs">
-                Destination Address: <strong className="text-blue-600 dark:text-cyan-400 font-mono">mucolabs2026@gmail.com</strong>
+                Destination Address: <strong className="text-blue-600 dark:text-cyan-400 font-mono">contact@mucolabs.com</strong>
               </p>
               <p className="text-slate-600 dark:text-slate-300 text-xs">
                 Status:{' '}
@@ -289,7 +289,7 @@ export const EmailJSSettingsModal: React.FC<EmailJSSettingsModalProps> = ({ isOp
               className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xs py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
             >
               <Send className="w-4 h-4" />
-              <span>{isTesting ? 'Sending Test Inquiry...' : 'Send Test Email Inquiry to mucolabs2026@gmail.com'}</span>
+              <span>{isTesting ? 'Sending Test Inquiry...' : 'Send Test Email Inquiry to contact@mucolabs.com'}</span>
             </button>
           </div>
         )}

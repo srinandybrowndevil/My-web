@@ -126,12 +126,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </a>
 
               <a
-                href="mailto:mucolabs2026@gmail.com"
+                href="mailto:contact@mucolabs.com"
                 className="flex items-start gap-2.5 text-slate-300 hover:text-blue-400 transition-colors group"
               >
                 <Mail className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-medium">mucolabs2026@gmail.com</span>
+                  <span className="block font-medium">contact@mucolabs.com</span>
                   <span className="text-[10px] text-slate-500">24h Email Response</span>
                 </div>
               </a>

@@ -1952,7 +1952,7 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
               </span>
               <span className="flex items-center gap-1.5">
                 <Mail className="w-3.5 h-3.5 text-blue-400" />
-                <span>mucolabs2026@gmail.com</span>
+                <span>contact@mucolabs.com</span>
               </span>
               <span className="flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5 text-emerald-400" />

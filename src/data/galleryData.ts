@@ -44,7 +44,7 @@ export const FOUNDER_INFO = {
   foundedYear: '2026',
   location: 'Erode, Tamil Nadu, India',
   phone: '+91 6381809844',
-  email: 'mucolabs2026@gmail.com',
+  email: 'contact@mucolabs.com',
   website: 'mucolabs.com',
   image: founderPortrait,
   quote: 'Technology is my tool. Innovation is my language. People are my purpose. MUCO Labs is my legacy.',
@@ -66,10 +66,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socialLinks: {
       linkedin: '#',
       twitter: '#',
-      email: 'mailto:mucolabs2026@gmail.com'
+      email: 'mailto:contact@mucolabs.com'
     },
     phone: '+91 6381809844',
-    email: 'mucolabs2026@gmail.com',
+    email: 'contact@mucolabs.com',
     location: 'Erode, Tamil Nadu',
     isFounder: true
   },

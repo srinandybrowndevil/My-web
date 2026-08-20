@@ -165,6 +165,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             </div>
           </div>
 
+          {/* QUICK SEARCH TRIGGER */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('openSearchModal'))}
+            className="w-full mb-3.5 px-3 py-2 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 text-slate-400 hover:text-white flex items-center justify-between transition-all group cursor-pointer text-xs"
+          >
+            <div className="flex items-center gap-2">
+              <Search className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+              <span className="font-semibold">Quick Search...</span>
+            </div>
+            <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400 group-hover:text-cyan-300">
+              ⌘K
+            </kbd>
+          </button>
+
           {/* SIDEBAR NAVIGATION LINKS */}
           <nav className="space-y-1.5">
             {mainSidebarNav.map((item) => {
@@ -247,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
         {/* Right Controls */}
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setIsSearchOpen(true)}
+            onClick={() => window.dispatchEvent(new CustomEvent('openSearchModal'))}
             className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
             aria-label="Search"
           >

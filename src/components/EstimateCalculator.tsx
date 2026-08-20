@@ -66,7 +66,7 @@ export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNaviga
   const generateEstimateText = () => {
     if (selectedOptions.length === 0) return '';
     const names = selectedOptions.map((o) => `• ${o.name} (${formatRupee(o.baseCost)}${o.period || ''})`).join('\n');
-    return `MUCO LABS - PROJECT ESTIMATE\n----------------------------\nSelected Services:\n${names}\n\nEstimated One-Time: ${formatRupee(totalOneTime)}\nEstimated Recurring: ${formatRupee(totalMonthly)}/mo\nDate: ${new Date().toLocaleDateString('en-IN')}\n\nReach out to MUCO Labs (Erode, TN) at +91 6381809844 or mucolabs2026@gmail.com`;
+    return `MUCO LABS - PROJECT ESTIMATE\n----------------------------\nSelected Services:\n${names}\n\nEstimated One-Time: ${formatRupee(totalOneTime)}\nEstimated Recurring: ${formatRupee(totalMonthly)}/mo\nDate: ${new Date().toLocaleDateString('en-IN')}\n\nReach out to MUCO Labs (Erode, TN) at +91 6381809844 or contact@mucolabs.com`;
   };
 
   const handleCopyBreakdown = () => {
@@ -166,7 +166,7 @@ export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNaviga
 
         <div class="footer">
           This estimate is for planning purposes based on client requirements. Official SLA and scope document will be provided upon onboarding.<br/>
-          <strong>MUCO Labs</strong> &bull; mucolabs2026@gmail.com &bull; mucolabs.com
+          <strong>MUCO Labs</strong> &bull; contact@mucolabs.com &bull; mucolabs.com
         </div>
         <script>
           window.onload = function() { window.print(); }

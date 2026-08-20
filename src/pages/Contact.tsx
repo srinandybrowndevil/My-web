@@ -100,7 +100,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
     try {
       const [emailJsRes, autoReplyRes, appsScriptRes] = await Promise.all([
-        // 1. Send Email to mucolabs2026@gmail.com via EmailJS
+        // 1. Send Email to contact@mucolabs.com via EmailJS
         sendInquiryEmail(formData).catch((err) => {
           console.warn('[EmailJS Primary Dispatch Error]', err);
           return { success: false, text: 'EmailJS error' };
@@ -229,7 +229,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
                 {/* Email */}
                 <a
-                  href="mailto:mucolabs2026@gmail.com"
+                  href="mailto:contact@mucolabs.com"
                   className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-slate-800/70 border border-slate-700/80 hover:border-blue-500 transition-all group"
                 >
                   <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
@@ -238,7 +238,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   <div>
                     <span className="text-[10px] text-slate-400 uppercase font-semibold block">Official Email</span>
                     <span className="text-sm font-extrabold text-white group-hover:text-blue-400 transition-colors">
-                      mucolabs2026@gmail.com
+                      contact@mucolabs.com
                     </span>
                     <span className="text-[10px] text-slate-400 block">Fast 24h Response</span>
                   </div>
@@ -304,7 +304,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
                   Your inquiry has been sent successfully.
                 </p>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-                  Your inquiry has been delivered directly to <strong>mucolabs2026@gmail.com</strong>. Our team will review your project details and respond within 24 hours.
+                  Your inquiry has been delivered directly to <strong>contact@mucolabs.com</strong>. Our team will review your project details and respond within 24 hours.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                   <button
