@@ -15,6 +15,7 @@ import { usePageViewLogger } from './hooks/usePageViewLogger';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 import { MobileQuickActionBar } from './components/MobileQuickActionBar';
 import { ScheduleCallModal } from './components/ScheduleCallModal';
+import { CommandPalette } from './components/CommandPalette';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -36,6 +37,14 @@ export default function App() {
   const [contactInitialMessage, setContactInitialMessage] = useState<string>('');
   const [isScrolledPastHero, setIsScrolledPastHero] = useState<boolean>(false);
   const [isScheduleCallOpen, setIsScheduleCallOpen] = useState<boolean>(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
+
+  // Listen to global openSearchModal events (e.g. from MobileQuickActionBar or Navbar)
+  useEffect(() => {
+    const handleOpenSearch = () => setIsCommandPaletteOpen(true);
+    window.addEventListener('openSearchModal', handleOpenSearch);
+    return () => window.removeEventListener('openSearchModal', handleOpenSearch);
+  }, []);
 
   // Parse valid page from hash
   const parsePageFromHash = (hash: string): PageId | null => {
@@ -256,6 +265,13 @@ export default function App() {
         isOpen={isScheduleCallOpen}
         onClose={() => setIsScheduleCallOpen(false)}
         currentPage={currentPage}
+      />
+
+      {/* Global Command Palette (Cmd + K / Spotlight Search) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onNavigate={handleNavigate}
       />
 
       {/* Floating WhatsApp Action */}

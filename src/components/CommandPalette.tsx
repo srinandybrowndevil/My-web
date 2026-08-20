@@ -21,7 +21,7 @@ import {
 import { PageId } from '../types';
 import { CORE_SERVICES } from '../data/servicesData';
 import { INITIAL_PROJECTS } from '../data/projectsData';
-import { FAQ_ITEMS } from '../data/faqData';
+import { FAQ_DATA } from '../data/faqData';
 import { BLOG_POSTS } from '../data/blogData';
 
 interface CommandPaletteProps {
@@ -158,7 +158,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     });
 
     // 5. FAQs
-    FAQ_ITEMS.forEach((f) => {
+    FAQ_DATA.forEach((f) => {
       items.push({
         id: `faq-${f.id}`,
         title: f.question,

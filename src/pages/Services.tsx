@@ -5,6 +5,8 @@ import { CORE_SERVICES, DetailedService } from '../data/servicesData';
 import { DynamicIcon } from '../components/DynamicIcon';
 import { ServiceQuickView } from '../components/ServiceQuickView';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { ProjectDeliveryRoadmap } from '../components/ProjectDeliveryRoadmap';
+import { RoiCalculator } from '../components/RoiCalculator';
 import { ArrowRight, CheckCircle2, Sparkles, Layers, Eye, MessageCircle } from 'lucide-react';
 import { openWhatsApp } from '../utils/whatsapp';
 import { LeadCaptureForm } from '../components/LeadCaptureForm';
@@ -173,6 +175,28 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate }) => {
           </motion.div>
         ))}
       </section>
+
+      {/* 4-Stage Project Delivery Roadmap */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        <ProjectDeliveryRoadmap onNavigate={onNavigate} />
+      </motion.section>
+
+      {/* AI Automation ROI Estimator */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        <RoiCalculator onNavigateToContact={(msg) => onNavigate('contact', msg)} />
+      </motion.section>
 
       {/* Direct Google Sheets Lead Capture Form */}
       <motion.section

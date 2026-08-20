@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { ProjectItem, PageId } from '../types';
 import { Image } from './Image';
+import { CaseStudyDetailModal } from './CaseStudyDetailModal';
 import { 
   Sparkles, 
   ArrowRight, 
@@ -26,6 +27,7 @@ interface FeaturedProjectsProps {
 export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
+  const [selectedModalProject, setSelectedModalProject] = useState<ProjectItem | null>(null);
 
   // Filter categories
   const categories = ['All', 'Web Development', 'Mobile App', 'SaaS Platform', 'AI & Automation'];
@@ -211,20 +213,31 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
                   )}
                 </div>
 
-                {onNavigate && (
-                  <button
-                    onClick={() => onNavigate('portfolio')}
-                    className="text-[11px] font-black text-amber-400 hover:text-amber-300 flex items-center gap-1 shrink-0 group-hover:translate-x-1 transition-transform"
-                  >
-                    <span>Details</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                )}
+                <button
+                  onClick={() => setSelectedModalProject(project)}
+                  className="text-[11px] font-black text-amber-400 hover:text-amber-300 flex items-center gap-1 shrink-0 group-hover:translate-x-1 transition-transform cursor-pointer"
+                >
+                  <span>Deep Dive</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Case Study Detail Modal */}
+      <CaseStudyDetailModal
+        project={selectedModalProject}
+        isOpen={Boolean(selectedModalProject)}
+        onClose={() => setSelectedModalProject(null)}
+        onNavigateToContact={(msg) => {
+          setSelectedModalProject(null);
+          if (onNavigate) {
+            onNavigate('contact');
+          }
+        }}
+      />
 
       {/* Footer Navigation CTA to full Portfolio */}
       {onNavigate && (

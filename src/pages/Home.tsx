@@ -13,6 +13,8 @@ import { TrustIndicatorsStrip } from '../components/TrustIndicatorsStrip';
 import { MucoLogo } from '../components/MucoLogo';
 import { BeforeAfterTransformation } from '../components/BeforeAfterTransformation';
 import { AuthenticCompanyVisuals } from '../components/AuthenticCompanyVisuals';
+import { ProjectDeliveryRoadmap } from '../components/ProjectDeliveryRoadmap';
+import { RoiCalculator } from '../components/RoiCalculator';
 import { Image } from '../components/Image';
 import {
   ArrowRight,
@@ -517,6 +519,16 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
               </div>
             ))}
           </div>
+        </section>
+
+        {/* 4-Stage Interactive Project Delivery Roadmap */}
+        <section className="max-w-7xl mx-auto">
+          <ProjectDeliveryRoadmap onNavigate={onNavigate} />
+        </section>
+
+        {/* AI & Automation Cost-Savings ROI Calculator */}
+        <section className="max-w-7xl mx-auto">
+          <RoiCalculator onNavigateToContact={(msg) => onNavigate('contact', msg)} />
         </section>
 
         {/* Interactive Estimate Calculator Widget */}
