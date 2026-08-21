@@ -12,6 +12,7 @@ interface BreadcrumbsProps {
 const PAGE_NAMES: Record<PageId, string> = {
   home: 'Home',
   about: 'About Us',
+  locations: 'Locations Served',
   services: 'Services & Solutions',
   courses: 'Mastery Courses & Bootcamps',
   pricing: 'Pricing & Plans',
