@@ -6,7 +6,7 @@ import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
-import { LuxurySpinner } from './components/LuxurySpinner';
+import { ModernLoadingScreen } from './components/ModernLoadingScreen';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
@@ -224,10 +224,22 @@ export default function App() {
         return <ServicesSkeleton />;
       case 'portfolio':
         return <PortfolioSkeleton />;
+      case 'courses':
+        return (
+          <div className="min-h-[55vh] flex items-center justify-center p-8">
+            <ModernLoadingScreen label="Loading Way2Me Mastery Academy..." sublabel="SYNCHRONIZING CURRICULUM & MENTORSHIP MODULES" size="md" />
+          </div>
+        );
+      case 'sheets':
+        return (
+          <div className="min-h-[55vh] flex items-center justify-center p-8">
+            <ModernLoadingScreen label="Connecting Google Sheets & Drive Hub..." sublabel="ESTABLISHING CLOUD OAUTH CHANNELS" size="md" />
+          </div>
+        );
       default:
         return (
-          <div className="min-h-[50vh] flex items-center justify-center p-8">
-            <LuxurySpinner label="Loading MUCO Architecture..." size="md" />
+          <div className="min-h-[55vh] flex items-center justify-center p-8">
+            <ModernLoadingScreen label="Loading MUCO Architecture..." size="md" />
           </div>
         );
     }

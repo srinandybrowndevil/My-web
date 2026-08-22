@@ -34,7 +34,7 @@ import {
   UserCheck,
   Download
 } from 'lucide-react';
-import { LuxurySpinner } from '../components/LuxurySpinner';
+import { ModernLoadingScreen } from '../components/ModernLoadingScreen';
 import { useToast } from '../context/ToastContext';
 import { SeoSitemapInspector } from '../components/SeoSitemapInspector';
 import { Breadcrumbs } from '../components/Breadcrumbs';
@@ -491,7 +491,7 @@ export const GoogleSheetsManager: React.FC = () => {
               className="gsi-material-button group relative overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg border border-slate-300 dark:border-slate-700 rounded-xl px-6 py-3 bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm flex items-center justify-center gap-3"
             >
               {isLoggingIn ? (
-                <LuxurySpinner size="sm" label="" />
+                <ModernLoadingScreen size="sm" label="" />
               ) : (
                 <>
                   <svg className="w-5 h-5 shrink-0" viewBox="0 0 48 48">
@@ -557,7 +557,7 @@ export const GoogleSheetsManager: React.FC = () => {
 
               {isLoadingSheets ? (
                 <div className="py-8 text-center">
-                  <LuxurySpinner size="sm" label="Fetching Drive files..." />
+                  <ModernLoadingScreen size="sm" label="Fetching Drive files..." />
                 </div>
               ) : spreadsheets.length === 0 ? (
                 <div className="py-8 text-center text-xs text-slate-500">
@@ -733,7 +733,7 @@ export const GoogleSheetsManager: React.FC = () => {
               {/* Data Table */}
               {isLoadingValues ? (
                 <div className="py-20 text-center">
-                  <LuxurySpinner size="md" label="Reading Google Sheet cells..." />
+                  <ModernLoadingScreen size="md" label="Reading Google Sheet cells..." sublabel="STREAMING LIVE ROWS FROM CLOUD DRIVE" />
                 </div>
               ) : !selectedSheetId ? (
                 <div className="py-20 text-center space-y-3">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Sparkles, Settings2, Check, Phone, Calendar, Activity } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, Settings2, Check, Phone, Calendar, Activity, FileSpreadsheet, Zap } from 'lucide-react';
 import { PageId } from '../types';
 import { openWhatsApp, WHATSAPP_NUMBER } from '../utils/whatsapp';
+import { logWhatsAppInquiryToGoogleSheets } from '../services/whatsAppSheetsLogger';
 import { useEngagementNudge } from '../hooks/useEngagementNudge';
 import { ScheduleCallModal } from './ScheduleCallModal';
 import { WhatsAppDiagnosticsModal } from './WhatsAppDiagnosticsModal';
@@ -354,7 +355,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <button
                         onClick={() => handleQuickSend()}
-                        className={`w-full ${currentTheme.btnSubmit} text-white font-bold text-xs py-2.5 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5`}
+                        className={`w-full ${currentTheme.btnSubmit} text-white font-bold text-xs py-2.5 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-95`}
                       >
                         <Send className="w-3.5 h-3.5 fill-current" />
                         <span>Chat Now</span>
@@ -371,6 +372,12 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                         <Calendar className="w-3.5 h-3.5 text-cyan-500 group-hover:scale-110 transition-transform" />
                         <span>Schedule 15m Call</span>
                       </button>
+                    </div>
+
+                    {/* Google Sheets Live Sync Assurance */}
+                    <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 dark:text-slate-400 pt-0.5">
+                      <FileSpreadsheet className="w-3 h-3 text-emerald-500 shrink-0" />
+                      <span>Inquiries automatically logged to Google Sheets integration</span>
                     </div>
                   </div>
                 </motion.div>

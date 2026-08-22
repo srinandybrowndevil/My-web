@@ -16,6 +16,7 @@ import {
   WhatsAppErrorCode,
   WhatsAppLogEntry
 } from './whatsappLogger';
+import { logWhatsAppInquiryToGoogleSheets } from '../services/whatsAppSheetsLogger';
 
 export const WHATSAPP_NUMBER = '916381809844';
 
@@ -256,6 +257,40 @@ export function getWhatsAppLink(context?: WhatsAppContext | LeadCaptureFormData)
  */
 export function openWhatsApp(context?: WhatsAppContext | LeadCaptureFormData): WhatsAppActionResult {
   const generated = generateSafeWhatsAppUrl(context);
+
+  // Automatically log every WhatsApp inquiry to the Google Sheets integration
+  try {
+    const leadData: LeadCaptureFormData | null =
+      context && 'leadData' in context && context.leadData
+        ? context.leadData
+        : context && ('name' in context || 'email' in context || 'serviceCategory' in context || 'service' in context || 'phone' in context)
+        ? (context as LeadCaptureFormData)
+        : null;
+
+    const ctx: WhatsAppContext | undefined =
+      context && !('name' in context || 'email' in context || 'serviceCategory' in context)
+        ? (context as WhatsAppContext)
+        : undefined;
+
+    logWhatsAppInquiryToGoogleSheets({
+      name: leadData?.name,
+      email: leadData?.email,
+      phone: leadData?.phone,
+      company: leadData?.company,
+      serviceCategory: leadData?.serviceCategory || leadData?.serviceName || leadData?.service || ctx?.serviceName,
+      serviceName: ctx?.serviceName,
+      pageName: ctx?.pageName || leadData?.sourcePage,
+      projectBudget: leadData?.budgetRange || leadData?.budget || ctx?.projectBudget,
+      budgetRange: leadData?.budgetRange || leadData?.budget || ctx?.projectBudget,
+      customMessage: ctx?.customMessage || leadData?.message,
+      message: generated.message,
+      sourceButton: 'Chat Now'
+    }).catch((err) => {
+      console.warn('[WhatsApp Sheet Auto-Log Notice]', err);
+    });
+  } catch (logErr) {
+    console.warn('[WhatsApp Sheet Auto-Log Exception]', logErr);
+  }
 
   if (generated.error) {
     notifyUser(
