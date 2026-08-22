@@ -140,7 +140,11 @@ export const Portfolio: React.FC<PortfolioProps> = ({ onNavigate, isLoading = fa
     <div className="space-y-12 pb-16">
       {/* Top Breadcrumb Trail */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        <Breadcrumbs currentPage="portfolio" onNavigate={onNavigate} />
+        <Breadcrumbs
+          currentPage="portfolio"
+          subItem={selectedProject ? selectedProject.title : undefined}
+          onNavigate={onNavigate}
+        />
       </div>
 
       {/* Header Banner */}

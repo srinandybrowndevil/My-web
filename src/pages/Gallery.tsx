@@ -5,6 +5,7 @@ import { PageId } from '../types';
 import { updateMemberSEO } from '../utils/seo';
 import { useToast } from '../context/ToastContext';
 import { Image } from '../components/Image';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { 
   Users, 
   Award, 
@@ -138,6 +139,15 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
 
   return (
     <div className="space-y-12 pb-16">
+      {/* Dynamic SEO Breadcrumbs Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs
+          currentPage="gallery"
+          subItem={activeMember ? `${activeMember.name} (${activeMember.role})` : (viewMode === 'hq_photos' ? 'HQ Engineering Photo Archives' : undefined)}
+          onNavigate={onNavigate}
+        />
+      </div>
+
       {/* Header Banner */}
       <section className="text-center max-w-3xl mx-auto px-4 pt-6 sm:pt-10 space-y-4">
         <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-cyan-400 font-extrabold text-xs shadow-sm">

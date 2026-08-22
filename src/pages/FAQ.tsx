@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PageId } from '../types';
 import { FAQ_DATA } from '../data/faqData';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { HelpCircle, Search, ChevronDown, ChevronUp, MessageSquare, Phone } from 'lucide-react';
 
 interface FAQProps {
@@ -36,6 +37,15 @@ export const FAQ: React.FC<FAQProps> = ({ onNavigate }) => {
 
   return (
     <div className="space-y-12 pb-16">
+      {/* Top Breadcrumb Trail */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs
+          currentPage="faq"
+          subItem={selectedCategory !== 'all' ? `${categories.find((c) => c.id === selectedCategory)?.label}` : undefined}
+          onNavigate={onNavigate}
+        />
+      </div>
+
       {/* Header Banner */}
       <section className="text-center max-w-3xl mx-auto px-4 pt-8">
         <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-semibold text-xs mb-3">

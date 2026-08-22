@@ -7,6 +7,14 @@ import { LOCATIONS_DATA } from '../data/locationsData';
 import { SERVICE_LOCATIONS_DATA } from '../data/serviceLocationsData';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { injectJsonLdSchema, getPageSchemaMarkup, getMemberSchemaMarkup, getLocationSchema, getServiceLocationSchema } from './schemaMarkup';
+import { 
+  generateServiceLocationOgImage, 
+  generateLocationOgImage, 
+  generateServiceOgImage, 
+  generateCourseOgImage, 
+  generateProjectOgImage, 
+  generateBlogPostOgImage 
+} from './ogImageGenerator';
 
 export interface PageMetadata {
   title: string;
@@ -85,8 +93,8 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
   },
   courses: {
     title: 'Mastery Courses & Engineering Bootcamps | MUCO Labs & Way2Me Academy',
-    description: 'Master in-demand industry skills with practical training in Full-Stack Web Development, Mobile Apps (Flutter/React Native), Generative AI & LLMs, Cloud Infrastructure, and AutoCAD Drafting led by Way2Me CEO Yogahariharan & MUCO Labs.',
-    keywords: 'MUCO Labs courses, Way2Me Academy, Yogahariharan, Web Development course, React Nextjs course, AI Bootcamp, Flutter training, AutoCAD course, Tamil Nadu tech institute, software engineering mentorship',
+    description: 'Master in-demand industry skills with practical training in Full-Stack Web Development, Mobile Apps (Flutter/React Native), Generative AI & LLMs, Cloud Infrastructure, and AutoCAD Drafting led by Way2Me CEO Yogaharikaran & MUCO Labs.',
+    keywords: 'MUCO Labs courses, Way2Me Academy, Yogaharikaran, Web Development course, React Nextjs course, AI Bootcamp, Flutter training, AutoCAD course, Tamil Nadu tech institute, software engineering mentorship',
     ogImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&h=630&q=85',
     ogImageAlt: 'Interactive Software Engineering Bootcamp and Tech Mentorship',
     ogType: 'website',
@@ -261,7 +269,7 @@ export function updateLocationSEO(location: LocationData) {
   setMetaTag('name', 'geo.position', `${location.coordinates.lat};${location.coordinates.lng}`);
   setMetaTag('name', 'ICBM', `${location.coordinates.lat}, ${location.coordinates.lng}`);
 
-  // Open Graph
+  // Initial Open Graph fallback
   setMetaTag('property', 'og:site_name', 'MUCO Labs');
   setMetaTag('property', 'og:title', locTitle);
   setMetaTag('property', 'og:description', locDesc);
@@ -280,6 +288,17 @@ export function updateLocationSEO(location: LocationData) {
   setMetaTag('name', 'twitter:image', location.heroImage);
 
   setCanonicalUrl(locUrl);
+
+  // Generate and inject dynamic customized Canvas Open Graph Card
+  generateLocationOgImage(location)
+    .then((customOgUrl) => {
+      setMetaTag('property', 'og:image', customOgUrl);
+      setMetaTag('property', 'og:image:secure_url', customOgUrl);
+      setMetaTag('name', 'twitter:image', customOgUrl);
+    })
+    .catch((err) => {
+      console.warn('Canvas OG card generation skipped:', err);
+    });
 
   try {
     const schemas = getLocationSchema(location);
@@ -324,6 +343,17 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
   setMetaTag('name', 'twitter:description', combo.metaDescription);
 
   setCanonicalUrl(pageUrl);
+
+  // Generate and inject dynamic customized Canvas Open Graph Card for this Service x Location combo
+  generateServiceLocationOgImage(combo)
+    .then((customOgUrl) => {
+      setMetaTag('property', 'og:image', customOgUrl);
+      setMetaTag('property', 'og:image:secure_url', customOgUrl);
+      setMetaTag('name', 'twitter:image', customOgUrl);
+    })
+    .catch((err) => {
+      console.warn('Canvas OG card generation skipped:', err);
+    });
 
   try {
     const schemas = getServiceLocationSchema(combo);
@@ -444,6 +474,17 @@ export function updateBlogPostSEO(post: BlogPost) {
   setMetaTag('name', 'twitter:image:alt', imageAlt);
 
   setCanonicalUrl(postUrl);
+
+  // Generate and inject dynamic customized Canvas Open Graph Card
+  generateBlogPostOgImage(post)
+    .then((customOgUrl) => {
+      setMetaTag('property', 'og:image', customOgUrl);
+      setMetaTag('property', 'og:image:secure_url', customOgUrl);
+      setMetaTag('name', 'twitter:image', customOgUrl);
+    })
+    .catch((err) => {
+      console.warn('Canvas OG card generation skipped:', err);
+    });
 }
 
 /**
@@ -479,6 +520,17 @@ export function updateServiceSEO(service: DetailedService) {
   setMetaTag('name', 'twitter:image', 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&h=630&q=85');
 
   setCanonicalUrl(serviceUrl);
+
+  // Generate and inject dynamic customized Canvas Open Graph Card
+  generateServiceOgImage(service)
+    .then((customOgUrl) => {
+      setMetaTag('property', 'og:image', customOgUrl);
+      setMetaTag('property', 'og:image:secure_url', customOgUrl);
+      setMetaTag('name', 'twitter:image', customOgUrl);
+    })
+    .catch((err) => {
+      console.warn('Canvas OG card generation skipped:', err);
+    });
 }
 
 /**
@@ -490,7 +542,7 @@ export function updateCourseSEO(course: CourseItem) {
   const courseUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/#courses?id=${encodeURIComponent(course.id)}`
     : `https://mucolabs.com/#courses?id=${course.id}`;
-  const keywords = `${course.title}, ${course.technologies.join(', ')}, ${course.category}, Way2Me Academy, Yogahariharan, tech training Tamil Nadu`;
+  const keywords = `${course.title}, ${course.technologies.join(', ')}, ${course.category}, Way2Me Academy, Yogaharikaran, tech training Tamil Nadu`;
 
   document.title = courseTitle;
 
@@ -510,6 +562,17 @@ export function updateCourseSEO(course: CourseItem) {
   setMetaTag('name', 'twitter:description', courseDesc);
 
   setCanonicalUrl(courseUrl);
+
+  // Generate and inject dynamic customized Canvas Open Graph Card
+  generateCourseOgImage(course)
+    .then((customOgUrl) => {
+      setMetaTag('property', 'og:image', customOgUrl);
+      setMetaTag('property', 'og:image:secure_url', customOgUrl);
+      setMetaTag('name', 'twitter:image', customOgUrl);
+    })
+    .catch((err) => {
+      console.warn('Canvas OG card generation skipped:', err);
+    });
 }
 
 /**
@@ -540,6 +603,17 @@ export function updateProjectSEO(project: ProjectItem) {
   setMetaTag('name', 'twitter:description', projDesc);
 
   setCanonicalUrl(projUrl);
+
+  // Generate and inject dynamic customized Canvas Open Graph Card
+  generateProjectOgImage(project)
+    .then((customOgUrl) => {
+      setMetaTag('property', 'og:image', customOgUrl);
+      setMetaTag('property', 'og:image:secure_url', customOgUrl);
+      setMetaTag('name', 'twitter:image', customOgUrl);
+    })
+    .catch((err) => {
+      console.warn('Canvas OG card generation skipped:', err);
+    });
 }
 
 /**

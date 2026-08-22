@@ -3,6 +3,7 @@ import { BookOpen, Calendar, Clock, User, ArrowRight, Sparkles, Tag, Search, Sha
 import { BLOG_POSTS, BlogPost } from '../data/blogData';
 import { PageId } from '../types';
 import { Image } from '../components/Image';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { updateBlogPostSEO, updatePageSEO } from '../utils/seo';
 
 interface BlogProps {
@@ -64,7 +65,14 @@ export const Blog: React.FC<BlogProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="py-12 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+    <div className="py-6 md:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10">
+      {/* Dynamic SEO Breadcrumbs Navigation */}
+      <Breadcrumbs
+        currentPage="blog"
+        subItem={activePost ? activePost.title : undefined}
+        onNavigate={onNavigate}
+      />
+
       {/* Page Header */}
       <header className="text-center space-y-4 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-widest shadow-sm">

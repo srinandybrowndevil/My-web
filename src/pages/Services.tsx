@@ -67,7 +67,7 @@ export const Services: React.FC<ServicesProps> = ({ onNavigate, isLoading = fals
           </div>
           <div className="text-xs">
             <span className="font-bold text-white block">Want to learn and build these solutions yourself?</span>
-            <span className="text-slate-300">All services are taught as practical masterclasses with 1-on-1 mentorship by Way2Me Founder Yogahariharan.</span>
+            <span className="text-slate-300">All services are taught as practical masterclasses with 1-on-1 mentorship by Way2Me Founder Yogaharikaran.</span>
           </div>
           <button
             onClick={() => onNavigate('courses')}

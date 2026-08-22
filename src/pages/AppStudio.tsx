@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PageId } from '../types';
 import { MucoLogo } from '../components/MucoLogo';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import {
   Smartphone,
   CheckCircle2,
@@ -83,7 +84,14 @@ export const AppStudio: React.FC<AppStudioProps> = ({
   };
 
   return (
-    <div className="space-y-12 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+    <div className="space-y-12 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      {/* Dynamic SEO Breadcrumbs Navigation */}
+      <Breadcrumbs
+        currentPage="apps"
+        subItem={appType ? `${appType.toUpperCase()} Mobile App Tier` : undefined}
+        onNavigate={onNavigate}
+      />
+
       {/* Header Banner */}
       <section className="text-center max-w-3xl mx-auto space-y-4">
         <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/80 border border-blue-200/80 dark:border-blue-800/80 px-4 py-1.5 rounded-full text-blue-700 dark:text-blue-300 font-extrabold text-xs">

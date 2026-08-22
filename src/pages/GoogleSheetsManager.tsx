@@ -37,6 +37,7 @@ import {
 import { LuxurySpinner } from '../components/LuxurySpinner';
 import { useToast } from '../context/ToastContext';
 import { SeoSitemapInspector } from '../components/SeoSitemapInspector';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 export const GoogleSheetsManager: React.FC = () => {
   const { showToast } = useToast();
@@ -341,7 +342,13 @@ export const GoogleSheetsManager: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+      {/* Dynamic SEO Breadcrumbs Navigation */}
+      <Breadcrumbs
+        currentPage="sheets"
+        subItem={activeMainTab === 'seo' ? 'SEO Architecture & Sitemap Inspector' : 'Google Sheets Integrator'}
+      />
+
       {/* Header Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 text-white rounded-3xl p-8 sm:p-12 border border-amber-500/30 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />

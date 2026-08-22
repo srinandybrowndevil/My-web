@@ -112,17 +112,17 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
     }
   };
 
-  // WhatsApp Inquiry Generator directly to Yogahariharan (+91 9566596501)
+  // WhatsApp Inquiry Generator directly to Yogaharikaran (+91 9566596501)
   const handleWhatsAppCourseInquiry = (courseTitle: string) => {
     const text = encodeURIComponent(
-      `Hello Mr. Yogahariharan (Founder & CEO, Way2Me),\n\nI am interested in enrolling for the "${courseTitle}" course offered in partnership with MUCO Labs.\n\nPlease share the detailed fee structure, syllabus brochure, and upcoming batch timings.\n\nThank you!`
+      `Hello Mr. Yogaharikaran (Founder & CEO, Way2Me),\n\nI am interested in enrolling for the "${courseTitle}" course offered in partnership with MUCO Labs.\n\nPlease share the detailed fee structure, syllabus brochure, and upcoming batch timings.\n\nThank you!`
     );
     window.open(`https://wa.me/${WAY2ME_PARTNER_INFO.cleanPhone1}?text=${text}`, '_blank');
   };
 
   const handleGeneralWhatsAppInquiry = () => {
     const text = encodeURIComponent(
-      `Hello Mr. Yogahariharan (Founder & CEO, Way2Me),\n\nI visited the MUCO Labs & Way2Me Courses portal and would like to speak with you regarding course admissions, fee structures, and customized training programs.\n\nPlease let me know a convenient time to discuss.`
+      `Hello Mr. Yogaharikaran (Founder & CEO, Way2Me),\n\nI visited the MUCO Labs & Way2Me Courses portal and would like to speak with you regarding course admissions, fee structures, and customized training programs.\n\nPlease let me know a convenient time to discuss.`
     );
     window.open(`https://wa.me/${WAY2ME_PARTNER_INFO.cleanPhone1}?text=${text}`, '_blank');
   };
@@ -139,7 +139,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
     setTimeout(() => {
       setIsSubmitting(false);
       setFormSubmitted(true);
-      showToast('Enrollment inquiry received! Founder Yogahariharan will contact you shortly.', 'success');
+      showToast('Enrollment inquiry received! Founder Yogaharikaran will contact you shortly.', 'success');
 
       // Also open WhatsApp pre-filled with this student's inquiry
       const targetCourse = COURSES_DATA.find((c) => c.id === formState.courseId)?.title || formState.courseId;
@@ -159,11 +159,11 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
   const faqs = [
     {
       q: 'How do I know the exact price and fee structure for each course?',
-      a: `To get customized course pricing, scholarship options, and batch fee details, please contact Way2Me Founder & CEO Yogahariharan directly by calling or messaging on WhatsApp at +91 9566596501 or +91 8807578299. Individual 1-on-1 mentorship, student group discounts, and corporate batch options are available.`
+      a: `To get customized course pricing, scholarship options, and batch fee details, please contact Way2Me Founder & CEO Yogaharikaran directly by calling or messaging on WhatsApp at +91 9566596501 or +91 8807578299. Individual 1-on-1 mentorship, student group discounts, and corporate batch options are available.`
     },
     {
       q: 'Who conducts the classes and mentorship sessions?',
-      a: `Classes and live practical labs are conducted jointly by S. Yogahariharan (Founder & CEO, Way2Me) and Srinivash Mahalingam (Founder, MUCO Labs) along with experienced senior software architects and CAD design specialists.`
+      a: `Classes and live practical labs are conducted jointly by S. Yogaharikaran (Founder & CEO, Way2Me) and Srinivash Mahalingam (Founder, MUCO Labs) along with experienced senior software architects and CAD design specialists.`
     },
     {
       q: 'Are these courses suitable for absolute beginners without prior coding experience?',
@@ -223,7 +223,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
                 className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/25 transition-all flex items-center gap-2"
               >
                 <MessageSquare className="w-4 h-4" />
-                <span>WhatsApp Founder Yogahariharan</span>
+                <span>WhatsApp Founder Yogaharikaran</span>
               </button>
 
               <a
@@ -249,18 +249,18 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                Way2Me Academy &mdash; Led by Yogahariharan
+                Way2Me Academy &mdash; Led by Yogaharikaran
               </h2>
 
               <p className="text-sm text-slate-300 leading-relaxed">
                 Courses are conducted and managed through <strong>Way2Me Academy</strong> under the leadership of{' '}
-                <strong>Founder & CEO Yogahariharan</strong> in partnership with MUCO Labs. All course fee pricing, custom student packages, and live batch schedules are handled directly through the official Way2Me contact desk.
+                <strong>Founder & CEO Yogaharikaran</strong> in partnership with MUCO Labs. All course fee pricing, custom student packages, and live batch schedules are handled directly through the official Way2Me contact desk.
               </p>
 
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-300 pt-1">
                 <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
                   <Award className="w-4 h-4 text-amber-400" />
-                  <span><strong>Founder & CEO:</strong> Yogahariharan</span>
+                  <span><strong>Founder & CEO:</strong> Yogaharikaran</span>
                 </div>
                 <div className="flex items-center gap-1.5 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
                   <Users className="w-4 h-4 text-blue-400" />
@@ -280,7 +280,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
                 className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-md shadow-blue-700/30"
               >
                 <Phone className="w-4 h-4" />
-                <span>Call Yogahariharan ({WAY2ME_PARTNER_INFO.primaryPhone})</span>
+                <span>Call Yogaharikaran ({WAY2ME_PARTNER_INFO.primaryPhone})</span>
               </a>
 
               <a
@@ -480,7 +480,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
                         Course Pricing
                       </span>
                       <span className="text-xs font-bold text-amber-400">
-                        Contact Yogahariharan for Fee Details
+                        Contact Yogaharikaran for Fee Details
                       </span>
                     </div>
                     <span className="text-[10px] bg-slate-900 px-2.5 py-1 rounded text-slate-300 border border-slate-700">
@@ -529,7 +529,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
 
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Fill out the quick inquiry below or reach out directly to{' '}
-                <strong>Way2Me Founder & CEO Yogahariharan</strong>. We will share the complete syllabus PDF, pricing breakdown, and upcoming batch calendar.
+                <strong>Way2Me Founder & CEO Yogaharikaran</strong>. We will share the complete syllabus PDF, pricing breakdown, and upcoming batch calendar.
               </p>
 
               <div className="space-y-3 pt-2 text-xs text-slate-300">
@@ -539,7 +539,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
                   </div>
                   <div>
                     <span className="block font-bold text-white">{WAY2ME_PARTNER_INFO.primaryPhone}</span>
-                    <span className="text-[11px] text-slate-400">Direct Call & WhatsApp (Yogahariharan)</span>
+                    <span className="text-[11px] text-slate-400">Direct Call & WhatsApp (Yogaharikaran)</span>
                   </div>
                 </div>
 
@@ -574,7 +574,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
                   </div>
                   <h4 className="text-xl font-bold text-white">Inquiry Sent Successfully!</h4>
                   <p className="text-xs text-slate-300 max-w-md mx-auto">
-                    Thank you! We have opened WhatsApp to connect you directly with Founder Yogahariharan (+91 9566596501).
+                    Thank you! We have opened WhatsApp to connect you directly with Founder Yogaharikaran (+91 9566596501).
                   </p>
                   <button
                     onClick={() => {
@@ -891,7 +891,7 @@ export const Courses: React.FC<CoursesProps> = ({ onNavigate }) => {
                     Contact Way2Me for Fees & Enrollment:
                   </span>
                   <span className="text-xs text-blue-300">
-                    Yogahariharan (Founder & CEO): {WAY2ME_PARTNER_INFO.primaryPhone}
+                    Yogaharikaran (Founder & CEO): {WAY2ME_PARTNER_INFO.primaryPhone}
                   </span>
                 </div>
 

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PageId } from '../types';
 import { FOUNDER_INFO } from '../data/galleryData';
 import { Image } from '../components/Image';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import {
   User,
   MapPin,
@@ -459,8 +460,17 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="space-y-20 sm:space-y-28 pb-24 text-slate-900 dark:text-slate-100 selection:bg-cyan-500 selection:text-slate-950">
+    <div className="space-y-16 sm:space-y-24 pb-24 text-slate-900 dark:text-slate-100 selection:bg-cyan-500 selection:text-slate-950">
       
+      {/* TOP SEO BREADCRUMBS */}
+      <div className="pt-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <Breadcrumbs
+          currentPage="about"
+          subItem={activeTab === 'founder' ? 'Founder & Leadership Profile' : 'Company Overview'}
+          onNavigate={onNavigate}
+        />
+      </div>
+
       {/* SECTION NAVIGATOR / TOP TOGGLE */}
       <section className="pt-6 sm:pt-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-3xl bg-slate-900/80 dark:bg-[#070b16]/90 border border-slate-800 shadow-xl backdrop-blur-xl">

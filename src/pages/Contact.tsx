@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building, Clock, Inbox, ShieldCheck, FileSpreadsheet, Sparkles, Loader2, AlertCircle } from 'lucide-react';
-import { ContactFormData } from '../types';
+import { ContactFormData, PageId } from '../types';
 import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInbox';
 import { GoogleSheetsHub } from '../components/GoogleSheetsHub';
 import { EmailJSSettingsModal } from '../components/EmailJSSettingsModal';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 import { getAccessToken, appendLeadToSheet } from '../services/googleSheets';
 import { sendInquiryEmail, sendAutoReplyEmail, isEmailJSConfigured } from '../services/emailjs';
 import { postToGoogleAppsScript } from '../services/googleAppsScript';
@@ -11,9 +12,10 @@ import { useToast } from '../context/ToastContext';
 
 interface ContactProps {
   initialMessage?: string;
+  onNavigate?: (page: PageId, msg?: string) => void;
 }
 
-export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
+export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigate }) => {
   const { showToast } = useToast();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
@@ -169,6 +171,11 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '' }) => {
 
   return (
     <div className="space-y-12 pb-16">
+      {/* Top Breadcrumb Trail */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs currentPage="contact" onNavigate={onNavigate} />
+      </div>
+
       {/* Admin Messages Inbox Modal */}
       <AdminMessagesInbox isOpen={showInboxModal} onClose={() => setShowInboxModal(false)} />
 

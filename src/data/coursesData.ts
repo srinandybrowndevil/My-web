@@ -41,7 +41,7 @@ export interface CourseItem {
 export const WAY2ME_PARTNER_INFO = {
   institutionName: 'Way2Me Academy',
   tagline: 'Premier Career & Technology Learning Hub',
-  founderName: 'Yogahariharan',
+  founderName: 'Yogaharikaran',
   founderRole: 'Founder & CEO, Way2Me',
   primaryPhone: '+91 9566596501',
   secondaryPhone: '+91 8807578299',
@@ -54,9 +54,9 @@ export const WAY2ME_PARTNER_INFO = {
   instagramUrl: 'https://www.instagram.com/way2me__/',
   instagramHandle: '@way2me__',
   location: 'Kavettipatty, Namakkal, Tamil Nadu, India - 637017',
-  pricingNotice: 'Customized student & batch pricing available. Contact Founder Yogahariharan directly on WhatsApp or Call for detailed fee structure, live batch schedules, and enrollment discounts.',
+  pricingNotice: 'Customized student & batch pricing available. Contact Founder Yogaharikaran directly on WhatsApp or Call for detailed fee structure, live batch schedules, and enrollment discounts.',
   keyBenefits: [
-    'Direct 1-on-1 Mentorship from Yogahariharan (Founder & CEO, Way2Me) & MUCO Labs Senior Architects',
+    'Direct 1-on-1 Mentorship from Yogaharikaran (Founder & CEO, Way2Me) & MUCO Labs Senior Architects',
     'Real-World Production Projects (Not Just Toy Code)',
     '100% Verified Certificate of Completion from MUCO Labs & Way2Me',
     'Dedicated Placement Assistance, Portfolio Construction & Mock Tech Interviews',
@@ -131,8 +131,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['Full-Stack Developer', 'Frontend Engineer', 'Next.js Specialist', 'Node.js Backend Developer'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan (Founder & CEO) & Srinivash Mahalingam',
-      contactNote: 'Contact Yogahariharan at +91 9566596501 for syllabus details & live batch admissions.'
+      mentor: 'Yogaharikaran (Founder & CEO) & Srinivash Mahalingam',
+      contactNote: 'Contact Yogaharikaran at +91 9566596501 for syllabus details & live batch admissions.'
     }
   },
   {
@@ -199,8 +199,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['Flutter Developer', 'React Native Engineer', 'Mobile App Architect', 'iOS/Android App Specialist'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan & Way2Me Mobile Faculty',
-      contactNote: 'Reach out to Yogahariharan (+91 9566596501) for seat booking & device requirements.'
+      mentor: 'Yogaharikaran & Way2Me Mobile Faculty',
+      contactNote: 'Reach out to Yogaharikaran (+91 9566596501) for seat booking & device requirements.'
     }
   },
   {
@@ -267,8 +267,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['AI Application Engineer', 'Generative AI Developer', 'LLM Prompt Engineer', 'Automation Consultant'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan (Way2Me) & Srinivash Mahalingam (MUCO Labs)',
-      contactNote: 'WhatsApp Yogahariharan at +91 9566596501 to check next AI cohort start dates.'
+      mentor: 'Yogaharikaran (Way2Me) & Srinivash Mahalingam (MUCO Labs)',
+      contactNote: 'WhatsApp Yogaharikaran at +91 9566596501 to check next AI cohort start dates.'
     }
   },
   {
@@ -334,8 +334,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['SaaS Architect', 'Cloud Solutions Architect', 'Lead Backend Engineer', 'DevOps & Cloud Engineer'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan & Senior MUCO Labs Engineering Leads',
-      contactNote: 'Call/WhatsApp Yogahariharan (+91 9566596501) for detailed enterprise curriculum.'
+      mentor: 'Yogaharikaran & Senior MUCO Labs Engineering Leads',
+      contactNote: 'Call/WhatsApp Yogaharikaran (+91 9566596501) for detailed enterprise curriculum.'
     }
   },
   {
@@ -401,7 +401,7 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['AutoCAD Drafter', 'CAD Design Specialist', 'Civil Draftsman', 'Mechanical CAD Modeler'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan & Way2Me Engineering Faculty',
+      mentor: 'Yogaharikaran & Way2Me Engineering Faculty',
       contactNote: 'Direct admissions inquiry via WhatsApp: +91 9566596501 / +91 8807578299.'
     }
   },
@@ -468,8 +468,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['Digital Marketing Manager', 'Performance Ads Specialist', 'SEO Strategist', 'Growth Marketer'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan & Digital Growth Mentors',
-      contactNote: 'Contact Yogahariharan at +91 9566596501 for marketing batch schedules.'
+      mentor: 'Yogaharikaran & Digital Growth Mentors',
+      contactNote: 'Contact Yogaharikaran at +91 9566596501 for marketing batch schedules.'
     }
   },
   {
@@ -535,8 +535,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['UI/UX Designer', 'Product Designer', 'Design System Lead', 'Brand Identity Designer'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan & MUCO Labs Creative Directors',
-      contactNote: 'WhatsApp Yogahariharan (+91 9566596501) for design cohort portfolio reviews.'
+      mentor: 'Yogaharikaran & MUCO Labs Creative Directors',
+      contactNote: 'WhatsApp Yogaharikaran (+91 9566596501) for design cohort portfolio reviews.'
     }
   },
   {
@@ -602,8 +602,8 @@ export const COURSES_DATA: CourseItem[] = [
     careerOpportunities: ['WhatsApp Automation Specialist', 'IT Solutions Consultant', 'Agency Owner', 'Chatbot Architect'],
     partner: {
       institution: 'Way2Me Academy',
-      mentor: 'Yogahariharan (Way2Me) & Srinivash Mahalingam (MUCO Labs)',
-      contactNote: 'Direct contact with Yogahariharan at +91 9566596501 for consulting batch seats.'
+      mentor: 'Yogaharikaran (Way2Me) & Srinivash Mahalingam (MUCO Labs)',
+      contactNote: 'Direct contact with Yogaharikaran at +91 9566596501 for consulting batch seats.'
     }
   }
 ];

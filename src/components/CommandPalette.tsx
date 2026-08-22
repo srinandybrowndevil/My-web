@@ -92,7 +92,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     const pages: { id: PageId; name: string; desc: string }[] = [
       { id: 'home', name: 'Home - MUCO Labs Overview', desc: 'Main landing page, technology capabilities & client showcase' },
       { id: 'services', name: 'Services & Enterprise Solutions', desc: 'Web apps, mobile apps, SaaS ERP, AI agents & cloud systems' },
-      { id: 'courses', name: 'Mastery Courses & Bootcamps (Way2Me)', desc: 'Full-stack, Mobile, AI, AutoCAD & Design courses by Yogahariharan' },
+      { id: 'courses', name: 'Mastery Courses & Bootcamps (Way2Me)', desc: 'Full-stack, Mobile, AI, AutoCAD & Design courses by Yogaharikaran' },
       { id: 'portfolio', name: 'Client Case Studies & Portfolio', desc: 'Live deployments, architecture breakdowns & performance metrics' },
       { id: 'pricing', name: 'Transparent Pricing & Cost Calculator', desc: 'Fixed-price packages, custom software estimates & AMC tiers' },
       { id: 'apps', name: 'App Studio & Play Store Deployments', desc: 'Published Android applications, APK builds & store listings' },
@@ -123,7 +123,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         id: `course-${c.id}`,
         title: c.title,
         category: 'Mastery Course',
-        description: `${c.duration} • ${c.tagline} • Contact Yogahariharan for Fees`,
+        description: `${c.duration} • ${c.tagline} • Contact Yogaharikaran for Fees`,
         icon: <GraduationCap className="w-4 h-4 text-purple-400" />,
         action: () => {
           onNavigate('courses', undefined, `#${c.id}`);

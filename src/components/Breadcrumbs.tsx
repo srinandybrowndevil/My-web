@@ -1,19 +1,28 @@
-import React, { useMemo } from 'react';
-import { ChevronRight, Home, Layers, MapPin } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { ChevronRight, Home, Layers, MapPin, BookOpen, Briefcase, FileText, Users, HelpCircle, Phone, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
+import { CORE_SERVICES } from '../data/servicesData';
+import { LOCATIONS_DATA } from '../data/locationsData';
+import { SERVICE_LOCATIONS_DATA } from '../data/serviceLocationsData';
+import { COURSES_DATA } from '../data/coursesData';
+import { INITIAL_PROJECTS } from '../data/projectsData';
+import { BLOG_POSTS } from '../data/blogData';
+import { TEAM_MEMBERS } from '../data/galleryData';
 
 export interface BreadcrumbStep {
   name: string;
   page?: PageId;
   hash?: string;
-  onClick?: () => void;
+  href?: string;
+  onClick?: (e?: React.MouseEvent) => void;
   isCurrent?: boolean;
+  icon?: React.ReactNode;
 }
 
 export interface BreadcrumbsProps {
-  currentPage: PageId;
+  currentPage?: PageId;
   subItem?: string;
-  onNavigate: (page: PageId, customMsg?: string, hash?: string) => void;
+  onNavigate?: (page: PageId, customMsg?: string, hash?: string) => void;
   className?: string;
   // Specific hierarchical props for /services/[service]/[location]
   serviceName?: string;
@@ -23,6 +32,8 @@ export interface BreadcrumbsProps {
   serviceLocationTitle?: string;
   comboId?: string;
   customTrail?: BreadcrumbStep[];
+  // If true, forces showing on home page as well
+  showOnHome?: boolean;
 }
 
 const PAGE_NAMES: Record<PageId, string> = {
@@ -35,7 +46,7 @@ const PAGE_NAMES: Record<PageId, string> = {
   portfolio: 'Client Portfolio',
   apps: 'App Studio & Play Store',
   maintenance: 'AMC & Maintenance',
-  gallery: 'Our Team & Leadership',
+  gallery: 'Leadership & Team',
   contact: 'Contact & Inquiry',
   faq: 'Frequently Asked Questions',
   sheets: 'Google Sheets CRM',
@@ -43,8 +54,36 @@ const PAGE_NAMES: Record<PageId, string> = {
   notfound: '404 Error'
 };
 
+const PAGE_ICONS: Partial<Record<PageId, React.ReactNode>> = {
+  services: <Layers className="w-3.5 h-3.5" />,
+  locations: <MapPin className="w-3.5 h-3.5" />,
+  courses: <BookOpen className="w-3.5 h-3.5" />,
+  portfolio: <Briefcase className="w-3.5 h-3.5" />,
+  blog: <FileText className="w-3.5 h-3.5" />,
+  gallery: <Users className="w-3.5 h-3.5" />,
+  faq: <HelpCircle className="w-3.5 h-3.5" />,
+  contact: <Phone className="w-3.5 h-3.5" />
+};
+
+/**
+ * Normalizes slug or string to readable title
+ */
+function humanizeSlug(slug: string): string {
+  if (!slug) return '';
+  return slug
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase())
+    .trim();
+}
+
+/**
+ * Breadcrumbs Component:
+ * Automatically parses current URL path, search params, and hash to generate
+ * SEO-optimized navigation links, Schema.org JSON-LD microdata, and bot-crawlable
+ * hierarchical anchors.
+ */
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
-  currentPage,
+  currentPage: propCurrentPage,
   subItem,
   onNavigate,
   className = '',
@@ -54,95 +93,389 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
   locationId,
   serviceLocationTitle,
   comboId,
-  customTrail
+  customTrail,
+  showOnHome = false
 }) => {
-  if (currentPage === 'home' && !customTrail) return null;
+  // Track location state dynamically for client navigation
+  const [urlState, setUrlState] = useState<{
+    pathname: string;
+    hash: string;
+    search: string;
+  }>({
+    pathname: typeof window !== 'undefined' ? window.location.pathname : '/',
+    hash: typeof window !== 'undefined' ? window.location.hash : '',
+    search: typeof window !== 'undefined' ? window.location.search : ''
+  });
 
-  // Build the complete hierarchical trail
+  useEffect(() => {
+    const handleUrlUpdate = () => {
+      setUrlState({
+        pathname: window.location.pathname,
+        hash: window.location.hash,
+        search: window.location.search
+      });
+    };
+
+    window.addEventListener('popstate', handleUrlUpdate);
+    window.addEventListener('hashchange', handleUrlUpdate);
+    window.addEventListener('muco:route_changed', handleUrlUpdate);
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlUpdate);
+      window.removeEventListener('hashchange', handleUrlUpdate);
+      window.removeEventListener('muco:route_changed', handleUrlUpdate);
+    };
+  }, []);
+
+  // Internal navigation handler
+  const handleNavigate = useCallback(
+    (page: PageId, targetHash?: string, customClick?: (e?: React.MouseEvent) => void) => (e?: React.MouseEvent) => {
+      if (customClick) {
+        customClick(e);
+        return;
+      }
+
+      if (e) {
+        // Allow middle clicks / cmd+clicks for opening in new tab
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) {
+          return;
+        }
+        e.preventDefault();
+      }
+
+      if (onNavigate) {
+        onNavigate(page, undefined, targetHash);
+      } else {
+        if (targetHash) {
+          window.location.hash = targetHash.replace(/^#/, '');
+        } else {
+          window.location.hash = page === 'home' ? '' : page;
+        }
+      }
+    },
+    [onNavigate]
+  );
+
+  // Automatically compute the hierarchical breadcrumb trail
   const trail: BreadcrumbStep[] = useMemo(() => {
+    // 1. Direct custom trail override
     if (customTrail && customTrail.length > 0) {
-      return [{ name: 'Home', page: 'home', hash: '#home' }, ...customTrail];
+      return [
+        {
+          name: 'Home',
+          page: 'home',
+          hash: '#home',
+          href: '/#home',
+          icon: <Home className="w-3.5 h-3.5" />
+        },
+        ...customTrail
+      ];
     }
 
     const items: BreadcrumbStep[] = [
-      { name: 'Home', page: 'home', hash: '#home' }
+      {
+        name: 'Home',
+        page: 'home',
+        hash: '#home',
+        href: '/#home',
+        icon: <Home className="w-3.5 h-3.5" />
+      }
     ];
 
-    // Check if this is a /services/[service]/[location] hierarchy
-    const hasService = Boolean(serviceName || serviceLocationTitle);
-    const hasLocation = Boolean(locationName);
+    // Combine parameters from URL query string and hash query string
+    const currentHash = urlState.hash;
+    const currentPath = urlState.pathname;
+    const queryPart = currentHash.includes('?') 
+      ? currentHash.split('?')[1] 
+      : (urlState.search ? urlState.search.replace(/^\?/, '') : '');
+    
+    const params = new URLSearchParams(queryPart);
 
-    if (hasService && hasLocation) {
-      // Step 2: Services Hub
+    // Determine the active page either from prop or URL
+    let resolvedPage: PageId = propCurrentPage || 'home';
+    if (!propCurrentPage) {
+      const rawHashPage = currentHash.replace(/^#\/?/, '').split('?')[0].split('/')[0].toLowerCase();
+      if (rawHashPage && PAGE_NAMES[rawHashPage as PageId]) {
+        resolvedPage = rawHashPage as PageId;
+      } else {
+        const pathSegments = currentPath.split('/').filter(Boolean);
+        if (pathSegments[0] && PAGE_NAMES[pathSegments[0] as PageId]) {
+          resolvedPage = pathSegments[0] as PageId;
+        }
+      }
+    }
+
+    // Resolve URL query IDs
+    const resolvedComboId = comboId || params.get('combo');
+    const resolvedServiceId = serviceId || params.get('id') || params.get('service');
+    const resolvedCityId = locationId || params.get('city') || params.get('loc');
+    const resolvedPostSlug = params.get('post');
+    const resolvedMemberId = params.get('member');
+
+    // --------------------------------------------------------------------------
+    // CASE A: Hierarchical /services/[service]/[location] (Service x Location Combo)
+    // --------------------------------------------------------------------------
+    if (resolvedComboId) {
+      const combo = SERVICE_LOCATIONS_DATA.find((c) => c.id === resolvedComboId);
+      if (combo) {
+        // 1. Services Hub Link
+        items.push({
+          name: 'Services',
+          page: 'services',
+          hash: '#services',
+          href: '/#services',
+          icon: <Layers className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('services', '#services')
+        });
+
+        // 2. Specific Service Category Link
+        items.push({
+          name: combo.serviceName,
+          page: 'services',
+          hash: `#services?id=${combo.serviceId}`,
+          href: `/#services?id=${combo.serviceId}`,
+          onClick: handleNavigate('services', `#services?id=${combo.serviceId}`)
+        });
+
+        // 3. Current Location Terminal Node
+        items.push({
+          name: `${combo.locationName} Hub`,
+          page: 'locations',
+          hash: `#locations?combo=${combo.id}`,
+          href: `/#locations?combo=${combo.id}`,
+          isCurrent: true,
+          icon: <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+        });
+
+        return items;
+      }
+    }
+
+    // Explicit service + location props passed
+    if ((serviceName || serviceLocationTitle) && locationName) {
+      const srvTitle = serviceName || serviceLocationTitle || 'Service';
       items.push({
         name: 'Services',
         page: 'services',
         hash: '#services',
-        onClick: () => onNavigate('services')
+        href: '/#services',
+        icon: <Layers className="w-3.5 h-3.5" />,
+        onClick: handleNavigate('services', '#services')
       });
 
-      // Step 3: Specific Service
-      const srvTitle = serviceName || serviceLocationTitle || 'Service';
       items.push({
         name: srvTitle,
         page: 'services',
         hash: serviceId ? `#services?id=${serviceId}` : '#services',
-        onClick: () => {
-          if (serviceId) {
-            onNavigate('services', undefined, `#services?id=${serviceId}`);
-          } else {
-            onNavigate('services');
-          }
-        }
+        href: serviceId ? `/#services?id=${serviceId}` : '/#services',
+        onClick: handleNavigate('services', serviceId ? `#services?id=${serviceId}` : '#services')
       });
 
-      // Step 4: Specific Location (Current Node)
       items.push({
-        name: locationName || 'Location Hub',
+        name: `${locationName} Hub`,
         page: 'locations',
-        hash: comboId ? `#locations?combo=${comboId}` : `#locations?city=${locationId || ''}`,
-        isCurrent: true
+        hash: comboId ? `#locations?combo=${comboId}` : (locationId ? `#locations?city=${locationId}` : '#locations'),
+        href: comboId ? `/#locations?combo=${comboId}` : (locationId ? `/#locations?city=${locationId}` : '/#locations'),
+        isCurrent: true,
+        icon: <MapPin className="w-3.5 h-3.5 text-cyan-400" />
       });
 
       return items;
     }
 
-    // Single Service Node in /services
-    if (currentPage === 'services' && (serviceName || subItem)) {
-      items.push({
-        name: 'Services',
-        page: 'services',
-        hash: '#services',
-        onClick: () => onNavigate('services')
-      });
-      items.push({
-        name: (serviceName || subItem) as string,
-        isCurrent: true
-      });
-      return items;
+    // --------------------------------------------------------------------------
+    // CASE B: Locations & Regional Hubs (/locations or #locations)
+    // --------------------------------------------------------------------------
+    if (resolvedPage === 'locations') {
+      const locKey = (resolvedCityId as keyof typeof LOCATIONS_DATA) || locationId;
+      const matchedLoc = locKey && LOCATIONS_DATA[locKey as keyof typeof LOCATIONS_DATA]
+        ? LOCATIONS_DATA[locKey as keyof typeof LOCATIONS_DATA]
+        : null;
+
+      const locDisplayName = locationName || matchedLoc?.name;
+
+      if (locDisplayName) {
+        items.push({
+          name: 'Locations & Regional Hubs',
+          page: 'locations',
+          hash: '#locations',
+          href: '/#locations',
+          icon: <MapPin className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('locations', '#locations')
+        });
+
+        items.push({
+          name: `${locDisplayName} Technology Hub`,
+          page: 'locations',
+          hash: `#locations?city=${locKey || ''}`,
+          href: `/#locations?city=${locKey || ''}`,
+          isCurrent: true,
+          icon: <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+        });
+        return items;
+      }
     }
 
-    // Single Location Node in /locations
-    if (currentPage === 'locations' && locationName) {
-      items.push({
-        name: 'Locations & Hubs',
-        page: 'locations',
-        hash: '#locations',
-        onClick: () => onNavigate('locations')
-      });
-      items.push({
-        name: locationName,
-        isCurrent: true
-      });
-      return items;
+    // --------------------------------------------------------------------------
+    // CASE C: Services & Solutions (/services or #services)
+    // --------------------------------------------------------------------------
+    if (resolvedPage === 'services') {
+      const matchedSrv = resolvedServiceId 
+        ? CORE_SERVICES.find((s) => s.id === resolvedServiceId) 
+        : null;
+      const srvDisplayName = serviceName || subItem || matchedSrv?.title;
+
+      if (srvDisplayName) {
+        items.push({
+          name: 'Services & Solutions',
+          page: 'services',
+          hash: '#services',
+          href: '/#services',
+          icon: <Layers className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('services', '#services')
+        });
+
+        items.push({
+          name: srvDisplayName,
+          page: 'services',
+          hash: matchedSrv ? `#services?id=${matchedSrv.id}` : '#services',
+          href: matchedSrv ? `/#services?id=${matchedSrv.id}` : '/#services',
+          isCurrent: true
+        });
+        return items;
+      }
     }
 
-    // Standard Page Level with optional sub-item
+    // --------------------------------------------------------------------------
+    // CASE D: Mastery Courses & Bootcamps (/courses or #courses)
+    // --------------------------------------------------------------------------
+    if (resolvedPage === 'courses') {
+      const courseIdParam = resolvedServiceId || params.get('course') || subItem;
+      const matchedCourse = courseIdParam
+        ? COURSES_DATA.find((c) => c.id === courseIdParam || c.title.toLowerCase() === courseIdParam.toLowerCase())
+        : null;
+
+      if (matchedCourse || subItem) {
+        items.push({
+          name: 'Mastery Courses & Bootcamps',
+          page: 'courses',
+          hash: '#courses',
+          href: '/#courses',
+          icon: <BookOpen className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('courses', '#courses')
+        });
+
+        items.push({
+          name: matchedCourse ? matchedCourse.title : subItem!,
+          page: 'courses',
+          hash: matchedCourse ? `#courses?id=${matchedCourse.id}` : '#courses',
+          href: matchedCourse ? `/#courses?id=${matchedCourse.id}` : '/#courses',
+          isCurrent: true
+        });
+        return items;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // CASE E: Client Portfolio Case Studies (/portfolio or #portfolio)
+    // --------------------------------------------------------------------------
+    if (resolvedPage === 'portfolio') {
+      const projIdParam = resolvedServiceId || params.get('project') || subItem;
+      const matchedProj = projIdParam
+        ? INITIAL_PROJECTS.find((p) => p.id === projIdParam || p.title.toLowerCase() === projIdParam.toLowerCase())
+        : null;
+
+      if (matchedProj || subItem) {
+        items.push({
+          name: 'Client Portfolio',
+          page: 'portfolio',
+          hash: '#portfolio',
+          href: '/#portfolio',
+          icon: <Briefcase className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('portfolio', '#portfolio')
+        });
+
+        items.push({
+          name: matchedProj ? matchedProj.title : subItem!,
+          page: 'portfolio',
+          hash: matchedProj ? `#portfolio?id=${matchedProj.id}` : '#portfolio',
+          href: matchedProj ? `/#portfolio?id=${matchedProj.id}` : '/#portfolio',
+          isCurrent: true
+        });
+        return items;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // CASE F: Engineering Blog Articles (/blog or #blog)
+    // --------------------------------------------------------------------------
+    if (resolvedPage === 'blog') {
+      const matchedPost = resolvedPostSlug
+        ? BLOG_POSTS.find((b) => b.slug === resolvedPostSlug || b.id === resolvedPostSlug)
+        : null;
+
+      if (matchedPost || subItem) {
+        items.push({
+          name: 'Engineering Blog',
+          page: 'blog',
+          hash: '#blog',
+          href: '/#blog',
+          icon: <FileText className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('blog', '#blog')
+        });
+
+        items.push({
+          name: matchedPost ? matchedPost.title : subItem!,
+          page: 'blog',
+          hash: matchedPost ? `#blog?post=${matchedPost.slug}` : '#blog',
+          href: matchedPost ? `/#blog?post=${matchedPost.slug}` : '/#blog',
+          isCurrent: true
+        });
+        return items;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // CASE G: Leadership & Team Profiles (/gallery or #gallery)
+    // --------------------------------------------------------------------------
+    if (resolvedPage === 'gallery') {
+      const matchedMember = resolvedMemberId
+        ? TEAM_MEMBERS.find((m) => m.id === resolvedMemberId)
+        : null;
+
+      if (matchedMember || subItem) {
+        items.push({
+          name: 'Leadership & Team',
+          page: 'gallery',
+          hash: '#gallery',
+          href: '/#gallery',
+          icon: <Users className="w-3.5 h-3.5" />,
+          onClick: handleNavigate('gallery', '#gallery')
+        });
+
+        items.push({
+          name: matchedMember ? `${matchedMember.name} (${matchedMember.titleRole})` : subItem!,
+          page: 'gallery',
+          hash: matchedMember ? `#gallery?member=${matchedMember.id}` : '#gallery',
+          href: matchedMember ? `/#gallery?member=${matchedMember.id}` : '/#gallery',
+          isCurrent: true
+        });
+        return items;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // DEFAULT: Standard Page Level
+    // --------------------------------------------------------------------------
+    const pageDisplayName = PAGE_NAMES[resolvedPage] || humanizeSlug(resolvedPage);
+    
     items.push({
-      name: PAGE_NAMES[currentPage] || currentPage,
-      page: currentPage,
-      hash: `#${currentPage}`,
-      onClick: subItem ? () => onNavigate(currentPage) : undefined,
+      name: pageDisplayName,
+      page: resolvedPage,
+      hash: `#${resolvedPage}`,
+      href: `/#${resolvedPage}`,
+      icon: PAGE_ICONS[resolvedPage],
+      onClick: subItem ? handleNavigate(resolvedPage, `#${resolvedPage}`) : undefined,
       isCurrent: !subItem
     });
 
@@ -155,17 +488,24 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
 
     return items;
   }, [
-    currentPage,
-    subItem,
-    serviceName,
-    serviceId,
-    locationName,
-    locationId,
-    serviceLocationTitle,
-    comboId,
     customTrail,
-    onNavigate
+    urlState,
+    propCurrentPage,
+    comboId,
+    serviceId,
+    locationId,
+    serviceName,
+    serviceLocationTitle,
+    locationName,
+    subItem,
+    handleNavigate
   ]);
+
+  // Hide on homepage unless explicit showOnHome is passed
+  const isHomePage = trail.length <= 1;
+  if (isHomePage && !showOnHome) {
+    return null;
+  }
 
   // Generate Schema.org BreadcrumbList JSON-LD
   const breadcrumbSchema = useMemo(() => {
@@ -177,21 +517,23 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
         '@type': 'ListItem',
         position: index + 1,
         name: item.name,
-        item: item.hash ? `${origin}/${item.hash}` : `${origin}/#${item.page || ''}`
+        item: item.href
+          ? `${origin}${item.href.startsWith('/') ? item.href : `/${item.href}`}`
+          : (item.hash ? `${origin}/${item.hash}` : `${origin}/#${item.page || ''}`)
       }))
     };
   }, [trail]);
 
   return (
-    <div className={`w-full ${className}`}>
-      {/* Schema.org Microdata Injected for SEO */}
+    <div className={`w-full ${className}`} aria-label="Breadcrumbs Section">
+      {/* Schema.org JSON-LD Microdata Injected into DOM */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <nav
-        aria-label="Breadcrumb"
+        aria-label="Breadcrumb Navigation"
         itemScope
         itemType="https://schema.org/BreadcrumbList"
         className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 dark:text-slate-400 py-3 mb-6 border-b border-slate-200/80 dark:border-slate-800/80 overflow-x-auto whitespace-nowrap scrollbar-none font-medium"
@@ -214,27 +556,21 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                   <span
                     itemProp="name"
                     aria-current="page"
-                    className="flex items-center gap-1 text-slate-900 dark:text-cyan-400 font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 shadow-xs"
+                    className="flex items-center gap-1.5 text-slate-900 dark:text-cyan-400 font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-cyan-500/30 shadow-xs"
                   >
-                    {locationName && isLast && <MapPin className="w-3 h-3 text-cyan-500" />}
-                    {step.name}
+                    {step.icon}
+                    <span>{step.name}</span>
                   </span>
                 ) : (
-                  <button
-                    type="button"
+                  <a
+                    href={step.href || step.hash || `/#${step.page || ''}`}
                     itemProp="item"
-                    onClick={() => {
-                      if (step.onClick) {
-                        step.onClick();
-                      } else if (step.page) {
-                        onNavigate(step.page, undefined, step.hash);
-                      }
-                    }}
-                    className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-cyan-300 hover:underline transition-colors cursor-pointer"
+                    onClick={step.onClick || handleNavigate(step.page || 'home', step.hash)}
+                    className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-cyan-300 hover:underline transition-colors cursor-pointer py-1"
                   >
-                    {isFirst && <Home className="w-3.5 h-3.5" />}
+                    {step.icon}
                     <span itemProp="name">{step.name}</span>
-                  </button>
+                  </a>
                 )}
               </div>
 

@@ -19,13 +19,15 @@ import {
   Terminal,
   Sparkles,
   RefreshCw,
-  CheckCircle2
+  CheckCircle2,
+  Image as ImageIcon
 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { OgImageStudio } from './OgImageStudio';
 
 export const SeoSitemapInspector: React.FC = () => {
   const { showToast } = useToast();
-  const [activeTab, setActiveTab] = useState<'routes' | 'xml' | 'robots' | 'architecture'>('routes');
+  const [activeTab, setActiveTab] = useState<'routes' | 'xml' | 'robots' | 'architecture' | 'og-studio'>('routes');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [copiedType, setCopiedType] = useState<'xml' | 'robots' | null>(null);
@@ -200,7 +202,22 @@ export const SeoSitemapInspector: React.FC = () => {
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            <span>SEO Information Architecture</span>
+            <span>SEO Architecture</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('og-studio')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+              activeTab === 'og-studio'
+                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/20'
+                : 'text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10'
+            }`}
+          >
+            <ImageIcon className="w-3.5 h-3.5" />
+            <span>OG Canvas Studio</span>
+            <span className="text-[9px] uppercase px-1.5 py-0.2 rounded bg-cyan-400/20 text-cyan-200 border border-cyan-400/30">
+              New
+            </span>
           </button>
         </div>
       </div>
@@ -422,6 +439,11 @@ export const SeoSitemapInspector: React.FC = () => {
             </ul>
           </div>
         </div>
+      )}
+
+      {/* TAB CONTENT: Automated Open Graph Canvas Studio */}
+      {activeTab === 'og-studio' && (
+        <OgImageStudio />
       )}
     </div>
   );

@@ -57,6 +57,7 @@ import {
   Award
 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
+import { Breadcrumbs } from './Breadcrumbs';
 
 interface PricingMaintenanceViewProps {
   initialSection?: string;
@@ -793,6 +794,14 @@ export const PricingMaintenanceView: React.FC<PricingMaintenanceViewProps> = ({
 
   return (
     <div className="space-y-12 pb-20">
+      {/* Dynamic SEO Breadcrumbs Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <Breadcrumbs
+          currentPage={initialSection === 'maintenance' ? 'maintenance' : 'pricing'}
+          subItem={activeTab !== 'all' ? (activeTab === 'pricing' ? 'Product Pricing Tiers' : activeTab === 'maintenance' ? 'AMC Maintenance Plans' : activeTab.toUpperCase()) : undefined}
+        />
+      </div>
+
       {/* SECTION 1 – HERO */}
       <section className="relative overflow-hidden pt-10 pb-6 px-4 sm:px-6 lg:px-8 text-center max-w-5xl mx-auto">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-gradient-to-tr from-blue-500/10 via-purple-500/10 to-indigo-500/10 rounded-full blur-3xl pointer-events-none" />

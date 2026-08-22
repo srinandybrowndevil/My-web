@@ -383,7 +383,7 @@ export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>
             url: 'https://way2me.co.in',
             founder: {
               '@type': 'Person',
-              name: 'Yogahariharan'
+              name: 'Yogaharikaran'
             },
             telephone: '+91 9566596501',
             email: 'admin@way2me.in'
