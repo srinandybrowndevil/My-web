@@ -5,6 +5,8 @@ import { ThemeToggle } from './ThemeToggle';
 import { CORE_SERVICES } from '../data/servicesData';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { COURSES_DATA } from '../data/coursesData';
+import { ALL_LOCATIONS } from '../data/locationsData';
+import { SERVICE_LOCATIONS_DATA } from '../data/serviceLocationsData';
 import {
   Home,
   Building,
@@ -24,7 +26,8 @@ import {
   ArrowRight,
   Sparkles,
   ChevronRight,
-  Compass
+  Compass,
+  MapPin
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -87,6 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     { id: 'home', label: 'Home', icon: Home },
     { id: 'about', label: 'About', icon: Building },
     { id: 'services', label: 'Services', icon: Layers },
+    { id: 'locations', label: 'Locations & Hubs', icon: MapPin },
     { id: 'courses', label: 'Courses & Learn', icon: GraduationCap },
     { id: 'portfolio', label: 'Portfolio', icon: Layout },
     { id: 'apps', label: 'Publish Apps', icon: Smartphone },
@@ -138,7 +142,34 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     targetPage: n.id
   }));
 
-  const allSearchItems = [...indexedServices, ...indexedCourses, ...indexedProjects, ...indexedPages];
+  const indexedLocations: SearchItem[] = ALL_LOCATIONS.map((loc) => ({
+    id: `loc-${loc.id}`,
+    type: 'page',
+    title: `${loc.name} Technology Hub`,
+    subtitle: `${loc.district}, Tamil Nadu • ${loc.tagline}`,
+    category: 'Regional Hubs',
+    targetPage: 'locations',
+    tags: [loc.name, loc.district, loc.pincode, ...loc.majorIndustries.map((i) => i.name)]
+  }));
+
+  const indexedCombos: SearchItem[] = SERVICE_LOCATIONS_DATA.map((combo) => ({
+    id: `combo-${combo.id}`,
+    type: 'service',
+    title: `${combo.serviceName} in ${combo.locationName}`,
+    subtitle: `${combo.startingPrice} • ${combo.localizedSummary}`,
+    category: `${combo.locationName} Service`,
+    targetPage: 'locations',
+    tags: [combo.locationName, combo.serviceName, ...combo.technologies]
+  }));
+
+  const allSearchItems = [
+    ...indexedServices,
+    ...indexedCourses,
+    ...indexedProjects,
+    ...indexedLocations,
+    ...indexedCombos,
+    ...indexedPages
+  ];
 
   const filteredSearchItems = allSearchItems.filter((item) => {
     const matchesFilter =

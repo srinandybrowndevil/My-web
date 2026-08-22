@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import compression from 'compression';
 import { createServer as createViteServer } from 'vite';
+import { generateSitemapXml, generateRobotsTxt, getSitemapStats } from './src/lib/sitemapGenerator';
 
 async function startServer() {
   const app = express();
@@ -62,6 +63,42 @@ async function startServer() {
   // API Routes
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', company: 'MUCO Labs', founder: 'Srinivash Mahalingam' });
+  });
+
+  // Dynamic XML Sitemap Endpoint for Search Engine Bots & Audits
+  app.get('/sitemap.xml', (req, res) => {
+    try {
+      const xml = generateSitemapXml();
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+      res.send(xml);
+    } catch (err: any) {
+      console.error('[SEO Sitemap Error]', err);
+      res.status(500).send('Error generating dynamic sitemap');
+    }
+  });
+
+  // Dynamic Robots.txt Endpoint
+  app.get('/robots.txt', (req, res) => {
+    try {
+      const robots = generateRobotsTxt();
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+      res.send(robots);
+    } catch (err: any) {
+      console.error('[SEO Robots.txt Error]', err);
+      res.status(500).send('Error generating robots.txt');
+    }
+  });
+
+  // SEO Info API endpoint (for frontend inspection & testing)
+  app.get('/api/seo/sitemap', (req, res) => {
+    try {
+      const stats = getSitemapStats();
+      res.json({ success: true, ...stats });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err?.message || 'Failed to get SEO stats' });
+    }
   });
 
   // Get all submitted contact messages

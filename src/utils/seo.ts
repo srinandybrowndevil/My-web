@@ -1,6 +1,11 @@
-import { PageId, LocationData, ServiceLocationCombo } from '../types';
-import { TeamMember } from '../data/galleryData';
-import { BlogPost } from '../data/blogData';
+import { PageId, LocationData, ServiceLocationCombo, ProjectItem } from '../types';
+import { TeamMember, TEAM_MEMBERS } from '../data/galleryData';
+import { BlogPost, BLOG_POSTS } from '../data/blogData';
+import { CORE_SERVICES, DetailedService } from '../data/servicesData';
+import { COURSES_DATA, CourseItem } from '../data/coursesData';
+import { LOCATIONS_DATA } from '../data/locationsData';
+import { SERVICE_LOCATIONS_DATA } from '../data/serviceLocationsData';
+import { INITIAL_PROJECTS } from '../data/projectsData';
 import { injectJsonLdSchema, getPageSchemaMarkup, getMemberSchemaMarkup, getLocationSchema, getServiceLocationSchema } from './schemaMarkup';
 
 export interface PageMetadata {
@@ -439,4 +444,199 @@ export function updateBlogPostSEO(post: BlogPost) {
   setMetaTag('name', 'twitter:image:alt', imageAlt);
 
   setCanonicalUrl(postUrl);
+}
+
+/**
+ * Dynamically inject SEO metadata for an individual IT service
+ */
+export function updateServiceSEO(service: DetailedService) {
+  const serviceTitle = `${service.title} | ${service.tagline} | MUCO Labs`;
+  const serviceDesc = service.description.length > 155 
+    ? `${service.description.slice(0, 155)}...` 
+    : service.description;
+  const serviceUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/#services?id=${encodeURIComponent(service.id)}`
+    : `https://mucolabs.com/#services?id=${service.id}`;
+  const keywords = `${service.title}, ${service.technologies.join(', ')}, software development Erode, MUCO Labs ${service.title}`;
+
+  document.title = serviceTitle;
+
+  setMetaTag('name', 'description', serviceDesc);
+  setMetaTag('name', 'keywords', keywords);
+  setMetaTag('name', 'author', 'MUCO Labs');
+
+  setMetaTag('property', 'og:site_name', 'MUCO Labs');
+  setMetaTag('property', 'og:title', serviceTitle);
+  setMetaTag('property', 'og:description', serviceDesc);
+  setMetaTag('property', 'og:type', 'website');
+  setMetaTag('property', 'og:url', serviceUrl);
+  setMetaTag('property', 'og:image', 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&h=630&q=85');
+  setMetaTag('property', 'og:image:alt', `${service.title} - MUCO Labs Engineering`);
+
+  setMetaTag('name', 'twitter:card', 'summary_large_image');
+  setMetaTag('name', 'twitter:title', serviceTitle);
+  setMetaTag('name', 'twitter:description', serviceDesc);
+  setMetaTag('name', 'twitter:image', 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&h=630&q=85');
+
+  setCanonicalUrl(serviceUrl);
+}
+
+/**
+ * Dynamically inject SEO metadata for a tech course/bootcamp
+ */
+export function updateCourseSEO(course: CourseItem) {
+  const courseTitle = `${course.title} (${course.duration}) | Way2Me & MUCO Labs Bootcamp`;
+  const courseDesc = course.description;
+  const courseUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/#courses?id=${encodeURIComponent(course.id)}`
+    : `https://mucolabs.com/#courses?id=${course.id}`;
+  const keywords = `${course.title}, ${course.technologies.join(', ')}, ${course.category}, Way2Me Academy, Yogahariharan, tech training Tamil Nadu`;
+
+  document.title = courseTitle;
+
+  setMetaTag('name', 'description', courseDesc);
+  setMetaTag('name', 'keywords', keywords);
+  setMetaTag('name', 'author', 'Way2Me & MUCO Labs');
+
+  setMetaTag('property', 'og:site_name', 'MUCO Labs');
+  setMetaTag('property', 'og:title', courseTitle);
+  setMetaTag('property', 'og:description', courseDesc);
+  setMetaTag('property', 'og:type', 'website');
+  setMetaTag('property', 'og:url', courseUrl);
+  setMetaTag('property', 'og:image', 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&h=630&q=85');
+
+  setMetaTag('name', 'twitter:card', 'summary_large_image');
+  setMetaTag('name', 'twitter:title', courseTitle);
+  setMetaTag('name', 'twitter:description', courseDesc);
+
+  setCanonicalUrl(courseUrl);
+}
+
+/**
+ * Dynamically inject SEO metadata for a client portfolio project
+ */
+export function updateProjectSEO(project: ProjectItem) {
+  const projTitle = `${project.title} (${project.category}) | MUCO Labs Portfolio`;
+  const projDesc = project.description;
+  const projUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/#portfolio?id=${encodeURIComponent(project.id)}`
+    : `https://mucolabs.com/#portfolio?id=${project.id}`;
+
+  document.title = projTitle;
+
+  setMetaTag('name', 'description', projDesc);
+  setMetaTag('name', 'keywords', `${project.title}, ${project.category}, ${project.techStack.join(', ')}, MUCO Labs client case study`);
+  setMetaTag('name', 'author', 'MUCO Labs');
+
+  setMetaTag('property', 'og:site_name', 'MUCO Labs');
+  setMetaTag('property', 'og:title', projTitle);
+  setMetaTag('property', 'og:description', projDesc);
+  setMetaTag('property', 'og:type', 'website');
+  setMetaTag('property', 'og:url', projUrl);
+  setMetaTag('property', 'og:image', project.image);
+
+  setMetaTag('name', 'twitter:card', 'summary_large_image');
+  setMetaTag('name', 'twitter:title', projTitle);
+  setMetaTag('name', 'twitter:description', projDesc);
+
+  setCanonicalUrl(projUrl);
+}
+
+/**
+ * Global URL Hash & Route SEO Synchronizer:
+ * Inspects hash query parameters (?combo=..., ?city=..., ?id=..., ?post=..., ?member=...)
+ * and automatically sets exact unique metadata, schema markup, and canonical tags.
+ */
+export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
+  if (typeof window === 'undefined') return;
+
+  const currentHash = targetHash !== undefined ? targetHash : window.location.hash;
+  const [routePart, queryPart] = currentHash.replace(/^#\/?/, '').split('?');
+  const pageCandidate = (routePart || fallbackPage || 'home').toLowerCase() as PageId;
+  const urlParams = new URLSearchParams(queryPart || '');
+
+  // 1. High-Intent Service x Location Combination
+  const comboParam = urlParams.get('combo');
+  if (comboParam) {
+    const matchingCombo = SERVICE_LOCATIONS_DATA.find(
+      (c) => c.id.toLowerCase() === comboParam.toLowerCase()
+    );
+    if (matchingCombo) {
+      updateServiceLocationSEO(matchingCombo);
+      return;
+    }
+  }
+
+  // 2. Specific Regional Location Hub
+  const cityParam = urlParams.get('city') || urlParams.get('loc');
+  if (cityParam && LOCATIONS_DATA[cityParam.toLowerCase() as any]) {
+    updateLocationSEO(LOCATIONS_DATA[cityParam.toLowerCase() as any]);
+    return;
+  }
+
+  // 3. Blog Article
+  const postParam = urlParams.get('post');
+  if (postParam) {
+    const matchingPost = BLOG_POSTS.find(
+      (p) => p.slug.toLowerCase() === postParam.toLowerCase()
+    );
+    if (matchingPost) {
+      updateBlogPostSEO(matchingPost);
+      return;
+    }
+  }
+
+  // 4. Core Service Detail
+  const serviceIdParam = urlParams.get('id');
+  if (pageCandidate === 'services' && serviceIdParam) {
+    const matchingService = CORE_SERVICES.find(
+      (s) => s.id.toLowerCase() === serviceIdParam.toLowerCase()
+    );
+    if (matchingService) {
+      updateServiceSEO(matchingService);
+      return;
+    }
+  }
+
+  // 5. Course Detail
+  if (pageCandidate === 'courses' && serviceIdParam) {
+    const matchingCourse = COURSES_DATA.find(
+      (c) => c.id.toLowerCase() === serviceIdParam.toLowerCase()
+    );
+    if (matchingCourse) {
+      updateCourseSEO(matchingCourse);
+      return;
+    }
+  }
+
+  // 6. Portfolio Project Detail
+  if (pageCandidate === 'portfolio' && serviceIdParam) {
+    const matchingProject = INITIAL_PROJECTS.find(
+      (p) => p.id.toLowerCase() === serviceIdParam.toLowerCase()
+    );
+    if (matchingProject) {
+      updateProjectSEO(matchingProject);
+      return;
+    }
+  }
+
+  // 7. Team Member Profile
+  const memberParam = urlParams.get('member');
+  if (pageCandidate === 'gallery' && memberParam) {
+    const matchingMember = TEAM_MEMBERS.find(
+      (m) => m.id.toLowerCase() === memberParam.toLowerCase()
+    );
+    if (matchingMember) {
+      updateMemberSEO(matchingMember);
+      return;
+    }
+  }
+
+  // 8. Fallback to standard top-level page SEO
+  const validPages: PageId[] = [
+    'home', 'about', 'services', 'courses', 'pricing', 'portfolio',
+    'apps', 'maintenance', 'gallery', 'contact', 'faq', 'sheets', 'blog', 'locations'
+  ];
+  const targetPage: PageId = validPages.includes(pageCandidate) ? pageCandidate : (fallbackPage || 'home');
+  updatePageSEO(targetPage);
 }

@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { LuxurySpinner } from '../components/LuxurySpinner';
 import { useToast } from '../context/ToastContext';
+import { SeoSitemapInspector } from '../components/SeoSitemapInspector';
 
 export const GoogleSheetsManager: React.FC = () => {
   const { showToast } = useToast();
@@ -66,6 +67,9 @@ export const GoogleSheetsManager: React.FC = () => {
   const [newRowBudget, setNewRowBudget] = useState<string>('₹50,000 - ₹1,50,000');
   const [newRowMessage, setNewRowMessage] = useState<string>('');
   
+  // Active Main Tab: Google Sheets CRM vs Technical SEO & Dynamic Sitemap
+  const [activeMainTab, setActiveMainTab] = useState<'sheets' | 'seo'>('sheets');
+
   // Confirmation Modal State
   const [confirmModal, setConfirmModal] = useState<{
     isOpen: boolean;
@@ -395,36 +399,67 @@ export const GoogleSheetsManager: React.FC = () => {
         </div>
       </div>
 
-      {/* Global Status Banner */}
-      <AnimatePresence>
-        {statusMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between gap-3 ${
-              statusMessage.type === 'success'
-                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                : statusMessage.type === 'error'
-                ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              {statusMessage.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
-              {statusMessage.type === 'error' && <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />}
-              {statusMessage.type === 'info' && <Sparkles className="w-4 h-4 text-blue-400 shrink-0" />}
-              <span>{statusMessage.text}</span>
-            </div>
-            <button
-              onClick={() => setStatusMessage(null)}
-              className="text-slate-400 hover:text-white p-1"
-            >
-              ×
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* View Switcher Tabs */}
+      <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800 w-fit">
+        <button
+          onClick={() => setActiveMainTab('sheets')}
+          className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${
+            activeMainTab === 'sheets'
+              ? 'bg-amber-500 text-slate-950 shadow-md'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+          }`}
+        >
+          <FileSpreadsheet className="w-4 h-4" />
+          <span>Google Sheets CRM</span>
+        </button>
+
+        <button
+          onClick={() => setActiveMainTab('seo')}
+          className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${
+            activeMainTab === 'seo'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+          }`}
+        >
+          <Layers className="w-4 h-4" />
+          <span>Technical SEO & Sitemap XML (87+ URLs)</span>
+        </button>
+      </div>
+
+      {activeMainTab === 'seo' ? (
+        <SeoSitemapInspector />
+      ) : (
+        <>
+          {/* Global Status Banner */}
+          <AnimatePresence>
+            {statusMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`p-4 rounded-2xl border text-xs font-bold flex items-center justify-between gap-3 ${
+                  statusMessage.type === 'success'
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                    : statusMessage.type === 'error'
+                    ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                    : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  {statusMessage.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
+                  {statusMessage.type === 'error' && <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />}
+                  {statusMessage.type === 'info' && <Sparkles className="w-4 h-4 text-blue-400 shrink-0" />}
+                  <span>{statusMessage.text}</span>
+                </div>
+                <button
+                  onClick={() => setStatusMessage(null)}
+                  className="text-slate-400 hover:text-white p-1"
+                >
+                  ×
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
       {/* Not Authenticated Screen */}
       {needsAuth ? (
@@ -764,6 +799,8 @@ export const GoogleSheetsManager: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+      </>
       )}
 
       {/* Confirmation Modal (Required for Workspace Mutating Operations) */}

@@ -10,7 +10,7 @@ import { LuxurySpinner } from './components/LuxurySpinner';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
-import { updatePageSEO } from './utils/seo';
+import { updatePageSEO, syncUrlSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 import { MobileQuickActionBar } from './components/MobileQuickActionBar';
@@ -35,6 +35,7 @@ const Contact = lazy(() => import('./pages/Contact').then((m) => ({ default: m.C
 const FAQ = lazy(() => import('./pages/FAQ').then((m) => ({ default: m.FAQ })));
 const GoogleSheetsManager = lazy(() => import('./pages/GoogleSheetsManager').then((m) => ({ default: m.GoogleSheetsManager })));
 const Blog = lazy(() => import('./pages/Blog').then((m) => ({ default: m.Blog })));
+const Locations = lazy(() => import('./pages/Locations').then((m) => ({ default: m.Locations })));
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
 
 export default function App() {
@@ -80,19 +81,26 @@ export default function App() {
       'contact',
       'faq',
       'sheets',
-      'blog'
+      'blog',
+      'locations'
     ];
     return validPages.includes(raw as PageId) ? (raw as PageId) : null;
   };
 
-  // Sync initial URL hash on mount & listen to popstate (browser back/forward)
+  // Sync initial URL hash on mount & listen to popstate and hashchange
   useEffect(() => {
-    if (window.location.hash) {
-      const parsed = parsePageFromHash(window.location.hash);
-      if (parsed) {
-        setCurrentPage(parsed);
+    const handleUrlSync = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const parsed = parsePageFromHash(hash);
+        if (parsed) {
+          setCurrentPage(parsed);
+        }
       }
-    }
+      syncUrlSEO(hash);
+    };
+
+    handleUrlSync();
 
     const handlePopState = (e: PopStateEvent) => {
       if (e.state && e.state.page) {
@@ -103,17 +111,22 @@ export default function App() {
       } else {
         setCurrentPage('home');
       }
+      syncUrlSEO(window.location.hash);
     };
 
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handleUrlSync);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handleUrlSync);
+    };
   }, []);
 
   // Log page view events on route changes
   usePageViewLogger(currentPage);
 
   useEffect(() => {
-    updatePageSEO(currentPage);
+    syncUrlSEO(window.location.hash, currentPage);
   }, [currentPage]);
 
   // Optimized scroll listener & IntersectionObserver to detect when user scrolls past Home Hero
@@ -282,6 +295,7 @@ export default function App() {
                 )}
                 {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
                 {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
+                {currentPage === 'locations' && <Locations onNavigate={handleNavigate} />}
                 {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
               </motion.div>
             </AnimatePresence>

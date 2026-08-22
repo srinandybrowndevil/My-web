@@ -26,6 +26,26 @@ const FOOTER_SERVICES = [
   { name: 'Technical Support & Maintenance', targetId: 'maintenance' }
 ];
 
+const REGIONAL_HUBS = [
+  { name: 'Erode (HQ)', cityId: 'erode' },
+  { name: 'Perundurai (SIPCOT)', cityId: 'perundurai' },
+  { name: 'Bhavani (Textiles)', cityId: 'bhavani' },
+  { name: 'Gobichettipalayam', cityId: 'gobichettipalayam' },
+  { name: 'Sathyamangalam', cityId: 'sathyamangalam' },
+  { name: 'Chennimalai (Handloom)', cityId: 'chennimalai' },
+  { name: 'Kodumudi', cityId: 'kodumudi' },
+  { name: 'Modakurichi', cityId: 'modakurichi' }
+];
+
+const TOP_LOCAL_COMBOS = [
+  { name: 'Website Development in Erode', comboId: 'website-development-erode' },
+  { name: 'SEO Company in Erode', comboId: 'seo-services-erode' },
+  { name: 'Custom ERP Software in Erode', comboId: 'custom-software-erode' },
+  { name: 'Mobile App Developers Erode', comboId: 'mobile-app-development-erode' },
+  { name: 'AI Development in Erode', comboId: 'ai-development-erode' },
+  { name: 'E-commerce Stores in Erode', comboId: 'ecommerce-development-erode' }
+];
+
 interface FooterProps {
   onNavigate: (page: PageId, customMsg?: string, hash?: string) => void;
 }
@@ -33,6 +53,17 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const handleNav = (page: PageId, hash?: string) => {
     onNavigate(page, undefined, hash);
+  };
+
+  const handleLocationNav = (cityId?: string, comboId?: string) => {
+    if (comboId) {
+      window.location.hash = `#locations?combo=${comboId}`;
+    } else if (cityId) {
+      window.location.hash = `#locations?city=${cityId}`;
+    } else {
+      window.location.hash = '#locations';
+    }
+    onNavigate('locations');
   };
 
   return (
@@ -44,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <MucoLogo variant="full" size="md" lightText={true} showTagline={true} />
 
             <p className="text-xs leading-relaxed text-slate-400 pr-4">
-              MUCO Labs architectures intelligent software, cloud infrastructure, and AI automation engines for ambitious startups and enterprises worldwide. We turn bold ideas into high-performance, scalable digital reality.
+              MUCO Labs architectures intelligent software, cloud infrastructure, and AI automation engines for ambitious startups and enterprises in Erode, Tamil Nadu, and worldwide. We turn bold ideas into high-performance, scalable digital reality.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-400">
@@ -67,13 +98,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 { id: 'home', label: 'Home Page' },
                 { id: 'about', label: 'About MUCO Labs' },
                 { id: 'services', label: 'All Services' },
-                { id: 'courses', label: 'Mastery Courses & Bootcamps' },
+                { id: 'locations', label: 'Locations & Hubs' },
+                { id: 'courses', label: 'Courses & Bootcamps' },
                 { id: 'portfolio', label: 'Project Portfolio' },
-                { id: 'apps', label: 'Publish to Play/App Store' },
+                { id: 'apps', label: 'Publish to App Stores' },
                 { id: 'pricing', label: 'Pricing Calculator' },
                 { id: 'maintenance', label: 'Maintenance Plans' },
-                { id: 'gallery', label: 'Our Team & Leadership' },
-                { id: 'blog', label: 'Blog & Tech Articles' },
+                { id: 'gallery', label: 'Our Leadership' },
+                { id: 'blog', label: 'Blog & Insights' },
                 { id: 'faq', label: 'Help & FAQ' },
                 { id: 'contact', label: 'Contact Us' }
               ].map((link) => (
@@ -152,10 +184,51 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-medium text-slate-300">Erode, Tamil Nadu</span>
-                  <span className="text-[10px] text-slate-500">India</span>
+                  <span className="text-[10px] text-slate-500">India - 638001</span>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Regional Hubs & Local SEO Bar */}
+        <div className="py-8 border-b border-slate-800/80 space-y-4">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Regional Technology Hubs & Local SEO</span>
+            </span>
+            <button
+              onClick={() => handleLocationNav()}
+              className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors"
+            >
+              View All Locations Directory →
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-2 text-xs">
+            {REGIONAL_HUBS.map((hub, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleLocationNav(hub.cityId)}
+                className="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-400 transition-all"
+              >
+                {hub.name}
+              </button>
+            ))}
+          </div>
+
+          <div className="pt-2 flex flex-wrap gap-x-4 gap-y-1.5 text-[11px] text-slate-400">
+            <span className="text-slate-400 font-medium">Popular Searches:</span>
+            {TOP_LOCAL_COMBOS.map((combo, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleLocationNav(undefined, combo.comboId)}
+                className="hover:text-blue-400 transition-colors underline-offset-2 hover:underline text-left"
+              >
+                {combo.name}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -163,7 +236,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {new Date().getFullYear()} MUCO Labs. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <span className="text-slate-400 font-medium">Founder & Chairman : Srinivash Mahalingam</span>
+            <span className="text-slate-400 font-medium">Founder & Chairman: Srinivash Mahalingam</span>
             <span className="text-slate-700">|</span>
             <span className="text-slate-500">Erode, TN, India</span>
           </div>

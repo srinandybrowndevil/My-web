@@ -13,6 +13,7 @@ import { TrustIndicatorsStrip } from '../components/TrustIndicatorsStrip';
 import { MucoLogo } from '../components/MucoLogo';
 import { BeforeAfterTransformation } from '../components/BeforeAfterTransformation';
 import { AuthenticCompanyVisuals } from '../components/AuthenticCompanyVisuals';
+import { RegionalHubsShowcase } from '../components/RegionalHubsShowcase';
 import { ProjectDeliveryRoadmap } from '../components/ProjectDeliveryRoadmap';
 import { RoiCalculator } from '../components/RoiCalculator';
 import { Image } from '../components/Image';
@@ -425,6 +426,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
         {/* AUTHENTIC COMPANY VISUALS & BEHIND THE SCENES */}
         <section className="max-w-7xl mx-auto">
           <AuthenticCompanyVisuals />
+        </section>
+
+        {/* REGIONAL HUBS & LOCAL SEO SHOWCASE */}
+        <section className="max-w-7xl mx-auto">
+          <RegionalHubsShowcase onNavigate={onNavigate} />
         </section>
 
         {/* Global Reach Interactive Map Section */}

@@ -102,6 +102,49 @@ export const SERVICE_LOCATIONS_DATA: ServiceLocationCombo[] = [
     ]
   },
   {
+    id: 'digital-marketing-erode',
+    serviceId: 'digital-marketing',
+    serviceSlug: 'digital-marketing',
+    serviceName: 'Digital Marketing & Paid Ads',
+    locationId: 'erode',
+    locationName: 'Erode',
+    seoTitle: 'Digital Marketing Agency in Erode | Meta & Google Ads MUCO Labs',
+    metaDescription: 'High-ROI digital marketing agency in Erode. Targeted Google Ads, Meta Facebook/Instagram campaigns, lead generation, and social media growth for Erode businesses.',
+    h1: 'Performance Digital Marketing Agency in Erode',
+    localizedSummary: 'Scale customer acquisition with laser-targeted digital marketing campaigns engineered for high conversion rates and measurable return on ad spend (ROAS).',
+    localBusinessContext: 'Erode businesses often burn advertising budgets on poorly targeted boosts. MUCO Labs designs multi-stage acquisition funnels combining search intent capture with retargeting on WhatsApp, Instagram, and Google.',
+    targetIndustries: [
+      'Retail Jewelry, Silk & Clothing Showrooms',
+      'Real Estate & Gated Community Projects',
+      'Private Schools, Colleges & Training Institutes',
+      'Automobile Dealerships & Service Centers',
+      'B2B Machinery & Hardware Manufacturers'
+    ],
+    keyDeliverables: [
+      'Hyperlocal Google Search & Display Ad Campaigns',
+      'Instagram & Facebook Reels Video Ad Production',
+      'Automated WhatsApp Click-to-Chat Lead Funnels',
+      'Landing Page Conversion Rate Optimization (CRO)',
+      'Direct Lead Ingestion into CRM / Google Sheets'
+    ],
+    localCaseScenario: {
+      title: 'Erode Real Estate Gated Community Launch',
+      clientSector: 'Property Developer (Solar Ring Road, Erode)',
+      challenge: 'High cost per lead and poor inquiry quality using standard social media boosts.',
+      solutionDelivered: 'Built dedicated high-speed mobile landing pages with verified WhatsApp OTP inquiry forms and targeted high-net-worth NRIs and Kongu region buyers.',
+      impact: 'Generated 340+ verified buyer site visits and sold 28 villa plots in 60 days with an 8.4x advertising ROI.'
+    },
+    technologies: ['Google Ads Manager', 'Meta Business Suite', 'WhatsApp Cloud API', 'GA4 Analytics'],
+    startingPrice: '₹9,999/mo',
+    timeline: 'Campaign launch in 3 to 5 Days',
+    faqs: [
+      {
+        question: 'How quickly can digital marketing generate leads in Erode?',
+        answer: 'Google Search and Meta Lead campaigns can begin delivering qualified inquiries within 24 to 48 hours of launch.'
+      }
+    ]
+  },
+  {
     id: 'mobile-app-development-erode',
     serviceId: 'mobile-dev',
     serviceSlug: 'mobile-app-development',
@@ -286,6 +329,48 @@ export const SERVICE_LOCATIONS_DATA: ServiceLocationCombo[] = [
     ]
   },
   {
+    id: 'ui-ux-design-erode',
+    serviceId: 'design',
+    serviceSlug: 'ui-ux-design',
+    serviceName: 'UI/UX Design & Product Prototyping',
+    locationId: 'erode',
+    locationName: 'Erode',
+    seoTitle: 'UI/UX Design Company in Erode | Modern Web & App Design | MUCO Labs',
+    metaDescription: 'Premier UI/UX design studio in Erode. Figma design systems, mobile app interfaces, software wireframes, and conversion-optimized web designs.',
+    h1: 'UI/UX Design & Digital Product Design in Erode',
+    localizedSummary: 'Create intuitive, user-delighting digital interfaces that convert visitors into loyal customers. We design bespoke Figma prototypes and design systems.',
+    localBusinessContext: 'Modern users demand seamless experiences. Clunky enterprise interfaces cause customer churn and user fatigue. MUCO Labs applies modern human-centered design principles to craft clean, accessible, high-conversion interfaces.',
+    targetIndustries: [
+      'SaaS & Software Product Startups',
+      'E-commerce & D2C Brands',
+      'Fintech & Banking Platforms',
+      'Corporate & Institutional Portals'
+    ],
+    keyDeliverables: [
+      'Comprehensive Figma Component Design System',
+      'Interactive Clickable Prototypes for User Testing',
+      'Mobile-First & Desktop Responsive Layouts',
+      'Design Token Export for Frontend Developers (Tailwind CSS)',
+      'Micro-Animations & Interaction Guidelines'
+    ],
+    localCaseScenario: {
+      title: 'B2B Wholesale Ordering UX Overhaul',
+      clientSector: 'Textile Supply Chain Portal (Erode)',
+      challenge: 'Buyers were abandoning orders due to complex 6-step form flows.',
+      solutionDelivered: 'Redesigned the entire ordering workflow into a streamlined 2-step single-screen checkout with instant UPI QR scanning.',
+      impact: 'Checkout conversion rate jumped by 54% in the first 30 days.'
+    },
+    technologies: ['Figma', 'Adobe Creative Suite', 'Tailwind CSS', 'Framer'],
+    startingPrice: '₹14,999',
+    timeline: '5 to 12 Business Days',
+    faqs: [
+      {
+        question: 'Do you provide interactive Figma prototypes before coding begins?',
+        answer: 'Yes! We deliver fully interactive clickable prototypes so you can experience and refine your app flow before a single line of code is written.'
+      }
+    ]
+  },
+  {
     id: 'website-development-perundurai',
     serviceId: 'web-dev',
     serviceSlug: 'website-development',
@@ -327,6 +412,47 @@ export const SERVICE_LOCATIONS_DATA: ServiceLocationCombo[] = [
     ]
   },
   {
+    id: 'custom-software-perundurai',
+    serviceId: 'custom-software',
+    serviceSlug: 'software-development',
+    serviceName: 'Industrial ERP & Manufacturing Software',
+    locationId: 'perundurai',
+    locationName: 'Perundurai',
+    seoTitle: 'Industrial ERP & Manufacturing Software in Perundurai SIPCOT | MUCO Labs',
+    metaDescription: 'Tailored manufacturing ERP, inventory management, and plant production software for SIPCOT Perundurai industrial facilities by MUCO Labs.',
+    h1: 'Manufacturing ERP & Factory Software in Perundurai',
+    localizedSummary: 'Streamline industrial manufacturing, batch production tracking, raw material stocks, and dispatch compliance with custom factory software.',
+    localBusinessContext: 'SIPCOT Perundurai plants operate complex multi-shift lines where downtime is expensive. We build real-time plant dashboards with operator logging and material traceability.',
+    targetIndustries: [
+      'Heavy Engineering & Casting Units',
+      'Chemical Processing & Pigment Manufacturers',
+      'Auto Ancillary & CNC Machining Workshops',
+      'Industrial Packaging & Corrugated Box Mills'
+    ],
+    keyDeliverables: [
+      'Batch Production & Quality Inspection Logging',
+      'Raw Material Intake & Stock Re-order Alert System',
+      'Machine Maintenance Scheduling & Downtime Log',
+      'GST Invoice & E-Way Bill Generation Engine'
+    ],
+    localCaseScenario: {
+      title: 'Automotive Stamping Line Traceability',
+      clientSector: 'Auto Component Supplier (SIPCOT Perundurai)',
+      challenge: 'Customer audit failures due to lack of lot-level traceability from steel coil to stamped bracket.',
+      solutionDelivered: 'Deployed QR-code batch tracking across all 12 stamping presses with real-time rejection logging.',
+      impact: 'Achieved 100% audit pass score with tier-1 automotive OEM customers and cut scrap rate by 14%.'
+    },
+    technologies: ['Node.js', 'PostgreSQL', 'React', 'Docker', 'Redis'],
+    startingPrice: '₹89,999',
+    timeline: '5 to 9 Weeks',
+    faqs: [
+      {
+        question: 'Can this software run on touch tablets installed directly on the factory floor?',
+        answer: 'Yes! We design rugged, high-contrast touchscreen interfaces optimized for factory floor tablets and barcode scanners.'
+      }
+    ]
+  },
+  {
     id: 'website-development-bhavani',
     serviceId: 'web-dev',
     serviceSlug: 'website-development',
@@ -363,6 +489,45 @@ export const SERVICE_LOCATIONS_DATA: ServiceLocationCombo[] = [
       {
         question: 'Can you handle shipping integration for heavy items like carpets?',
         answer: 'Yes, we integrate specialized surface transport and courier rate calculators like Delhivery and VRL Logistics.'
+      }
+    ]
+  },
+  {
+    id: 'ecommerce-development-bhavani',
+    serviceId: 'web-dev',
+    serviceSlug: 'ecommerce-development',
+    serviceName: 'Jamakkalam & Handloom E-commerce',
+    locationId: 'bhavani',
+    locationName: 'Bhavani',
+    seoTitle: 'Bhavani Jamakkalam Online Store & E-commerce Development | MUCO Labs',
+    metaDescription: 'Launch an online store for Bhavani Jamakkalam carpets, rugs, and textile crafts with pan-India delivery, UPI payments, and SEO by MUCO Labs.',
+    h1: 'E-commerce Development for Bhavani Weavers & Artisans',
+    localizedSummary: 'Sell authentic Bhavani woven products directly to buyers in Bangalore, Chennai, Mumbai, and Delhi with an automated online store.',
+    localBusinessContext: 'Direct-to-consumer online selling allows Bhavani weaving families to earn double the margins compared to selling to wholesale traders.',
+    targetIndustries: [
+      'Bhavani Jamakkalam Master Weavers',
+      'Cotton & Jute Floor Covering Exporters',
+      'Home Decor & Heritage Handicraft Stores'
+    ],
+    keyDeliverables: [
+      'High-Definition Fabric Texture Visualizer',
+      'Custom Dimension Pricing Calculator',
+      'Automated WhatsApp Order Confirmation and Tracking'
+    ],
+    localCaseScenario: {
+      title: 'Heritage Rug D2C Brand Launch',
+      clientSector: 'Handcrafted Floor Rug Manufacturer (Bhavani)',
+      challenge: 'Excess inventory accumulating between festival seasons.',
+      solutionDelivered: 'Built a sleek D2C storefront with Instagram Shopping integration and automated WhatsApp checkout.',
+      impact: 'Cleared ₹6.5 Lakhs in aging inventory within 45 days.'
+    },
+    technologies: ['Next.js', 'Razorpay', 'Shiprocket', 'Tailwind CSS'],
+    startingPrice: '₹24,999',
+    timeline: '10 to 18 Business Days',
+    faqs: [
+      {
+        question: 'Can customers customize rug dimensions online?',
+        answer: 'Yes! We build interactive length and width sliders that calculate instant pricing based on square footage.'
       }
     ]
   },
@@ -441,6 +606,124 @@ export const SERVICE_LOCATIONS_DATA: ServiceLocationCombo[] = [
       {
         question: 'Can you create a bilingual English and Tamil website?',
         answer: 'Yes! We build seamless bilingual language toggles for both English and Tamil readers.'
+      }
+    ]
+  },
+  {
+    id: 'custom-software-sathyamangalam',
+    serviceId: 'custom-software',
+    serviceSlug: 'software-development',
+    serviceName: 'Industrial Software & Paper Mill ERP',
+    locationId: 'sathyamangalam',
+    locationName: 'Sathyamangalam',
+    seoTitle: 'Paper Mill ERP & Industrial Software in Sathyamangalam | MUCO Labs',
+    metaDescription: 'Custom software, paper mill production ERP, and weightbridge automation for manufacturing units in Sathyamangalam by MUCO Labs.',
+    h1: 'Industrial ERP & Factory Software in Sathyamangalam',
+    localizedSummary: 'Automate heavy paper mill workflows, raw wastepaper intake, boiler steam efficiency, and finished reel dispatches.',
+    localBusinessContext: 'Sathyamangalam\'s paper manufacturing corridor requires robust software that connects physical weighing scales with cloud accounting.',
+    targetIndustries: [
+      'Kraft Paper & Duplex Board Manufacturing Mills',
+      'Sugar Factories & Distilleries',
+      'Engineering & Polytechnic Colleges'
+    ],
+    keyDeliverables: [
+      'Automated Electronic Weighbridge Serial API Bridge',
+      'Paper Reel GSM & Bursting Factor Quality Testing Log',
+      'Shift-wise Operator Production Incentive Calculator',
+      'Finished Goods Dispatch & Transporter LR Generator'
+    ],
+    localCaseScenario: {
+      title: 'Kraft Paper Mill Yield Optimization',
+      clientSector: 'Packaging Paper Manufacturer (Sathy)',
+      challenge: 'Discrepancies in moisture loss and scrap weight between raw pulp feed and finished paper reels.',
+      solutionDelivered: 'Engineered an automated sensor-connected tracking portal monitoring production yield per shift.',
+      impact: 'Reduced paper wastage by 8.5% and saved ₹22 Lakhs in unaccounted raw material variance.'
+    },
+    technologies: ['Node.js', 'PostgreSQL', 'Express', 'Hardware Serial APIs'],
+    startingPrice: '₹89,999',
+    timeline: '6 to 10 Weeks',
+    faqs: [
+      {
+        question: 'Can your system integrate with our weighbridge indicator hardware?',
+        answer: 'Yes, we interface directly with Avery India, Essae, and other major weighbridge indicator brands via RS232/Ethernet.'
+      }
+    ]
+  },
+  {
+    id: 'website-development-kodumudi',
+    serviceId: 'web-dev',
+    serviceSlug: 'website-development',
+    serviceName: 'Hospitality & Business Web Design',
+    locationId: 'kodumudi',
+    locationName: 'Kodumudi',
+    seoTitle: 'Website Development & Hotel Booking Systems in Kodumudi | MUCO Labs',
+    metaDescription: 'Direct booking hotel websites, agro-trade platforms, and business web development in Kodumudi by MUCO Labs.',
+    h1: 'Website Design & Tourism Booking in Kodumudi',
+    localizedSummary: 'Empowering Kodumudi\'s pilgrimage lodges, banana/coconut agro-traders, and local businesses with direct booking web platforms.',
+    localBusinessContext: 'Pilgrim travelers to Magudeswarar Temple frequently search on smartphones for room availability and local amenities. Direct booking saves 15-20% OTA commission.',
+    targetIndustries: [
+      'Pilgrimage Lodges & Heritage Hotels',
+      'Banana & Coconut Plantation Exporters',
+      'Temple Tourism Tour Operators'
+    ],
+    keyDeliverables: [
+      'Mobile-Friendly Direct Room Booking Engine',
+      'Instant WhatsApp Room Reservation Notifications',
+      'Local Kodumudi Google Maps Optimization'
+    ],
+    localCaseScenario: {
+      title: 'Kodumudi Pilgrim Lodge Direct Booking',
+      clientSector: 'Heritage Accommodation (Kodumudi Sannathi St)',
+      challenge: 'Paying high 22% commissions to online booking portals with delayed customer check-in.',
+      solutionDelivered: 'Built a sleek mobile-friendly direct reservation website with instant UPI payment and WhatsApp confirmation.',
+      impact: 'Achieved 65% direct reservations within 3 months, saving ₹1.2 Lakhs in aggregator fees.'
+    },
+    technologies: ['Next.js', 'React', 'Tailwind CSS', 'Razorpay'],
+    startingPrice: '₹14,999',
+    timeline: '7 to 12 Business Days',
+    faqs: [
+      {
+        question: 'Can guests pay using Google Pay and receive WhatsApp booking confirmation?',
+        answer: 'Yes! Our booking system sends instant automated WhatsApp booking vouchers with Google Maps directions upon payment.'
+      }
+    ]
+  },
+  {
+    id: 'website-development-modakurichi',
+    serviceId: 'web-dev',
+    serviceSlug: 'website-development',
+    serviceName: 'E-commerce & Oil Brand Websites',
+    locationId: 'modakurichi',
+    locationName: 'Modakurichi',
+    seoTitle: 'E-commerce & Web Development in Modakurichi | Oil Mills & Garments',
+    metaDescription: 'Direct-to-consumer online stores, oil mill e-commerce, and powerloom software in Modakurichi by MUCO Labs.',
+    h1: 'E-commerce & Web Development in Modakurichi',
+    localizedSummary: 'Helping Modakurichi\'s wood-pressed oil mills, powerloom subcontractors, and local retail stores expand their customer reach online.',
+    localBusinessContext: 'Modakurichi\'s natural cold-pressed oil producers have huge demand in Chennai and Bangalore if provided a credible direct storefront.',
+    targetIndustries: [
+      'Cold-Pressed Sesame, Groundnut & Coconut Oil Mills',
+      'Garment Sub-Contractors & Job-Work Centers',
+      'Local Retail & Hardware Businesses'
+    ],
+    keyDeliverables: [
+      'Subscription-Enabled E-commerce Store',
+      'FSSAI & Lab Test Report Showcase Vault',
+      'Automated Courier Dispatch Integration'
+    ],
+    localCaseScenario: {
+      title: 'Wood-Pressed Cold Oil Brand Expansion',
+      clientSector: 'Agro Oil Expeller (Modakurichi)',
+      challenge: 'Struggling to sell outside the local weekly market with low unit margins.',
+      solutionDelivered: 'Created a direct-to-consumer e-commerce portal with recurring monthly subscription deliveries across South India.',
+      impact: 'Scaled to 450+ recurring monthly oil subscribers generating steady predictable revenue.'
+    },
+    technologies: ['Next.js', 'React', 'Tailwind CSS', 'PhonePe Gateway', 'Shiprocket'],
+    startingPrice: '₹19,999',
+    timeline: '10 to 15 Business Days',
+    faqs: [
+      {
+        question: 'Can customers set up automated recurring monthly oil deliveries?',
+        answer: 'Yes! We integrate UPI AutoPay and card recurring subscriptions for predictable monthly replenishment.'
       }
     ]
   }
