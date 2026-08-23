@@ -5,6 +5,7 @@ import { LOCATIONS_DATA, ALL_LOCATIONS } from '../data/locationsData';
 import { SERVICE_LOCATIONS_DATA } from '../data/serviceLocationsData';
 import { updatePageSEO, updateLocationSEO, updateServiceLocationSEO } from '../utils/seo';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import { openWhatsApp } from '../utils/whatsapp';
 import {
   MapPin,

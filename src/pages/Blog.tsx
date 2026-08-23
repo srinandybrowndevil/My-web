@@ -4,6 +4,7 @@ import { BLOG_POSTS, BlogPost } from '../data/blogData';
 import { PageId } from '../types';
 import { Image } from '../components/Image';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import { updateBlogPostSEO, updatePageSEO } from '../utils/seo';
 
 interface BlogProps {

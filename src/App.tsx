@@ -11,6 +11,8 @@ import { BroedPageLoader } from './components/BroedPageLoader';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
+import { RoleProvider } from './context/RoleContext';
+import { RoleQuickSwitcher } from './components/RoleQuickSwitcher';
 import { updatePageSEO, syncUrlSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
@@ -21,11 +23,13 @@ import { WhatsAppDiagnosticsModal } from './components/WhatsAppDiagnosticsModal'
 import { openWhatsApp } from './utils/whatsapp';
 import { ServicesSkeleton } from './components/skeletons/ServicesSkeleton';
 import { PortfolioSkeleton } from './components/skeletons/PortfolioSkeleton';
+import { CustomCursor } from './components/CustomCursor';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })));
 const Services = lazy(() => import('./pages/Services').then((m) => ({ default: m.Services })));
+const AiSystems = lazy(() => import('./pages/AiSystems').then((m) => ({ default: m.AiSystems })));
 const Courses = lazy(() => import('./pages/Courses').then((m) => ({ default: m.Courses })));
 const Pricing = lazy(() => import('./pages/Pricing').then((m) => ({ default: m.Pricing })));
 const Portfolio = lazy(() => import('./pages/Portfolio').then((m) => ({ default: m.Portfolio })));
@@ -77,6 +81,7 @@ export default function App() {
       'home',
       'about',
       'services',
+      'systems',
       'courses',
       'pricing',
       'portfolio',
@@ -247,124 +252,133 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
-      
-      {/* Awwwards Broed-Style Page Load Reveal Animation */}
-      {showIntroLoader && (
-        <BroedPageLoader onComplete={() => setShowIntroLoader(false)} />
-      )}
+      <RoleProvider>
+        <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
+        
+        {/* Awwwards Broed-Style Page Load Reveal Animation */}
+        {showIntroLoader && (
+          <BroedPageLoader onComplete={() => setShowIntroLoader(false)} />
+        )}
 
-      {/* Luxury Scroll Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
-        style={{ scaleX: scrollYProgress }}
-      />
+        {/* Luxury Custom Physics Cursor System */}
+        <CustomCursor />
 
-      {/* Global Futuristic Enterprise Background Layer */}
-      <GlobalBackgroundLayer />
+        {/* Luxury Scroll Progress Bar */}
+        <motion.div
+          className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
+          style={{ scaleX: scrollYProgress }}
+        />
 
-      {/* Floating Navigation & Header Controls */}
-      <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
+        {/* Global Futuristic Enterprise Background Layer */}
+        <GlobalBackgroundLayer />
 
-      {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
-      <main className="flex-1 relative z-10 lg:pl-64 pt-16 lg:pt-0 transition-all duration-300">
-        <ErrorBoundary>
-          <Suspense fallback={getPageSuspenseFallback(currentPage)}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentPage}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {currentPage === 'home' && (
-                  <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
-                )}
-                {currentPage === 'about' && <About onNavigate={handleNavigate} />}
-                {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
-                {currentPage === 'courses' && <Courses onNavigate={handleNavigate} />}
-                {currentPage === 'pricing' && (
-                  <Pricing
-                    onNavigateToContactWithItem={handleNavigateToContactWithItem}
-                    onNavigateToMaintenance={() => handleNavigate('maintenance')}
-                  />
-                )}
-                {currentPage === 'portfolio' && (
-                  <Portfolio onNavigate={handleNavigate} />
-                )}
-                {currentPage === 'apps' && (
-                  <AppStudio
-                    onNavigateToContactWithItem={handleNavigateToContactWithItem}
-                    onNavigate={handleNavigate}
-                  />
-                )}
-                {currentPage === 'maintenance' && (
-                  <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
-                )}
-                {currentPage === 'gallery' && (
-                  <Gallery onNavigate={handleNavigate} />
-                )}
-                {currentPage === 'sheets' && (
-                  <GoogleSheetsManager />
-                )}
-                {currentPage === 'contact' && (
-                  <Contact initialMessage={contactInitialMessage} />
-                )}
-                {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
-                {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
-                {currentPage === 'locations' && <Locations onNavigate={handleNavigate} />}
-                {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
-              </motion.div>
-            </AnimatePresence>
-          </Suspense>
-        </ErrorBoundary>
-      </main>
+        {/* Floating Navigation & Header Controls */}
+        <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
 
-      {/* Mobile Sticky Quick Action Bar */}
-      <MobileQuickActionBar
-        currentPage={currentPage}
-        onNavigate={handleNavigate}
-        onOpenSchedule={() => setIsScheduleCallOpen(true)}
-      />
+        {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
+        <main className="flex-1 relative z-10 lg:pl-64 pt-16 lg:pt-0 transition-all duration-300">
+          <ErrorBoundary>
+            <Suspense fallback={getPageSuspenseFallback(currentPage)}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentPage}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {currentPage === 'home' && (
+                    <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
+                  )}
+                  {currentPage === 'about' && <About onNavigate={handleNavigate} />}
+                  {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
+                  {currentPage === 'systems' && <AiSystems onNavigate={handleNavigate} />}
+                  {currentPage === 'courses' && <Courses onNavigate={handleNavigate} />}
+                  {currentPage === 'pricing' && (
+                    <Pricing
+                      onNavigateToContactWithItem={handleNavigateToContactWithItem}
+                      onNavigateToMaintenance={() => handleNavigate('maintenance')}
+                    />
+                  )}
+                  {currentPage === 'portfolio' && (
+                    <Portfolio onNavigate={handleNavigate} />
+                  )}
+                  {currentPage === 'apps' && (
+                    <AppStudio
+                      onNavigateToContactWithItem={handleNavigateToContactWithItem}
+                      onNavigate={handleNavigate}
+                    />
+                  )}
+                  {currentPage === 'maintenance' && (
+                    <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
+                  )}
+                  {currentPage === 'gallery' && (
+                    <Gallery onNavigate={handleNavigate} />
+                  )}
+                  {currentPage === 'sheets' && (
+                    <GoogleSheetsManager onNavigate={handleNavigate} />
+                  )}
+                  {currentPage === 'contact' && (
+                    <Contact initialMessage={contactInitialMessage} onNavigate={handleNavigate} />
+                  )}
+                  {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
+                  {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
+                  {currentPage === 'locations' && <Locations onNavigate={handleNavigate} />}
+                  {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
+                </motion.div>
+              </AnimatePresence>
+            </Suspense>
+          </ErrorBoundary>
+        </main>
 
-      {/* Schedule 1-on-1 Discovery Call Modal */}
-      <ScheduleCallModal
-        isOpen={isScheduleCallOpen}
-        onClose={() => setIsScheduleCallOpen(false)}
-        currentPage={currentPage}
-      />
+        {/* Floating Quick Role Switcher (Mosey Awwwards Experience on all pages) */}
+        <RoleQuickSwitcher onNavigate={handleNavigate} />
 
-      {/* Global Command Palette (Cmd + K / Spotlight Search) */}
-      <CommandPalette
-        isOpen={isCommandPaletteOpen}
-        onClose={() => setIsCommandPaletteOpen(false)}
-        onNavigate={handleNavigate}
-      />
+        {/* Mobile Sticky Quick Action Bar */}
+        <MobileQuickActionBar
+          currentPage={currentPage}
+          onNavigate={handleNavigate}
+          onOpenSchedule={() => setIsScheduleCallOpen(true)}
+        />
 
-      {/* Global WhatsApp Diagnostics Modal */}
-      <WhatsAppDiagnosticsModal
-        isOpen={isWhatsAppDiagOpen}
-        onClose={() => setIsWhatsAppDiagOpen(false)}
-      />
+        {/* Schedule 1-on-1 Discovery Call Modal */}
+        <ScheduleCallModal
+          isOpen={isScheduleCallOpen}
+          onClose={() => setIsScheduleCallOpen(false)}
+          currentPage={currentPage}
+        />
 
-      {/* Floating WhatsApp Action */}
-      <FloatingWhatsApp currentPage={currentPage} />
+        {/* Global Command Palette (Cmd + K / Spotlight Search) */}
+        <CommandPalette
+          isOpen={isCommandPaletteOpen}
+          onClose={() => setIsCommandPaletteOpen(false)}
+          onNavigate={handleNavigate}
+        />
 
-      {/* Scroll To Top Action Button */}
-      <ScrollToTopButton />
+        {/* Global WhatsApp Diagnostics Modal */}
+        <WhatsAppDiagnosticsModal
+          isOpen={isWhatsAppDiagOpen}
+          onClose={() => setIsWhatsAppDiagOpen(false)}
+        />
 
-      {/* Real-world Web Vitals & Performance Telemetry Tracker */}
-      <PagePerformanceTracker currentPage={currentPage} />
+        {/* Floating WhatsApp Action */}
+        <FloatingWhatsApp currentPage={currentPage} />
 
-      {/* Internal Web Vitals Performance Monitor */}
-      <PerformanceMonitor />
+        {/* Scroll To Top Action Button */}
+        <ScrollToTopButton />
 
-      {/* Footer */}
-      <div className="lg:pl-64 transition-all duration-300">
-        <Footer onNavigate={handleNavigate} />
+        {/* Real-world Web Vitals & Performance Telemetry Tracker */}
+        <PagePerformanceTracker currentPage={currentPage} />
+
+        {/* Internal Web Vitals Performance Monitor */}
+        <PerformanceMonitor />
+
+        {/* Footer */}
+        <div className="lg:pl-64 transition-all duration-300">
+          <Footer onNavigate={handleNavigate} />
+        </div>
       </div>
-    </div>
+      </RoleProvider>
     </ToastProvider>
   );
 }

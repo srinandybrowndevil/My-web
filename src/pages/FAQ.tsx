@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PageId } from '../types';
 import { FAQ_DATA } from '../data/faqData';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import { HelpCircle, Search, ChevronDown, ChevronUp, MessageSquare, Phone } from 'lucide-react';
 
 interface FAQProps {

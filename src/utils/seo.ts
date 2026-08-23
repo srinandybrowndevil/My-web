@@ -91,6 +91,15 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     ogType: 'website',
     twitterCard: 'summary_large_image'
   },
+  systems: {
+    title: 'Autonomous AI Systems & Neural Workflows | MUCO AI Studio',
+    description: 'Explore MUCO AI Studio proprietary intelligence stack: multi-agent swarms, RAG vector knowledge graphs, zero-data-retention security, and sub-100ms autonomous business workflows.',
+    keywords: 'AI Systems, Autonomous AI Agents, RAG Vector Search, Multi-Agent Swarms, Enterprise LLMs, WhatsApp AI Bot, AI Automation Workflows, Private VPC AI',
+    ogImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&h=630&q=85',
+    ogImageAlt: 'MUCO Autonomous AI Systems Architecture',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
+  },
   courses: {
     title: 'Mastery Courses & Engineering Bootcamps | MUCO Labs & Way2Me Academy',
     description: 'Master in-demand industry skills with practical training in Full-Stack Web Development, Mobile Apps (Flutter/React Native), Generative AI & LLMs, Cloud Infrastructure, and AutoCAD Drafting led by Way2Me CEO Yogaharikaran & MUCO Labs.',

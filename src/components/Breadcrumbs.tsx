@@ -41,6 +41,7 @@ const PAGE_NAMES: Record<PageId, string> = {
   about: 'About Us',
   locations: 'Locations & Regional Hubs',
   services: 'Services & Solutions',
+  systems: 'Autonomous AI Systems',
   courses: 'Mastery Courses & Bootcamps',
   pricing: 'Pricing & Plans',
   portfolio: 'Client Portfolio',
@@ -56,6 +57,7 @@ const PAGE_NAMES: Record<PageId, string> = {
 
 const PAGE_ICONS: Partial<Record<PageId, React.ReactNode>> = {
   services: <Layers className="w-3.5 h-3.5" />,
+  systems: <Sparkles className="w-3.5 h-3.5" />,
   locations: <MapPin className="w-3.5 h-3.5" />,
   courses: <BookOpen className="w-3.5 h-3.5" />,
   portfolio: <Briefcase className="w-3.5 h-3.5" />,

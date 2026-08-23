@@ -5,6 +5,7 @@ import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInb
 import { GoogleSheetsHub } from '../components/GoogleSheetsHub';
 import { EmailJSSettingsModal } from '../components/EmailJSSettingsModal';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import { getAccessToken, appendLeadToSheet } from '../services/googleSheets';
 import { sendInquiryEmail, sendAutoReplyEmail, isEmailJSConfigured } from '../services/emailjs';
 import { postToGoogleAppsScript } from '../services/googleAppsScript';

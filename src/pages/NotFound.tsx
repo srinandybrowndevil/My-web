@@ -1,6 +1,7 @@
 import React from 'react';
 import { Home, ArrowLeft, Search, ShieldAlert, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 
 interface NotFoundProps {
   onNavigate: (page: PageId) => void;
@@ -8,7 +9,7 @@ interface NotFoundProps {
 
 export const NotFound: React.FC<NotFoundProps> = ({ onNavigate }) => {
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
+    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16 space-y-8 max-w-7xl mx-auto">
       <div className="max-w-md w-full text-center space-y-6 bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-2xl">
         <div className="w-16 h-16 bg-rose-500/10 text-rose-500 rounded-2xl flex items-center justify-center mx-auto border border-rose-500/20">
           <ShieldAlert className="w-8 h-8" />
@@ -45,3 +46,4 @@ export const NotFound: React.FC<NotFoundProps> = ({ onNavigate }) => {
     </div>
   );
 };
+

@@ -38,8 +38,14 @@ import { ModernLoadingScreen } from '../components/ModernLoadingScreen';
 import { useToast } from '../context/ToastContext';
 import { SeoSitemapInspector } from '../components/SeoSitemapInspector';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
+import { PageId } from '../types';
 
-export const GoogleSheetsManager: React.FC = () => {
+interface GoogleSheetsManagerProps {
+  onNavigate?: (page: PageId, msg?: string) => void;
+}
+
+export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavigate }) => {
   const { showToast } = useToast();
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -347,6 +353,7 @@ export const GoogleSheetsManager: React.FC = () => {
       <Breadcrumbs
         currentPage="sheets"
         subItem={activeMainTab === 'seo' ? 'SEO Architecture & Sitemap Inspector' : 'Google Sheets Integrator'}
+        onNavigate={onNavigate}
       />
 
       {/* Header Banner */}

@@ -6,6 +6,7 @@ import { updateMemberSEO } from '../utils/seo';
 import { useToast } from '../context/ToastContext';
 import { Image } from '../components/Image';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import { 
   Users, 
   Award, 

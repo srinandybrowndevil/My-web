@@ -11,6 +11,8 @@ import { ArrowRight, CheckCircle2, Sparkles, Layers, Eye, MessageCircle, Graduat
 import { openWhatsApp } from '../utils/whatsapp';
 import { LeadCaptureForm } from '../components/LeadCaptureForm';
 import { ServicesSkeleton } from '../components/skeletons/ServicesSkeleton';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
+import { useUserRole } from '../context/RoleContext';
 
 interface ServicesProps {
   onNavigate: (page: PageId, customMsg?: string) => void;

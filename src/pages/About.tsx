@@ -4,6 +4,7 @@ import { PageId } from '../types';
 import { FOUNDER_INFO } from '../data/galleryData';
 import { Image } from '../components/Image';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import {
   User,
   MapPin,

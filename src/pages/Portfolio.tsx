@@ -23,6 +23,7 @@ import {
   Cpu
 } from 'lucide-react';
 import { PortfolioSkeleton } from '../components/skeletons/PortfolioSkeleton';
+import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 
 interface PortfolioProps {
   onNavigate: (page: PageId, customMsg?: string) => void;

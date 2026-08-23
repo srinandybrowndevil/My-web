@@ -88,18 +88,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
   // Main Sidebar Navigation Routes
   const mainSidebarNav: { id: PageId; label: string; icon: React.ElementType }[] = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'about', label: 'About', icon: Building },
+    { id: 'systems', label: 'AI Systems', icon: Sparkles },
     { id: 'services', label: 'Services', icon: Layers },
+    { id: 'portfolio', label: 'Portfolio', icon: Layout },
+    { id: 'about', label: 'About', icon: Building },
     { id: 'locations', label: 'Locations & Hubs', icon: MapPin },
     { id: 'courses', label: 'Courses & Learn', icon: GraduationCap },
-    { id: 'portfolio', label: 'Portfolio', icon: Layout },
     { id: 'apps', label: 'Publish Apps', icon: Smartphone },
     { id: 'pricing', label: 'Pricing', icon: Tag },
     { id: 'maintenance', label: 'Maintenance', icon: ShieldCheck },
     { id: 'gallery', label: 'Our Team', icon: Users },
     { id: 'blog', label: 'Blog', icon: FileText },
     { id: 'faq', label: 'FAQ', icon: HelpCircle },
-    { id: 'contact', label: 'Contact', icon: Send },
+    { id: 'contact', label: 'Contact Us', icon: Send }
   ];
 
   // Search Index Data

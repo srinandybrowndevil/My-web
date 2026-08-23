@@ -58,6 +58,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '../context/ToastContext';
 import { Breadcrumbs } from './Breadcrumbs';
+import { MoseyRoleSelector } from './MoseyRoleSelector';
 
 interface PricingMaintenanceViewProps {
   initialSection?: string;
