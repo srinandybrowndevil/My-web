@@ -106,7 +106,10 @@ export const ClientSuccessStories: React.FC<ClientSuccessStoriesProps> = ({
   return (
     <section className="relative py-12 sm:py-16 overflow-hidden">
       {/* Background ambient lighting glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-blue-600/10 via-indigo-600/10 to-amber-500/10 dark:from-blue-500/15 dark:via-indigo-500/15 dark:to-amber-500/15 blur-[120px] rounded-full pointer-events-none" />
+      <div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full pointer-events-none opacity-40 dark:opacity-60"
+        style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(37, 99, 235, 0.14) 0%, rgba(99, 102, 241, 0.08) 45%, transparent 70%)' }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         

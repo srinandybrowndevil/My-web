@@ -526,8 +526,14 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
         <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="relative rounded-3xl bg-slate-900/90 dark:bg-[#070b16]/95 border border-slate-800/90 p-6 sm:p-12 lg:p-16 shadow-2xl backdrop-blur-2xl overflow-hidden text-left">
             {/* Ambient Background Glows */}
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[110px] pointer-events-none" />
-            <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+            <div 
+              className="absolute top-0 right-1/4 w-96 h-96 rounded-full pointer-events-none opacity-40 dark:opacity-60"
+              style={{ background: 'radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.16) 0%, transparent 70%)' }}
+            />
+            <div 
+              className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full pointer-events-none opacity-40 dark:opacity-60"
+              style={{ background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.16) 0%, transparent 70%)' }}
+            />
 
             <div className="relative z-10 max-w-4xl space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-black uppercase tracking-widest">
@@ -1131,8 +1137,14 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
         <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="relative rounded-3xl bg-slate-900/90 dark:bg-[#070b16]/95 border border-slate-800/90 p-6 sm:p-10 lg:p-14 shadow-2xl backdrop-blur-2xl overflow-hidden">
             {/* Ambient Background Glows */}
-            <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-[90px] pointer-events-none" />
+            <div 
+              className="absolute top-0 right-1/4 w-96 h-96 rounded-full pointer-events-none opacity-40 dark:opacity-60"
+              style={{ background: 'radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.16) 0%, transparent 70%)' }}
+            />
+            <div 
+              className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full pointer-events-none opacity-40 dark:opacity-60"
+              style={{ background: 'radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.16) 0%, transparent 70%)' }}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
               

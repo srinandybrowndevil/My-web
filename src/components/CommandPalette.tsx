@@ -194,6 +194,18 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
     // 6. Quick Utilities & Developer Diagnostics
     items.push({
+      id: 'tool-replay-loader',
+      title: 'Replay Page Load Animation (Broed / Awwwards Style)',
+      category: 'Diagnostic Tool',
+      description: 'Experience the Awwwards-inspired Broed split-column loading screen with numeric counter & kinetic typography',
+      icon: <Sparkles className="w-4 h-4 text-cyan-400" />,
+      action: () => {
+        onClose();
+        window.dispatchEvent(new CustomEvent('muco:replay_intro'));
+      }
+    });
+
+    items.push({
       id: 'tool-whatsapp-diag',
       title: 'WhatsApp Error Logger & Deep-Link Diagnostics',
       category: 'Diagnostic Tool',

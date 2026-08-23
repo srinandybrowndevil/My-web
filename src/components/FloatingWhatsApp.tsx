@@ -12,7 +12,23 @@ interface FloatingWhatsAppProps {
   currentPage: PageId;
 }
 
-type ButtonTheme = 'emerald' | 'cyan' | 'amber' | 'indigo' | 'glass';
+export type ButtonTheme = 'emerald' | 'cyan' | 'amber' | 'indigo' | 'glass';
+
+interface ThemeDefinition {
+  id: ButtonTheme;
+  name: string;
+  dotColor: string;
+  badgeBg: string;
+  description: string;
+}
+
+const AVAILABLE_THEMES: ThemeDefinition[] = [
+  { id: 'emerald', name: 'Emerald', dotColor: 'bg-emerald-500', badgeBg: 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30', description: 'Classic WhatsApp Green' },
+  { id: 'cyan', name: 'Cyan', dotColor: 'bg-cyan-500', badgeBg: 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/30', description: 'Cyber Neon Glow' },
+  { id: 'amber', name: 'Amber', dotColor: 'bg-amber-500', badgeBg: 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30', description: 'Luxury Gold Accent' },
+  { id: 'indigo', name: 'Indigo', dotColor: 'bg-indigo-600', badgeBg: 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/30', description: 'Enterprise Violet' },
+  { id: 'glass', name: 'Glass', dotColor: 'bg-gradient-to-r from-cyan-400 to-blue-500', badgeBg: 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/40', description: 'Cyber Glass Prism' }
+];
 
 export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -239,25 +255,72 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                   </div>
 
                   {/* Theme Selector */}
-                  <div className="space-y-1.5">
-                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                      Button Theme Accent:
-                    </p>
-                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-1.5">
-                      {(['emerald', 'cyan', 'amber', 'indigo', 'glass'] as ButtonTheme[]).map((t) => (
-                        <button
-                          key={t}
-                          onClick={() => setTheme(t)}
-                          className={`py-1.5 px-1.5 rounded-xl text-[10px] font-bold capitalize flex items-center justify-center gap-1 border transition-all ${
-                            theme === t
-                              ? 'bg-white dark:bg-slate-900 border-slate-900 dark:border-white shadow-sm text-slate-900 dark:text-white'
-                              : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'
-                          }`}
-                        >
-                          {theme === t && <Check className="w-3 h-3 text-emerald-500" />}
-                          <span>{t === 'glass' ? '✨ Glass' : t}</span>
-                        </button>
-                      ))}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <Sparkles className="w-3 h-3 text-amber-500" />
+                        <span>Theme Accent ({AVAILABLE_THEMES.length} options)</span>
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const currentIndex = AVAILABLE_THEMES.findIndex((t) => t.id === theme);
+                          const nextTheme = AVAILABLE_THEMES[(currentIndex + 1) % AVAILABLE_THEMES.length].id;
+                          setTheme(nextTheme);
+                        }}
+                        className="text-[10px] font-bold text-blue-600 dark:text-cyan-400 hover:text-blue-700 dark:hover:text-cyan-300 flex items-center gap-1 transition-colors"
+                        title="Cycle to next theme"
+                      >
+                        <Zap className="w-2.5 h-2.5" />
+                        <span>Next Theme</span>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                      {AVAILABLE_THEMES.map((t) => {
+                        const isSelected = theme === t.id;
+                        return (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => setTheme(t.id)}
+                            className={`p-2 rounded-xl text-left transition-all border flex items-center justify-between group ${
+                              isSelected
+                                ? 'bg-white dark:bg-slate-900 border-slate-900 dark:border-white shadow-md ring-1 ring-slate-900/10 dark:ring-white/20'
+                                : 'bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-slate-300'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className={`w-3.5 h-3.5 rounded-full ${t.dotColor} shrink-0 shadow-sm ${isSelected ? 'ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-600' : ''}`} />
+                              <div>
+                                <div className="text-[11px] font-bold text-slate-900 dark:text-white leading-tight">
+                                  {t.name}
+                                </div>
+                                <div className="text-[9px] text-slate-500 dark:text-slate-400 leading-tight">
+                                  {t.description}
+                                </div>
+                              </div>
+                            </div>
+                            {isSelected ? (
+                              <span className="p-0.5 rounded-full bg-emerald-500 text-white shadow-sm shrink-0">
+                                <Check className="w-2.5 h-2.5 stroke-[3]" />
+                              </span>
+                            ) : (
+                              <span className="w-2.5 h-2.5 rounded-full border border-slate-300 dark:border-slate-600 group-hover:border-slate-400 shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Live Preview Indicator */}
+                    <div className={`p-2 rounded-xl border ${currentTheme.border} ${currentTheme.accentBg} flex items-center justify-between transition-colors`}>
+                      <span className="text-[10px] text-slate-600 dark:text-slate-300 font-medium">
+                        Active Live Preview:
+                      </span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${currentTheme.badge} text-slate-950 capitalize shadow-sm`}>
+                        {theme} Theme Active
+                      </span>
                     </div>
                   </div>
 

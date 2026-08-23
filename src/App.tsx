@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import { PageId } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -7,6 +7,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { ModernLoadingScreen } from './components/ModernLoadingScreen';
+import { BroedPageLoader } from './components/BroedPageLoader';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
@@ -45,6 +46,7 @@ export default function App() {
   const [isScheduleCallOpen, setIsScheduleCallOpen] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isWhatsAppDiagOpen, setIsWhatsAppDiagOpen] = useState<boolean>(false);
+  const [showIntroLoader, setShowIntroLoader] = useState<boolean>(true);
 
   // Listen to global events
   useEffect(() => {
@@ -53,15 +55,18 @@ export default function App() {
     const handleOpenWhatsAppChat = () => {
       openWhatsApp({ pageName: currentPage });
     };
+    const handleReplayIntro = () => setShowIntroLoader(true);
 
     window.addEventListener('openSearchModal', handleOpenSearch);
     window.addEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
     window.addEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
+    window.addEventListener('muco:replay_intro', handleReplayIntro);
 
     return () => {
       window.removeEventListener('openSearchModal', handleOpenSearch);
       window.removeEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
       window.removeEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
+      window.removeEventListener('muco:replay_intro', handleReplayIntro);
     };
   }, [currentPage]);
 
@@ -170,11 +175,6 @@ export default function App() {
   }, []);
 
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
 
   const handleNavigate = (page: PageId, customMsg?: string, hash?: string) => {
     if (customMsg) {
@@ -248,10 +248,16 @@ export default function App() {
   return (
     <ToastProvider>
       <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
+      
+      {/* Awwwards Broed-Style Page Load Reveal Animation */}
+      {showIntroLoader && (
+        <BroedPageLoader onComplete={() => setShowIntroLoader(false)} />
+      )}
+
       {/* Luxury Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
-        style={{ scaleX }}
+        style={{ scaleX: scrollYProgress }}
       />
 
       {/* Global Futuristic Enterprise Background Layer */}

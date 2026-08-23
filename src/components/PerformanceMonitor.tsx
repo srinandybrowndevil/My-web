@@ -36,8 +36,10 @@ export const PerformanceMonitor: React.FC = () => {
   const lastFpsCheck = useRef<number>(performance.now());
   const animFrameId = useRef<number | null>(null);
 
-  // Measure Realtime FPS
+  // Measure Realtime FPS only when monitor is actively opened
   useEffect(() => {
+    if (!isOpen) return;
+
     const calcFps = () => {
       const now = performance.now();
       frameCount.current++;
@@ -59,7 +61,7 @@ export const PerformanceMonitor: React.FC = () => {
         cancelAnimationFrame(animFrameId.current);
       }
     };
-  }, []);
+  }, [isOpen]);
 
   // Gather Navigation & Performance Observer Web Vitals
   const collectPerformanceMetrics = () => {

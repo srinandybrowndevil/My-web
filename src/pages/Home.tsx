@@ -42,24 +42,24 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
       <section
         className="relative min-h-[calc(100vh-4rem)] lg:min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-12 pb-16 sm:pb-20 px-4 sm:px-6 overflow-hidden text-center"
       >
-        {/* Animated ambient background glows */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] bg-blue-600/15 dark:bg-blue-500/20 rounded-full blur-[120px] pointer-events-none"
+        {/* High-performance ambient background glows */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] rounded-full pointer-events-none opacity-50 dark:opacity-65"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.18) 0%, rgba(6, 182, 212, 0.08) 50%, transparent 70%)'
+          }}
         />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.2 }}
-          className="absolute top-1/3 left-1/3 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/15 rounded-full blur-[90px] pointer-events-none"
+        <div
+          className="absolute top-1/3 left-1/3 w-64 sm:w-96 h-64 sm:h-96 rounded-full pointer-events-none opacity-40 dark:opacity-55"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.16) 0%, transparent 65%)'
+          }}
         />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.4, delay: 0.4 }}
-          className="absolute bottom-1/4 right-1/4 w-52 sm:w-80 h-52 sm:h-80 bg-amber-500/10 rounded-full blur-[80px] pointer-events-none"
+        <div
+          className="absolute bottom-1/4 right-1/4 w-52 sm:w-80 h-52 sm:h-80 rounded-full pointer-events-none opacity-35 dark:opacity-45"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.12) 0%, transparent 65%)'
+          }}
         />
 
         {/* Subtle grid pattern backdrop */}

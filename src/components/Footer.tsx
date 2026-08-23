@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageId } from '../types';
-import { Phone, Mail, MapPin, Globe, ArrowUpRight, ShieldCheck, Heart } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, ArrowUpRight, ShieldCheck, Heart, Sparkles } from 'lucide-react';
 import { MucoLogo } from './MucoLogo';
 
 // Service Mapping for Pricing page deep-linking
@@ -235,7 +235,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>© {new Date().getFullYear()} MUCO Labs. All rights reserved.</p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('muco:replay_intro'))}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 hover:border-cyan-400 transition-colors text-[11px] font-mono"
+            >
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              <span>Replay Broed Page Load</span>
+            </button>
+            <span className="text-slate-700">|</span>
             <span className="text-slate-400 font-medium">Founder & Chairman: Srinivash Mahalingam</span>
             <span className="text-slate-700">|</span>
             <span className="text-slate-500">Erode, TN, India</span>

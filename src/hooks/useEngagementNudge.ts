@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { PageId } from '../types';
 
 interface UseEngagementNudgeOptions {
-  targetPages?: PageId[];
+  targetPages?: readonly PageId[];
   durationMs?: number;
   isOpen?: boolean;
 }
+
+const DEFAULT_TARGET_PAGES: readonly PageId[] = ['pricing', 'contact'];
 
 /**
  * Custom React hook that monitors time spent on high-intent conversion pages
@@ -17,7 +19,7 @@ export function useEngagementNudge(
   options: UseEngagementNudgeOptions = {}
 ) {
   const {
-    targetPages = ['pricing', 'contact'],
+    targetPages = DEFAULT_TARGET_PAGES,
     durationMs = 45000, // 45 seconds threshold
     isOpen = false
   } = options;
