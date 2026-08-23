@@ -371,6 +371,140 @@ export const SERVICE_LOCATIONS_DATA: ServiceLocationCombo[] = [
     ]
   },
   {
+    id: 'autocad-design-erode',
+    serviceId: 'autocad-design',
+    serviceSlug: 'autocad-design',
+    serviceName: 'AutoCAD Design & 2D/3D CAD Drafting',
+    locationId: 'erode',
+    locationName: 'Erode',
+    seoTitle: 'AutoCAD Design & 2D/3D CAD Drafting in Erode | MUCO Labs',
+    metaDescription: 'Best AutoCAD design and 2D/3D CAD drafting company in Erode. Architectural floor plans, industrial mechanical drawings, MEP drafting, and precision DWG/DXF models.',
+    h1: 'Best AutoCAD Design & 2D/3D CAD Drafting in Erode',
+    localizedSummary: 'Precision engineering drawings, architectural blueprints, and 3D industrial mechanical modeling for Erode factories, builders, and textile mills.',
+    localBusinessContext: 'Erode is a premier industrial and manufacturing powerhouse in Tamil Nadu. Our certified CAD drafting engineers provide high-precision architectural floor plans, MEP layouts, structural drawings, and industrial machinery modeling complying with national and global engineering standards.',
+    targetIndustries: [
+      'Textile Processing & Dyeing Machinery Manufacturers',
+      'Civil Construction Builders & Real Estate Developers',
+      'Industrial Paper Mills & Fabrication Workshops',
+      'Solar & Electrical Power Plant Installers',
+      'HVAC & Plumbing Contractors'
+    ],
+    keyDeliverables: [
+      'Layered 2D Architectural Floor Plans & Elevations (DWG/DXF)',
+      '3D Industrial Mechanical Assemblies & STEP / IGES Files',
+      'MEP (Mechanical, Electrical, Plumbing) Coordination Layouts',
+      'Paper-to-CAD / PDF-to-Vector Conversion',
+      'Print-Ready Scaled Engineering PDF Sheets with Title Blocks',
+      'Detailed Bill of Materials (BOM) & Quantity Estimations'
+    ],
+    localCaseScenario: {
+      title: 'Erode Industrial Sizing Plant 3D Model & Layout',
+      clientSector: 'Textile Machinery Fabricator (Solar Road, Erode)',
+      challenge: 'The fabricator needed accurate 3D CAD models and structural assembly drawings to pitch a multi-crore automated weaving loom setup.',
+      solutionDelivered: 'Generated full 3D SolidWorks and AutoCAD models with exploded views and precision dimensional tolerance sheets.',
+      impact: 'The client successfully won the state government industrial grant and expanded production capacity by 40%.'
+    },
+    technologies: ['AutoCAD', 'SolidWorks', 'Revit', 'Fusion 360', '3ds Max'],
+    startingPrice: '₹3,999',
+    timeline: '3 to 7 Business Days',
+    faqs: [
+      {
+        question: 'Do you convert paper sketches and scanned PDFs into clean CAD files?',
+        answer: 'Yes! We accurately digitize hand-drawn sketches, legacy blueprints, and PDF drawings into layered, perfectly dimensioned DWG and DXF CAD files.'
+      },
+      {
+        question: 'Can you provide 3D mechanical component models for CNC machining?',
+        answer: 'Absolutely. We deliver production-ready 3D solid models in STEP, IGES, STL, and native SolidWorks formats ready for CNC manufacturing and 3D printing.'
+      }
+    ]
+  },
+  {
+    id: 'branding-erode',
+    serviceId: 'creative-branding',
+    serviceSlug: 'branding',
+    serviceName: 'Creative Branding, Logo Design & Media',
+    locationId: 'erode',
+    locationName: 'Erode',
+    seoTitle: 'Best Logo Design & Branding Agency in Erode | MUCO Labs',
+    metaDescription: 'Top creative branding and logo design company in Erode. Distinctive corporate identities, trademark-ready logos, brand guidelines, and high-converting copy.',
+    h1: 'Best Branding & Logo Design Agency in Erode',
+    localizedSummary: 'Transform your business into a household brand. We design memorable logo identities, premium packaging, brand guidelines, and corporate marketing assets in Erode.',
+    localBusinessContext: 'In competitive markets across Erode and Tamil Nadu, visual distinction commands higher pricing and deep customer trust. MUCO Labs crafts timeless visual brand identities, packaging for agro/textile products, and persuasive marketing copy.',
+    targetIndustries: [
+      'Apparel Brands & Textile Retail Showrooms',
+      'Organic Turmeric & Agro-Export Brands',
+      'Hospitals, Health Clinics & Pharmacies',
+      'Educational Institutions & Schools',
+      'Restaurants, Hotels & Sweet Bakeries'
+    ],
+    keyDeliverables: [
+      'Original Vector Logo Design Concepts (AI, EPS, SVG, PNG)',
+      'Comprehensive Brand Guidelines Book (Color, Typography, Usage)',
+      'Business Stationery Suite (Cards, Letterheads, Envelopes)',
+      'Product Packaging & Label Design for Retail Shelves',
+      'High-Impact Social Media Launch Kit & Brand Assets'
+    ],
+    localCaseScenario: {
+      title: 'Erode Saree Brand Identity Re-launch',
+      clientSector: 'Silk & Cotton Saree Brand (Park Road, Erode)',
+      challenge: 'The brand looked outdated and struggled to attract young modern shoppers against luxury online competitors.',
+      solutionDelivered: 'Re-imagined the visual logo mark, designed gold-foil packaging boxes, and created a distinctive typography and color palette.',
+      impact: 'Retail footfall surged by 65% during festival season and direct gift-box sales tripled.'
+    },
+    technologies: ['Adobe Illustrator', 'Photoshop', 'Figma', 'InDesign'],
+    startingPrice: '₹2,999',
+    timeline: '3 to 7 Business Days',
+    faqs: [
+      {
+        question: 'Will I receive full vector source files and commercial copyright?',
+        answer: 'Yes! You receive 100% full copyright ownership and vector master files (AI, EPS, SVG, PDF, high-res PNG) upon project completion.'
+      }
+    ]
+  },
+  {
+    id: 'it-consulting-erode',
+    serviceId: 'business-consulting',
+    serviceSlug: 'it-consulting',
+    serviceName: 'IT Consulting & WhatsApp Business API',
+    locationId: 'erode',
+    locationName: 'Erode',
+    seoTitle: 'IT Consulting & WhatsApp Business API in Erode | MUCO Labs',
+    metaDescription: 'Official WhatsApp Business API integration and enterprise IT consulting in Erode. Green tick verification, broadcast messaging, cloud migrations, and cybersecurity.',
+    h1: 'IT Consulting & WhatsApp Business Solutions in Erode',
+    localizedSummary: 'Streamline business operations, scale customer engagement with official WhatsApp Business API, and get strategic CTO guidance in Erode.',
+    localBusinessContext: 'Over 95% of consumers in Erode communicate via WhatsApp. We configure official Meta WhatsApp Business API channels with verified green checkmarks, automated chatbots, and bulk broadcast messaging to drive rapid revenue.',
+    targetIndustries: [
+      'Wholesale Traders & Distribution Houses',
+      'Colleges, Schools & Training Academies',
+      'Diagnostic Labs & Healthcare Clinics',
+      'Automotive Dealerships & Service Centers',
+      'Real Estate Promoters & Booking Agencies'
+    ],
+    keyDeliverables: [
+      'Official Meta WhatsApp Business Cloud API Verification',
+      'Automated Order Confirmation & Dispatch Notifications',
+      'Interactive Customer Service Bot with Quick Reply Buttons',
+      'Cloud Architecture Review & Server Cost Optimization',
+      'Cybersecurity & Network Infrastructure Audit'
+    ],
+    localCaseScenario: {
+      title: 'Erode Automobile Dealership WhatsApp Automation',
+      clientSector: 'Multi-Brand Car Dealership (Brough Road, Erode)',
+      challenge: 'Service reminder calls had a 30% connect rate and high manual staffing costs.',
+      solutionDelivered: 'Integrated official WhatsApp automated service reminders with single-tap booking buttons and live status tracking.',
+      impact: 'Service appointment bookings increased by 88% while reducing front-desk telephone overhead by 70%.'
+    },
+    technologies: ['WhatsApp Cloud API', 'Node.js', 'AWS', 'Google Cloud', 'Webhooks'],
+    startingPrice: '₹4,999',
+    timeline: '3 to 5 Business Days',
+    faqs: [
+      {
+        question: 'Can you help us get the official WhatsApp Green Tick badge?',
+        answer: 'Yes! We guide your business through Meta Business Verification and handle the application for the official Green Tick verification badge.'
+      }
+    ]
+  },
+  {
     id: 'website-development-perundurai',
     serviceId: 'web-dev',
     serviceSlug: 'website-development',

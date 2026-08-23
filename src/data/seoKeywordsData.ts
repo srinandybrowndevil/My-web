@@ -166,6 +166,60 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     internalLinkTargets: ['#services', '#portfolio'],
     searchVolumeTier: 'Medium'
   },
+  {
+    keyword: 'AutoCAD design company in Erode',
+    category: 'Service',
+    location: 'Erode',
+    searchIntent: 'Transactional',
+    primaryUrl: 'https://mucolabs.com/#locations?combo=autocad-design-erode',
+    primaryTargetPage: 'Locations (AutoCAD Design in Erode)',
+    secondaryKeywords: [
+      '2D 3D CAD drafting Erode',
+      'architectural floor plans CAD Erode',
+      'mechanical 3D modeling Erode',
+      'MEP drafting services Erode',
+      'DWG drawing conversion Erode'
+    ],
+    suggestedAnchorText: 'AutoCAD Design & CAD Drafting in Erode',
+    internalLinkTargets: ['#services', '#pricing', '#contact'],
+    searchVolumeTier: 'High'
+  },
+  {
+    keyword: 'logo design and branding agency in Erode',
+    category: 'Service',
+    location: 'Erode',
+    searchIntent: 'Transactional',
+    primaryUrl: 'https://mucolabs.com/#locations?combo=branding-erode',
+    primaryTargetPage: 'Locations (Branding & Logo Design in Erode)',
+    secondaryKeywords: [
+      'best logo designer in Erode',
+      'corporate branding agency Erode',
+      'packaging design company Erode',
+      'graphic design services Erode',
+      'business card designer Erode'
+    ],
+    suggestedAnchorText: 'Branding & Logo Design in Erode',
+    internalLinkTargets: ['#services', '#portfolio', '#pricing'],
+    searchVolumeTier: 'High'
+  },
+  {
+    keyword: 'WhatsApp Business API and IT consulting in Erode',
+    category: 'Service',
+    location: 'Erode',
+    searchIntent: 'Transactional',
+    primaryUrl: 'https://mucolabs.com/#locations?combo=it-consulting-erode',
+    primaryTargetPage: 'Locations (IT Consulting in Erode)',
+    secondaryKeywords: [
+      'WhatsApp API integration company Erode',
+      'official WhatsApp green tick Erode',
+      'IT consulting firm in Erode',
+      'cloud migration consultant Erode',
+      'business automation consultant Erode'
+    ],
+    suggestedAnchorText: 'IT Consulting & WhatsApp Business API in Erode',
+    internalLinkTargets: ['#services', '#contact'],
+    searchVolumeTier: 'High'
+  },
 
   // Industry-Specific Keywords
   {

@@ -56,36 +56,36 @@ export function setCanonicalUrl(url: string) {
 
 export const PAGE_METADATA: Record<PageId, PageMetadata> = {
   home: {
-    title: 'MUCO Labs | AI Solutions, Software Engineering & Digital Transformation',
-    description: 'MUCO Labs is a premier software engineering & AI solutions firm. We deliver enterprise AI models, custom software engineering, mobile apps, cloud architecture, SaaS platforms, and digital transformation.',
-    keywords: 'MUCO, MUCO Labs, MUCO Labs India, Software Development Company, Website Development, Web Design, Mobile App Development, Android App Development, AI Development, AI Chatbot Development, AI Automation, Cloud Service Management, Cloud Computing, AutoCAD Design, CAD Drafting, CRM Development, ERP Solutions, SaaS Development, UI UX Design, API Development, Digital Marketing, SEO Services, Branding, IT Consulting, Technical Support',
+    title: 'Best Website Development in Erode | Top Web Design, SEO & Software Company | MUCO Labs',
+    description: 'Looking for the best website development company in Erode? MUCO Labs delivers top-rated web design, local SEO optimization, mobile apps, custom ERP software, AI solutions, AutoCAD drafting & digital marketing in Erode, Tamil Nadu.',
+    keywords: 'best website development in erode, website development company in erode, web design in erode, web development erode, SEO company in erode, SEO optimization erode, local SEO services in erode, mobile app development company in erode, android app developers in erode, software development company in erode, custom software erode, enterprise ERP developers erode, AI solutions erode, AI chatbot development erode, AutoCAD design in erode, 2D 3D CAD drafting erode, digital marketing company in erode, Google Ads agency erode, logo design branding erode, IT consulting erode, MUCO Labs Erode, top web designers in erode',
     ogImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&h=630&q=85',
-    ogImageAlt: 'MUCO Labs Enterprise Software & AI Engineering HQ',
+    ogImageAlt: 'MUCO Labs Enterprise Software & Web Development HQ Erode',
     ogType: 'website',
     twitterCard: 'summary_large_image'
   },
   about: {
-    title: 'About MUCO Labs | Leadership, Vision & Software Engineering HQ India',
+    title: 'About MUCO Labs | Top Technology Firm in Erode, Tamil Nadu | Leadership',
     description: 'Discover MUCO Labs, founded by Srinivash Mahalingam in Erode, Tamil Nadu, India. Explore our engineering philosophy, corporate leadership, core values, and rapid technological innovation.',
-    keywords: 'MUCO Labs team, Srinivash Mahalingam, Erode software company, MUCO Labs India, software development company India, IT consulting Tamil Nadu, leadership vision',
+    keywords: 'MUCO Labs team, Srinivash Mahalingam, Erode software company, MUCO Labs India, software development company India, IT consulting Tamil Nadu, web development company Erode, leadership vision',
     ogImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=85',
     ogImageAlt: 'MUCO Labs Executive Team and Collaborative Tech Workspace',
     ogType: 'website',
     twitterCard: 'summary_large_image'
   },
   locations: {
-    title: 'Locations Served | Erode District & Tamil Nadu Technology Hubs | MUCO Labs',
+    title: 'Locations Served | Best Website Development, SEO & Software in Erode & Tamil Nadu | MUCO Labs',
     description: 'Explore custom software development, mobile apps, enterprise ERP, web design, and local SEO services across Erode, Perundurai, Bhavani, Gobichettipalayam, Sathyamangalam, and Chennimalai.',
-    keywords: 'software company Erode, website development Erode, web design Erode, web development Perundurai, software company Bhavani, web development Gobichettipalayam, SEO company Erode, AI development Erode',
+    keywords: 'best website development in erode, software company Erode, web design Erode, web development Perundurai, software company Bhavani, web development Gobichettipalayam, SEO company Erode, AI development Erode, AutoCAD design Erode',
     ogImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=630&q=85',
     ogImageAlt: 'MUCO Labs Regional Technology and Local SEO Hubs across Tamil Nadu',
     ogType: 'website',
     twitterCard: 'summary_large_image'
   },
   services: {
-    title: 'Full-Suite Software & AI Engineering Services | MUCO Labs',
-    description: 'Explore MUCO Labs\' comprehensive engineering offerings: Custom Web Development, iOS & Android Mobile Apps, Enterprise AI & Automation, Cloud Services, AutoCAD Drafting, CRM & ERP Architecture.',
-    keywords: 'Website Development, Mobile App Development, AI Development, Cloud Service Management, AutoCAD Design, CAD Drafting, CRM Development, ERP Solutions, SaaS Development, UI UX Design, Digital Marketing, SEO Services, IT Consulting',
+    title: 'Services in Erode | Website Development, Mobile Apps, SEO, AI & Software | MUCO Labs',
+    description: 'Explore MUCO Labs full suite of services in Erode: Next.js website development, Android/iOS mobile apps, local SEO & Google ranking, AI automation, custom ERP software, AutoCAD drafting, and performance marketing in Erode.',
+    keywords: 'Website Development Erode, Mobile App Development Erode, SEO Services Erode, AI Development Erode, Cloud Service Management, AutoCAD Design Erode, CAD Drafting Erode, CRM Development Erode, ERP Solutions Erode, Digital Marketing Erode, IT Consulting Erode',
     ogImage: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&h=630&q=85',
     ogImageAlt: 'Advanced Code Architecture and AI Software Engineering Services',
     ogType: 'website',
