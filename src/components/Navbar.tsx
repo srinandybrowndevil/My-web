@@ -55,8 +55,40 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'services' | 'portfolio' | 'pages'>('all');
 
+  // Pop-up Navbar Cursor & Scroll Interaction States
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isCursorNearTop, setIsCursorNearTop] = useState(false);
+
   const searchInputRef = useRef<HTMLInputElement>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
+
+  // Monitor scroll and cursor position to trigger pop-up
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 60);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Pop up immediately when cursor approaches within 70px of the top of the viewport
+      if (e.clientY <= 70) {
+        setIsCursorNearTop(true);
+      } else if (e.clientY > 110 && !isMoreMenuOpen && !isSearchOpen) {
+        setIsCursorNearTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isMoreMenuOpen, isSearchOpen]);
+
+  // Determine if the navbar should be visible/popped up
+  const isNavbarVisible = !isScrolled || isHovered || isCursorNearTop || isMoreMenuOpen || isSearchOpen;
 
   // Close "More" dropdown when clicking outside
   useEffect(() => {
@@ -224,8 +256,50 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
   return (
     <>
-      {/* FIXED TOP NAVIGATION BAR (Desktop & Mobile) */}
-      <header className="fixed top-0 left-0 right-0 h-16 sm:h-20 bg-white/90 dark:bg-[#030712]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 z-40 transition-colors">
+      {/* TOP EDGE CURSOR HOVER SENSOR (Trigger Pop-up on Touch/Hover) */}
+      <div
+        className="fixed top-0 left-0 right-0 h-4 sm:h-6 z-50 pointer-events-auto"
+        onMouseEnter={() => setIsCursorNearTop(true)}
+        onTouchStart={() => setIsCursorNearTop(true)}
+        aria-hidden="true"
+      />
+
+      {/* MINIMAL FLOATING NOTCH INDICATOR (Appears when navbar is tucked away to invite cursor touch) */}
+      <AnimatePresence>
+        {!isNavbarVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            onMouseEnter={() => setIsCursorNearTop(true)}
+            onClick={() => setIsCursorNearTop(true)}
+            className="fixed top-2 left-1/2 -translate-x-1/2 z-40 cursor-pointer pointer-events-auto"
+          >
+            <div className="px-3.5 py-1.5 rounded-full bg-slate-950/90 dark:bg-[#070b16]/95 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)] backdrop-blur-xl flex items-center gap-2 text-cyan-400 hover:text-white transition-all hover:scale-105">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+              <span className="text-[11px] font-bold tracking-wide">Menu</span>
+              <ChevronDown className="w-3 h-3 text-cyan-400" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* FIXED TOP NAVIGATION BAR (Auto Pop-up on cursor touch/hover) */}
+      <motion.header
+        initial={false}
+        animate={{
+          y: isNavbarVisible ? 0 : -95,
+          opacity: isNavbarVisible ? 1 : 0
+        }}
+        transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setIsCursorNearTop(false);
+        }}
+        className="fixed top-0 left-0 right-0 h-16 sm:h-20 bg-white/95 dark:bg-[#030712]/95 backdrop-blur-2xl border-b border-slate-200/80 dark:border-slate-800/80 z-40 transition-colors shadow-lg dark:shadow-2xl dark:shadow-cyan-950/20"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
           
           {/* LEFT: BRAND LOGO */}
@@ -350,7 +424,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
           </div>
 
         </div>
-      </header>
+      </motion.header>
 
       {/* MOBILE SLIDE-IN DRAWER MENU (< lg screen) */}
       <AnimatePresence>
