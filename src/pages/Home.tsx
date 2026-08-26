@@ -2,31 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { PageId } from '../types';
 import { HeroIntelligenceSystem } from '../components/HeroIntelligenceSystem';
+import { TrustIndicatorsStrip } from '../components/TrustIndicatorsStrip';
 import { EditorialIntro } from '../components/EditorialIntro';
-import { InteractiveServiceList } from '../components/InteractiveServiceList';
-import { InteractiveAutomationWorkflow } from '../components/InteractiveAutomationWorkflow';
-import { AnimatedMetrics } from '../components/AnimatedMetrics';
-import { InteractiveProcessTimeline } from '../components/InteractiveProcessTimeline';
+import { WhatMucoBuilds } from '../components/WhatMucoBuilds';
+import { AiSystemFlowDiagram } from '../components/AiSystemFlowDiagram';
+import { FeaturedProjects } from '../components/FeaturedProjects';
 import { WhyMucoPrinciples } from '../components/WhyMucoPrinciples';
+import { ProcessPreviewSection } from '../components/ProcessPreviewSection';
+import { AnimatedMetrics } from '../components/AnimatedMetrics';
 import { EditorialTestimonials } from '../components/EditorialTestimonials';
 import { ClosingCta } from '../components/ClosingCta';
-import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
-import { TrustIndicatorsStrip } from '../components/TrustIndicatorsStrip';
-import { FeaturedProjects } from '../components/FeaturedProjects';
-import { EstimateCalculator } from '../components/EstimateCalculator';
-import { AuthenticCompanyVisuals } from '../components/AuthenticCompanyVisuals';
-import { RegionalHubsShowcase } from '../components/RegionalHubsShowcase';
-import { MucoLogo } from '../components/MucoLogo';
-import { 
-  ArrowRight, 
-  Sparkles, 
-  ShieldCheck, 
-  Activity, 
-  ChevronRight, 
-  Code2, 
-  Cpu, 
-  Bot 
-} from 'lucide-react';
+import { ArrowRight, ChevronRight, Sparkles } from 'lucide-react';
 
 interface HomeProps {
   onNavigate: (page: PageId, customMsg?: string) => void;
@@ -73,9 +59,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             transition={{ duration: 0.6, delay: 0.15 }}
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 dark:text-white text-center leading-[1.05]"
           >
-            WE BUILD INTELLIGENT <br className="hidden sm:inline" />
+            BUILD WHAT'S NEXT. <br className="hidden sm:inline" />
             <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">
-              DIGITAL SYSTEMS.
+              MAKE IT INTELLIGENT.
             </span>
           </motion.h1>
 
@@ -86,7 +72,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             transition={{ duration: 0.6, delay: 0.25 }}
             className="text-slate-600 dark:text-slate-300 text-sm sm:text-lg md:text-xl max-w-3xl leading-relaxed font-normal px-2 text-center"
           >
-            AI products, autonomous automation workflows, high-speed web platforms, and native mobile apps engineered to move ambitious businesses forward.
+            We design, engineer and automate intelligent digital systems, products and experiences for ambitious businesses.
           </motion.p>
 
           {/* HERO ACTION BUTTONS */}
@@ -105,10 +91,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
             </button>
 
             <button
-              onClick={() => onNavigate('systems')}
+              onClick={() => onNavigate('portfolio')}
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-slate-900/90 dark:bg-slate-900 text-slate-200 hover:text-white hover:bg-slate-850 font-bold text-sm border border-slate-700/80 shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
-              <span>Explore AI Systems</span>
+              <span>Explore Our Work</span>
               <ChevronRight className="w-4 h-4 text-cyan-400" />
             </button>
           </motion.div>
@@ -131,48 +117,28 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, isScrolledPastHero = fal
       {/* 3. LARGE EDITORIAL INTRODUCTION STATEMENT */}
       <EditorialIntro onNavigate={onNavigate} />
 
-      {/* 4. AWWWARDS MOSEY-STYLE INTERACTIVE ROLE SELECTION MATRIX */}
-      <MoseyRoleSelector onNavigate={onNavigate} variant="full" />
+      {/* 4. WHAT MUCO BUILDS (4 Major Disciplines) */}
+      <WhatMucoBuilds onNavigate={onNavigate} />
 
-      {/* 5. INTERACTIVE SERVICES & TECHNICAL INSPECTOR */}
-      <InteractiveServiceList onNavigate={onNavigate} />
+      {/* 5. SIGNATURE AI SYSTEM FLOW DIAGRAM */}
+      <AiSystemFlowDiagram onNavigate={onNavigate} />
 
-      {/* 6. INTERACTIVE AUTOMATION WORKFLOW SIMULATION */}
-      <InteractiveAutomationWorkflow onNavigate={onNavigate} />
-
-      {/* 7. FEATURED PRODUCTION CASE STUDIES */}
+      {/* 6. SELECTED PRODUCTION WORK & CASE STUDIES */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FeaturedProjects onNavigate={onNavigate} />
       </div>
 
-      {/* 8. ANIMATED TELEMETRY METRICS SECTION */}
-      <AnimatedMetrics />
-
-      {/* 9. INTERACTIVE 6-STEP DELIVERY PROCESS */}
-      <InteractiveProcessTimeline onNavigate={onNavigate} />
-
-      {/* 10. WHY MUCO OPERATING PRINCIPLES */}
+      {/* 7. WHY MUCO OPERATING PRINCIPLES */}
       <WhyMucoPrinciples onNavigate={onNavigate} />
 
-      {/* 11. EDITORIAL CLIENT TESTIMONIALS & OUTCOMES */}
+      {/* 8. PROCESS PREVIEW SECTION (DISCOVER -> DESIGN -> ENGINEER -> AUTOMATE -> LAUNCH) */}
+      <ProcessPreviewSection onNavigate={onNavigate} />
+
+      {/* 9. PROOF: ANIMATED METRICS & CLIENT TESTIMONIALS */}
+      <AnimatedMetrics />
       <EditorialTestimonials />
 
-      {/* 12. AUTHENTIC COMPANY VISUALS & TEAM WORKSPACE */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AuthenticCompanyVisuals />
-      </div>
-
-      {/* 13. REGIONAL HUBS & GLOBAL CONNECTIVITY */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <RegionalHubsShowcase onNavigate={onNavigate} />
-      </div>
-
-      {/* 14. INTERACTIVE PROJECT ESTIMATE CALCULATOR */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <EstimateCalculator onNavigate={onNavigate} />
-      </div>
-
-      {/* 15. HIGH-IMPACT CLOSING CALL-TO-ACTION */}
+      {/* 10. HIGH-IMPACT CLOSING CALL-TO-ACTION */}
       <ClosingCta onNavigate={onNavigate} />
     </div>
   );

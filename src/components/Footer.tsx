@@ -96,11 +96,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="space-y-2 text-xs">
               {[
                 { id: 'home', label: 'Home Page' },
-                { id: 'about', label: 'About MUCO Labs' },
+                { id: 'systems', label: 'Autonomous AI Systems' },
                 { id: 'services', label: 'All Services' },
+                { id: 'portfolio', label: 'Project Portfolio' },
+                { id: 'process', label: 'Our 8-Step Process' },
+                { id: 'about', label: 'About MUCO Labs' },
                 { id: 'locations', label: 'Locations & Hubs' },
                 { id: 'courses', label: 'Courses & Bootcamps' },
-                { id: 'portfolio', label: 'Project Portfolio' },
                 { id: 'apps', label: 'Publish to App Stores' },
                 { id: 'pricing', label: 'Pricing Calculator' },
                 { id: 'maintenance', label: 'Maintenance Plans' },

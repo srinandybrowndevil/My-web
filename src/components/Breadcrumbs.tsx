@@ -42,6 +42,7 @@ const PAGE_NAMES: Record<PageId, string> = {
   locations: 'Locations & Regional Hubs',
   services: 'Services & Solutions',
   systems: 'Autonomous AI Systems',
+  process: 'Our Process',
   courses: 'Mastery Courses & Bootcamps',
   pricing: 'Pricing & Plans',
   portfolio: 'Client Portfolio',

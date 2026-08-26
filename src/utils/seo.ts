@@ -100,6 +100,15 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     ogType: 'website',
     twitterCard: 'summary_large_image'
   },
+  process: {
+    title: 'Our 8-Step Engineering & Delivery Process | MUCO Labs',
+    description: 'Discover how MUCO Labs transforms complex business problems into scalable software systems through our structured 8-step delivery methodology with predictable milestones.',
+    keywords: 'MUCO Labs process, software development lifecycle, engineering methodology, discovery sprint, agile milestones, software delivery framework, SLA support',
+    ogImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=630&q=85',
+    ogImageAlt: 'MUCO Labs 8-Step Engineering & Delivery Process',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
+  },
   courses: {
     title: 'Mastery Courses & Engineering Bootcamps | MUCO Labs & Way2Me Academy',
     description: 'Master in-demand industry skills with practical training in Full-Stack Web Development, Mobile Apps (Flutter/React Native), Generative AI & LLMs, Cloud Infrastructure, and AutoCAD Drafting led by Way2Me CEO Yogaharikaran & MUCO Labs.',

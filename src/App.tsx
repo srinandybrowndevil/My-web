@@ -7,7 +7,6 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { ModernLoadingScreen } from './components/ModernLoadingScreen';
-import { BroedPageLoader } from './components/BroedPageLoader';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
@@ -23,13 +22,13 @@ import { WhatsAppDiagnosticsModal } from './components/WhatsAppDiagnosticsModal'
 import { openWhatsApp } from './utils/whatsapp';
 import { ServicesSkeleton } from './components/skeletons/ServicesSkeleton';
 import { PortfolioSkeleton } from './components/skeletons/PortfolioSkeleton';
-import { CustomCursor } from './components/CustomCursor';
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })));
 const Services = lazy(() => import('./pages/Services').then((m) => ({ default: m.Services })));
 const AiSystems = lazy(() => import('./pages/AiSystems').then((m) => ({ default: m.AiSystems })));
+const Process = lazy(() => import('./pages/Process').then((m) => ({ default: m.Process })));
 const Courses = lazy(() => import('./pages/Courses').then((m) => ({ default: m.Courses })));
 const Pricing = lazy(() => import('./pages/Pricing').then((m) => ({ default: m.Pricing })));
 const Portfolio = lazy(() => import('./pages/Portfolio').then((m) => ({ default: m.Portfolio })));
@@ -50,7 +49,6 @@ export default function App() {
   const [isScheduleCallOpen, setIsScheduleCallOpen] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isWhatsAppDiagOpen, setIsWhatsAppDiagOpen] = useState<boolean>(false);
-  const [showIntroLoader, setShowIntroLoader] = useState<boolean>(true);
 
   // Listen to global events
   useEffect(() => {
@@ -59,18 +57,15 @@ export default function App() {
     const handleOpenWhatsAppChat = () => {
       openWhatsApp({ pageName: currentPage });
     };
-    const handleReplayIntro = () => setShowIntroLoader(true);
 
     window.addEventListener('openSearchModal', handleOpenSearch);
     window.addEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
     window.addEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
-    window.addEventListener('muco:replay_intro', handleReplayIntro);
 
     return () => {
       window.removeEventListener('openSearchModal', handleOpenSearch);
       window.removeEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
       window.removeEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
-      window.removeEventListener('muco:replay_intro', handleReplayIntro);
     };
   }, [currentPage]);
 
@@ -82,6 +77,7 @@ export default function App() {
       'about',
       'services',
       'systems',
+      'process',
       'courses',
       'pricing',
       'portfolio',
@@ -255,14 +251,6 @@ export default function App() {
       <RoleProvider>
         <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
         
-        {/* Awwwards Broed-Style Page Load Reveal Animation */}
-        {showIntroLoader && (
-          <BroedPageLoader onComplete={() => setShowIntroLoader(false)} />
-        )}
-
-        {/* Luxury Custom Physics Cursor System */}
-        <CustomCursor />
-
         {/* Luxury Scroll Progress Bar */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
@@ -276,7 +264,7 @@ export default function App() {
         <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
 
         {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
-        <main className="flex-1 relative z-10 lg:pl-64 pt-16 lg:pt-0 transition-all duration-300">
+        <main className="flex-1 relative z-10 pt-16 sm:pt-20 transition-all duration-300">
           <ErrorBoundary>
             <Suspense fallback={getPageSuspenseFallback(currentPage)}>
               <AnimatePresence mode="wait">
@@ -293,6 +281,7 @@ export default function App() {
                   {currentPage === 'about' && <About onNavigate={handleNavigate} />}
                   {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
                   {currentPage === 'systems' && <AiSystems onNavigate={handleNavigate} />}
+                  {currentPage === 'process' && <Process onNavigate={handleNavigate} />}
                   {currentPage === 'courses' && <Courses onNavigate={handleNavigate} />}
                   {currentPage === 'pricing' && (
                     <Pricing
@@ -374,9 +363,7 @@ export default function App() {
         <PerformanceMonitor />
 
         {/* Footer */}
-        <div className="lg:pl-64 transition-all duration-300">
-          <Footer onNavigate={handleNavigate} />
-        </div>
+        <Footer onNavigate={handleNavigate} />
       </div>
       </RoleProvider>
     </ToastProvider>
