@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PageId } from '../types';
 import { ThemeToggle } from './ThemeToggle';
 import { MucoLogo } from './MucoLogo';
+import { useLanguage } from '../context/LanguageContext';
+import { useAuth } from '../context/AuthContext';
 import { CORE_SERVICES } from '../data/servicesData';
 import { INITIAL_PROJECTS } from '../data/projectsData';
 import { COURSES_DATA } from '../data/coursesData';
@@ -28,8 +30,10 @@ import {
   Sparkles,
   ChevronRight,
   ChevronDown,
-  Compass,
-  MapPin,
+  Globe,
+  User,
+  Shield,
+  Scale,
   GitCommit
 } from 'lucide-react';
 
@@ -49,6 +53,9 @@ interface SearchItem {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
+  const { t, language, setLanguage, toggleLanguage } = useLanguage();
+  const { currentUser, userProfile, openAuthModal } = useAuth();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -70,7 +77,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Pop up immediately when cursor approaches within 70px of the top of the viewport
       if (e.clientY <= 70) {
         setIsCursorNearTop(true);
       } else if (e.clientY > 110 && !isMoreMenuOpen && !isSearchOpen) {
@@ -87,9 +93,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     };
   }, [isMoreMenuOpen, isSearchOpen]);
 
-  // Determine if the navbar should be visible/popped up
-  const isNavbarVisible = !isScrolled || isHovered || isCursorNearTop || isMoreMenuOpen || isSearchOpen;
-
   // Close "More" dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -101,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Keyboard Navigation & Shortcuts (Cmd/Ctrl + K to search, ESC to close menu or search)
+  // Keyboard Shortcuts (Cmd/Ctrl + K to search, ESC to close menu/search)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
@@ -137,31 +140,32 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
   // Primary desktop navbar links
   const primaryNavLinks: { id: PageId; label: string; icon: React.ElementType }[] = [
-    { id: 'portfolio', label: 'Work', icon: Layout },
-    { id: 'services', label: 'Services', icon: Layers },
-    { id: 'systems', label: 'Systems', icon: Sparkles },
-    { id: 'process', label: 'Process', icon: GitCommit },
-    { id: 'about', label: 'About', icon: Building },
-    { id: 'courses', label: 'Learn', icon: GraduationCap },
-    { id: 'pricing', label: 'Pricing', icon: Tag }
+    { id: 'portfolio', label: t.nav.work, icon: Layout },
+    { id: 'services', label: t.nav.services, icon: Layers },
+    { id: 'systems', label: t.nav.systems, icon: Sparkles },
+    { id: 'process', label: t.nav.process, icon: GitCommit },
+    { id: 'about', label: t.nav.about, icon: Building },
+    { id: 'courses', label: t.nav.learn, icon: GraduationCap },
+    { id: 'pricing', label: t.nav.pricing, icon: Tag }
   ];
 
   // Secondary "More" links for desktop
   const secondaryNavLinks: { id: PageId; label: string; desc: string; icon: React.ElementType }[] = [
-    { id: 'apps', label: 'Publish Apps', desc: 'iOS App Store & Google Play publishing', icon: Smartphone },
-    { id: 'maintenance', label: 'Maintenance & SLA', desc: '24/7 server health & dedicated support', icon: ShieldCheck },
-    { id: 'gallery', label: 'Team & Culture', desc: 'Behind the scenes at MUCO Labs', icon: Users },
-    { id: 'locations', label: 'Regional Hubs', desc: 'Erode & Tamil Nadu industrial technology hubs', icon: MapPin },
-    { id: 'blog', label: 'Engineering Blog', desc: 'Insights, tech breakdowns & tutorials', icon: FileText },
-    { id: 'faq', label: 'FAQ', desc: 'Common answers & project queries', icon: HelpCircle }
+    { id: 'apps', label: t.nav.apps, desc: 'iOS App Store & Google Play publishing', icon: Smartphone },
+    { id: 'maintenance', label: t.nav.maintenance, desc: '24/7 server health & dedicated support', icon: ShieldCheck },
+    { id: 'locations', label: t.nav.locations, desc: 'Erode & Tamil Nadu industrial technology hubs', icon: Globe },
+    { id: 'blog', label: t.nav.blog, desc: 'Insights, tech breakdowns & tutorials', icon: FileText },
+    { id: 'faq', label: t.nav.faq, desc: 'Common answers & project queries', icon: HelpCircle },
+    { id: 'terms', label: t.nav.terms, desc: 'Master Service Agreement & 50% advance terms', icon: Scale },
+    { id: 'privacy', label: t.nav.privacy, desc: 'DPDP Act 2023 compliance & data rights', icon: Shield }
   ];
 
   // All navigation routes for mobile drawer and search
   const allNavItems: { id: PageId; label: string; icon: React.ElementType }[] = [
-    { id: 'home', label: 'Home', icon: Home },
+    { id: 'home', label: t.nav.home, icon: Home },
     ...primaryNavLinks,
-    ...secondaryNavLinks.map(s => ({ id: s.id, label: s.label, icon: s.icon })),
-    { id: 'contact', label: 'Start a Project', icon: Send }
+    ...secondaryNavLinks.map((s) => ({ id: s.id, label: s.label, icon: s.icon })),
+    { id: 'contact', label: t.nav.startProject, icon: Send }
   ];
 
   // Search Index Data
@@ -258,13 +262,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     <>
       {/* FIXED TOP NAVIGATION BAR */}
       <header
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         className={`fixed top-0 left-0 right-0 h-16 sm:h-20 z-40 transition-all duration-300 ${
           isScrolled
             ? 'bg-[#fcfcf9]/95 dark:bg-[#080b11]/95 backdrop-blur-2xl border-b border-slate-200/80 dark:border-white/10 shadow-sm dark:shadow-2xl'
             : 'bg-[#fcfcf9]/80 dark:bg-[#080b11]/80 backdrop-blur-xl border-b border-slate-200/40 dark:border-white/5'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-3">
           
           {/* LEFT: BRAND LOGO */}
           <button
@@ -283,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-3.5 py-2 rounded-xl text-xs xl:text-[13px] font-semibold tracking-wide transition-all cursor-pointer ${
+                  className={`px-3 py-2 rounded-xl text-xs xl:text-[13px] font-semibold tracking-wide transition-all cursor-pointer ${
                     isActive
                       ? 'bg-slate-900 text-white dark:bg-white/10 dark:text-orange-400 font-bold shadow-sm'
                       : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
@@ -298,13 +304,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             <div className="relative" ref={moreMenuRef}>
               <button
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                className={`px-3.5 py-2 rounded-xl text-xs xl:text-[13px] font-semibold tracking-wide flex items-center gap-1.5 transition-all cursor-pointer ${
-                  secondaryNavLinks.some(s => s.id === currentPage)
+                className={`px-3 py-2 rounded-xl text-xs xl:text-[13px] font-semibold tracking-wide flex items-center gap-1.5 transition-all cursor-pointer ${
+                  secondaryNavLinks.some((s) => s.id === currentPage)
                     ? 'bg-slate-900 text-white dark:bg-white/10 dark:text-orange-400'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
                 }`}
               >
-                <span>More</span>
+                <span>{t.nav.more}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMoreMenuOpen ? 'rotate-180 text-orange-400' : ''}`} />
               </button>
 
@@ -350,12 +356,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             </div>
           </nav>
 
-          {/* RIGHT: SEARCH, THEME, ESTIMATE CTA & MOBILE TOGGLE */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* RIGHT: SEARCH, LANGUAGE SWITCHER, AUTH, THEME, ESTIMATE CTA & MOBILE TOGGLE */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             {/* Quick Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all cursor-pointer text-xs"
+              className="px-2.5 sm:px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all cursor-pointer text-xs"
               aria-label="Open search dialog"
             >
               <Search className="w-4 h-4 text-orange-500" />
@@ -365,15 +371,49 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               </kbd>
             </button>
 
+            {/* Language Switcher */}
+            <button
+              onClick={toggleLanguage}
+              className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              title="Switch Language / மொழியை மாற்றவும்"
+            >
+              <Globe className="w-3.5 h-3.5 text-orange-500" />
+              <span>{language === 'en' ? 'தமிழ்' : 'EN'}</span>
+            </button>
+
+            {/* User Auth Trigger */}
+            {currentUser ? (
+              <button
+                onClick={() => openAuthModal('profile')}
+                className="px-3 py-1.5 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-600 dark:text-orange-400 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer hover:bg-orange-500/20"
+                title="Account Dashboard"
+              >
+                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center text-[10px] font-bold">
+                  {(currentUser.displayName || currentUser.email || 'U')[0].toUpperCase()}
+                </div>
+                <span className="hidden sm:inline max-w-[80px] truncate">
+                  {currentUser.displayName?.split(' ')[0] || 'Account'}
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => openAuthModal('signin')}
+                className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                <User className="w-3.5 h-3.5 text-slate-400" />
+                <span className="hidden sm:inline">{t.nav.signIn}</span>
+              </button>
+            )}
+
             {/* Theme Toggle */}
             <ThemeToggle />
 
             {/* Start a Project CTA Button */}
             <button
               onClick={() => handleNavClick('contact')}
-              className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
-              <span>Start a Project</span>
+              <span>{t.nav.startProject}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
 
@@ -423,20 +463,69 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                   </button>
                 </div>
 
-                {/* SEARCH BUTTON IN DRAWER */}
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    setIsSearchOpen(true);
-                  }}
-                  className="w-full mb-4 px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold flex items-center justify-between cursor-pointer"
-                >
-                  <span className="flex items-center gap-2">
-                    <Search className="w-4 h-4 text-cyan-500" />
-                    <span>Search all services & pages...</span>
-                  </span>
-                  <span className="font-mono text-[10px] bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">⌘K</span>
-                </button>
+                {/* SEARCH & LANGUAGE ROW IN DRAWER */}
+                <div className="flex items-center gap-2 mb-4">
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsSearchOpen(true);
+                    }}
+                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Search className="w-4 h-4 text-orange-500" />
+                      <span>{t.nav.searchPlaceholder.slice(0, 18)}...</span>
+                    </span>
+                    <span className="font-mono text-[10px] bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">⌘K</span>
+                  </button>
+
+                  <button
+                    onClick={toggleLanguage}
+                    className="px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-white flex items-center gap-1"
+                  >
+                    <Globe className="w-3.5 h-3.5 text-orange-500" />
+                    <span>{language === 'en' ? 'தமிழ்' : 'EN'}</span>
+                  </button>
+                </div>
+
+                {/* USER AUTH IN DRAWER */}
+                <div className="mb-4">
+                  {currentUser ? (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        openAuthModal('profile');
+                      }}
+                      className="w-full p-3 rounded-2xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-between text-xs"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center font-bold">
+                          {(currentUser.displayName || currentUser.email || 'U')[0].toUpperCase()}
+                        </div>
+                        <div className="text-left">
+                          <div className="font-bold text-slate-900 dark:text-white">
+                            {currentUser.displayName || 'Client Account'}
+                          </div>
+                          <div className="text-[10px] text-slate-500 truncate max-w-[150px]">
+                            {currentUser.email}
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-orange-500" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        openAuthModal('signin');
+                      }}
+                      className="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-white flex items-center justify-center gap-2"
+                    >
+                      <User className="w-4 h-4 text-orange-500" />
+                      <span>{t.nav.signIn} / {t.nav.signUp}</span>
+                    </button>
+                  )}
+                </div>
 
                 {/* DRAWER NAVIGATION LIST */}
                 <nav className="space-y-1">
@@ -450,16 +539,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                         onClick={() => handleNavClick(item.id)}
                         className={`w-full text-left px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-between transition-all cursor-pointer ${
                           isActive
-                            ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30'
+                            ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30'
                             : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900/80'
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-500' : 'text-slate-400'}`} />
+                          <Icon className={`w-4 h-4 ${isActive ? 'text-orange-500' : 'text-slate-400'}`} />
                           <span>{item.label}</span>
                         </div>
 
-                        {isActive && <ChevronRight className="w-4 h-4 text-cyan-500" />}
+                        {isActive && <ChevronRight className="w-4 h-4 text-orange-500" />}
                       </button>
                     );
                   })}
@@ -470,9 +559,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
                 <button
                   onClick={() => handleNavClick('contact')}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer"
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-orange-600/20 cursor-pointer"
                 >
-                  <span>Request Custom Proposal</span>
+                  <span>{t.nav.startProject}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -499,20 +588,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -10 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-2xl bg-white dark:bg-slate-950 backdrop-blur-2xl border border-slate-200 dark:border-cyan-500/30 rounded-3xl shadow-2xl shadow-cyan-950/40 overflow-hidden z-10 flex flex-col max-h-[80vh]"
+              className="relative w-full max-w-2xl bg-white dark:bg-slate-950 backdrop-blur-2xl border border-slate-200 dark:border-orange-500/30 rounded-3xl shadow-2xl shadow-orange-950/40 overflow-hidden z-10 flex flex-col max-h-[80vh]"
             >
               {/* Top Specular Line */}
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent pointer-events-none" />
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-orange-400/60 to-transparent pointer-events-none" />
 
               {/* Search Header Input */}
               <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800/80 flex items-center gap-3">
-                <Search className="w-5 h-5 text-cyan-500 shrink-0" />
+                <Search className="w-5 h-5 text-orange-500 shrink-0" />
                 <input
                   ref={searchInputRef}
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search services, portfolio, pages..."
+                  placeholder={t.nav.searchPlaceholder}
                   className="w-full bg-transparent text-slate-900 dark:text-white placeholder-slate-400 text-sm font-semibold focus:outline-none"
                 />
                 {searchQuery && (
@@ -539,7 +628,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                     onClick={() => setActiveFilter(filter)}
                     className={`px-3 py-1 rounded-full font-extrabold capitalize transition-all cursor-pointer ${
                       activeFilter === filter
-                        ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
+                        ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-200/60 dark:bg-white/5'
                     }`}
                   >
@@ -555,7 +644,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                     <button
                       key={item.id}
                       onClick={() => handleNavClick(item.targetPage)}
-                      className="w-full text-left p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-white/5 hover:border-amber-500/30 transition-all group flex items-center justify-between cursor-pointer"
+                      className="w-full text-left p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-white/5 hover:border-orange-500/30 transition-all group flex items-center justify-between cursor-pointer"
                     >
                       <div>
                         <div className="flex items-center gap-2 mb-1">
@@ -563,14 +652,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                             item.type === 'service'
                               ? 'bg-blue-500/20 text-blue-500 dark:text-blue-400 border border-blue-500/30'
                               : item.type === 'portfolio'
-                              ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30'
+                              ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30'
                               : 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30'
                           }`}>
                             {item.type}
                           </span>
                           <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400">{item.category}</span>
                         </div>
-                        <h4 className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors">
+                        <h4 className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-orange-500 transition-colors">
                           {item.title}
                         </h4>
                         <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1 mt-0.5 font-normal">
@@ -578,7 +667,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                         </p>
                       </div>
 
-                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-amber-500 group-hover:translate-x-1 transition-all" />
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
                     </button>
                   ))
                 ) : (
@@ -590,7 +679,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                         <button
                           key={tag}
                           onClick={() => setSearchQuery(tag)}
-                          className="text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full hover:bg-amber-500/20 transition-all font-semibold cursor-pointer"
+                          className="text-xs text-orange-600 dark:text-orange-400 bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-full hover:bg-orange-500/20 transition-all font-semibold cursor-pointer"
                         >
                           {tag}
                         </button>
@@ -602,7 +691,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
               {/* Footer */}
               <div className="p-3 bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-white/10 text-center text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                MUCO Labs Instant Search • Click any item to navigate directly
+                MUCO Labs Instant Search &bull; Click any item to navigate directly
               </div>
             </motion.div>
           </div>
@@ -611,4 +700,3 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     </>
   );
 };
-

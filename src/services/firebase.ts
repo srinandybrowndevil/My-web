@@ -1,14 +1,28 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  sendEmailVerification,
+  signOut as fbSignOut,
+  updateProfile,
+  User as FirebaseUser
+} from 'firebase/auth';
 import { 
   getFirestore, 
   collection, 
   getDocs, 
   addDoc, 
+  setDoc,
+  getDoc,
+  doc, 
   query, 
+  where,
   orderBy, 
   serverTimestamp,
-  doc,
   getDocFromServer
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
@@ -22,6 +36,7 @@ export const db = (firebaseConfig as { firestoreDatabaseId?: string }).firestore
   : getFirestore(app);
 
 export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
 
 // Operation types for standard error formatting
 export enum OperationType {
@@ -63,16 +78,245 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
   throw new Error(JSON.stringify(errInfo));
 }
 
-// Test Connection Helper (Exported for explicit health checks only)
-export async function testFirestoreConnection() {
+// User Profile Interface
+export interface UserProfile {
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL?: string;
+  preferredLanguage?: 'en' | 'ta';
+  role: 'USER' | 'CLIENT' | 'ADMIN' | 'SUPER_ADMIN';
+  status: 'active' | 'suspended' | 'pending';
+  emailVerified: boolean;
+  createdAt: any;
+  updatedAt?: any;
+  lastLoginAt?: any;
+}
+
+// Sync/Save User Profile in Firestore
+export async function syncUserProfile(user: FirebaseUser, additionalData: Partial<UserProfile> = {}): Promise<UserProfile> {
+  const userDocRef = doc(db, 'users', user.uid);
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
+    const existingSnap = await getDoc(userDocRef);
+    if (existingSnap.exists()) {
+      const data = existingSnap.data() as UserProfile;
+      const updatedProfile: Partial<UserProfile> = {
+        displayName: user.displayName || data.displayName || 'MUCO User',
+        email: user.email || data.email,
+        photoURL: user.photoURL || data.photoURL || '',
+        emailVerified: user.emailVerified,
+        updatedAt: serverTimestamp(),
+        lastLoginAt: serverTimestamp(),
+        ...(additionalData.preferredLanguage ? { preferredLanguage: additionalData.preferredLanguage } : {})
+      };
+      await setDoc(userDocRef, updatedProfile, { merge: true });
+      return { ...data, ...updatedProfile } as UserProfile;
+    } else {
+      const newProfile: UserProfile = {
+        uid: user.uid,
+        displayName: user.displayName || additionalData.displayName || 'MUCO User',
+        email: user.email || '',
+        photoURL: user.photoURL || '',
+        preferredLanguage: additionalData.preferredLanguage || 'en',
+        role: 'USER',
+        status: 'active',
+        emailVerified: user.emailVerified,
+        createdAt: serverTimestamp(),
+        lastLoginAt: serverTimestamp()
+      };
+      await setDoc(userDocRef, newProfile);
+      return newProfile;
+    }
   } catch (error) {
-    console.warn('Firebase Firestore client is operating in fallback offline mode.');
+    console.warn('Failed to sync user profile to Firestore:', error);
+    return {
+      uid: user.uid,
+      displayName: user.displayName || 'MUCO User',
+      email: user.email || '',
+      role: 'USER',
+      status: 'active',
+      emailVerified: user.emailVerified,
+      createdAt: new Date().toISOString()
+    };
   }
 }
 
-// Testimonial Interface
+// Submit Project Request
+export interface ProjectRequestData {
+  userId?: string;
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  projectType?: string;
+  budget?: string;
+  timeline?: string;
+  message: string;
+  sourcePage?: string;
+  language?: 'en' | 'ta';
+  marketingConsent?: boolean;
+}
+
+export async function submitProjectRequest(data: ProjectRequestData): Promise<string> {
+  const collectionPath = 'project_requests';
+  try {
+    const docRef = await addDoc(collection(db, collectionPath), {
+      userId: data.userId || (auth.currentUser ? auth.currentUser.uid : 'guest'),
+      name: data.name,
+      email: data.email,
+      company: data.company || '',
+      phone: data.phone || '',
+      projectType: data.projectType || 'Custom Software',
+      budget: data.budget || 'Custom RFP',
+      timeline: data.timeline || 'Flexible',
+      message: data.message,
+      sourcePage: data.sourcePage || 'contact',
+      language: data.language || 'en',
+      status: 'new',
+      createdAt: serverTimestamp()
+    });
+
+    // Also log activity telemetry
+    logActivityEvent('project_request_submitted', {
+      requestId: docRef.id,
+      projectType: data.projectType
+    });
+
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, collectionPath);
+    throw error;
+  }
+}
+
+// Save Estimator Session
+export interface EstimatorSessionData {
+  userId?: string;
+  selectedOptions: string;
+  totalOneTime: number;
+  totalMonthly: number;
+  notes?: string;
+}
+
+export async function saveEstimatorSession(data: EstimatorSessionData): Promise<string> {
+  const collectionPath = 'estimator_sessions';
+  try {
+    const uid = data.userId || (auth.currentUser ? auth.currentUser.uid : 'guest');
+    const docRef = await addDoc(collection(db, collectionPath), {
+      userId: uid,
+      selectedOptions: data.selectedOptions,
+      totalOneTime: Number(data.totalOneTime),
+      totalMonthly: Number(data.totalMonthly || 0),
+      notes: data.notes || '',
+      createdAt: serverTimestamp()
+    });
+
+    logActivityEvent('estimator_saved', {
+      sessionId: docRef.id,
+      totalOneTime: data.totalOneTime
+    });
+
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, collectionPath);
+    throw error;
+  }
+}
+
+// Fetch User's Saved Project Requests
+export async function fetchUserProjectRequests(userId: string): Promise<any[]> {
+  const collectionPath = 'project_requests';
+  try {
+    const q = query(
+      collection(db, collectionPath),
+      where('userId', '==', userId)
+    );
+    const snap = await getDocs(q);
+    const requests: any[] = [];
+    snap.forEach((docSnap) => {
+      requests.push({ id: docSnap.id, ...docSnap.data() });
+    });
+    return requests;
+  } catch (error) {
+    console.warn('Could not fetch user requests:', error);
+    return [];
+  }
+}
+
+// Fetch User's Saved Estimator Sessions
+export async function fetchUserEstimates(userId: string): Promise<any[]> {
+  const collectionPath = 'estimator_sessions';
+  try {
+    const q = query(
+      collection(db, collectionPath),
+      where('userId', '==', userId)
+    );
+    const snap = await getDocs(q);
+    const estimates: any[] = [];
+    snap.forEach((docSnap) => {
+      estimates.push({ id: docSnap.id, ...docSnap.data() });
+    });
+    return estimates;
+  } catch (error) {
+    console.warn('Could not fetch user estimates:', error);
+    return [];
+  }
+}
+
+// Submit Direct Contact Form Message
+export interface ContactSubmissionData {
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  serviceCategory?: string;
+  message: string;
+}
+
+export async function submitContactForm(data: ContactSubmissionData): Promise<string> {
+  const collectionPath = 'contact_submissions';
+  try {
+    const docRef = await addDoc(collection(db, collectionPath), {
+      name: data.name,
+      email: data.email,
+      phone: data.phone || '',
+      company: data.company || '',
+      serviceCategory: data.serviceCategory || 'General Inquiry',
+      message: data.message,
+      status: 'unread',
+      createdAt: serverTimestamp()
+    });
+
+    logActivityEvent('contact_form_submitted', { submissionId: docRef.id });
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, collectionPath);
+    throw error;
+  }
+}
+
+// Privacy-Conscious Product Usage Telemetry
+export async function logActivityEvent(eventName: string, metadata: Record<string, any> = {}) {
+  const collectionPath = 'activity_events';
+  try {
+    const uid = auth.currentUser ? auth.currentUser.uid : 'anonymous';
+    const page = typeof window !== 'undefined' ? window.location.hash.replace('#', '') || 'home' : 'home';
+    const language = typeof window !== 'undefined' ? localStorage.getItem('muco_language') || 'en' : 'en';
+
+    await addDoc(collection(db, collectionPath), {
+      eventName,
+      userId: uid,
+      page,
+      language,
+      metadata: JSON.stringify(metadata).slice(0, 1000),
+      timestamp: serverTimestamp()
+    });
+  } catch {
+    // Non-blocking telemetry fallback
+  }
+}
+
+// Testimonial Interface & Fetching
 export interface TestimonialItem {
   id?: string;
   clientName: string;
@@ -86,7 +330,6 @@ export interface TestimonialItem {
   createdAt?: any;
 }
 
-// Default Seed Testimonials for MUCO Labs Client Feedback
 export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
   {
     id: 'seed-1',
@@ -95,7 +338,7 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     companyName: 'Apex HealthTech',
     companyLogo: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=120&q=80',
     rating: 5,
-    content: 'MUCO Labs engineered our Next.js patient portal with flawless precision and zero lag. Srinivash and his team delivered full-stack production code in record time.',
+    content: 'MUCO Labs engineered our patient portal with flawless precision and zero lag. Srinivash and his team delivered full-stack production code in record time.',
     projectCategory: 'Enterprise SaaS',
     verified: true
   },
@@ -120,69 +363,17 @@ export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     content: 'MUCO Labs built our native Android fleet management app. Exceptional performance, smooth offline caching, and 100% upfront pricing clarity.',
     projectCategory: 'Mobile Apps',
     verified: true
-  },
-  {
-    id: 'seed-4',
-    clientName: 'Dr. Meera Vasudevan',
-    clientRole: 'Founder',
-    companyName: 'BioGenics India',
-    companyLogo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80',
-    rating: 5,
-    content: 'Srinivash Mahalingam and the team designed our modern e-commerce platform. Outstanding Apple-inspired minimal UI and blistering fast page loads.',
-    projectCategory: 'E-Commerce & Web',
-    verified: true
-  },
-  {
-    id: 'seed-5',
-    clientName: 'Karthik Raja',
-    clientRole: 'Head of Growth',
-    companyName: 'CloudScale Global',
-    companyLogo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
-    rating: 5,
-    content: 'Working with MUCO Labs is a breath of fresh air. Pure engineering craft, proactive communication, and transparent milestones from day one.',
-    projectCategory: 'Cloud & Infrastructure',
-    verified: true
-  },
-  {
-    id: 'seed-6',
-    clientName: 'Sarah Jenkins',
-    clientRole: 'Director of Tech Innovation',
-    companyName: 'Aura Digital London',
-    companyLogo: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80',
-    rating: 5,
-    content: 'Extremely impressed with MUCO Labs global service standards. They integrated custom Gemini LLM workflows into our CRM seamlessly.',
-    projectCategory: 'AI & Automation',
-    verified: true
   }
 ];
 
-// Fetch Testimonials from Firestore with automatic timeout fallback & background seeding
 export async function fetchTestimonials(): Promise<TestimonialItem[]> {
   const collectionPath = 'testimonials';
-
-  const timeoutPromise = new Promise<TestimonialItem[]>((_, reject) =>
-    setTimeout(() => reject(new Error('Firestore fetch timeout')), 2000)
-  );
-
-  const fetchPromise = async (): Promise<TestimonialItem[]> => {
+  try {
     const q = query(collection(db, collectionPath));
     const snapshot = await getDocs(q);
-
     if (snapshot.empty) {
-      // Background non-blocking seeding
-      Promise.allSettled(
-        DEFAULT_TESTIMONIALS.map((item) => {
-          const { id, ...data } = item;
-          return addDoc(collection(db, collectionPath), {
-            ...data,
-            createdAt: serverTimestamp()
-          });
-        })
-      ).catch((err) => console.warn('Background seeding error:', err));
-
       return DEFAULT_TESTIMONIALS;
     }
-
     const fetched: TestimonialItem[] = [];
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
@@ -199,32 +390,23 @@ export async function fetchTestimonials(): Promise<TestimonialItem[]> {
         createdAt: data.createdAt
       });
     });
-
     return fetched.length > 0 ? fetched : DEFAULT_TESTIMONIALS;
-  };
-
-  try {
-    return await Promise.race([fetchPromise(), timeoutPromise]);
   } catch (error) {
     console.warn('Firestore fetch timeout or offline mode, using default testimonials:', error);
     return DEFAULT_TESTIMONIALS;
   }
 }
 
-// Add New Testimonial to Firestore
-export async function addTestimonial(data: Omit<TestimonialItem, 'id'>): Promise<string> {
+export async function addTestimonial(testimonial: Omit<TestimonialItem, 'id' | 'createdAt'>): Promise<string> {
   const collectionPath = 'testimonials';
   try {
     const docRef = await addDoc(collection(db, collectionPath), {
-      clientName: data.clientName,
-      clientRole: data.clientRole,
-      companyName: data.companyName,
-      companyLogo: data.companyLogo || '',
-      rating: Number(data.rating),
-      content: data.content,
-      projectCategory: data.projectCategory,
-      verified: data.verified ?? true,
+      ...testimonial,
       createdAt: serverTimestamp()
+    });
+    logActivityEvent('testimonial_added', {
+      companyName: testimonial.companyName,
+      rating: testimonial.rating
     });
     return docRef.id;
   } catch (error) {
@@ -232,3 +414,4 @@ export async function addTestimonial(data: Omit<TestimonialItem, 'id'>): Promise
     throw error;
   }
 }
+

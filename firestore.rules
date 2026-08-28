@@ -2,7 +2,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Global Helper Functions
+    // Global Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Primitive & Global Helpers
     function isValidId(id) {
       return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
     }
@@ -15,7 +20,53 @@ service cloud.firestore {
       return resource.data;
     }
 
-    // Testimonial validation helper
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Role validation: checked against trusted database document
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Validation Blueprint for User
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'role']) &&
+             data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 150 &&
+             data.role in ['USER', 'CLIENT', 'ADMIN', 'SUPER_ADMIN'];
+    }
+
+    // Validation Blueprint for ProjectRequest
+    function isValidProjectRequest(data) {
+      return data.keys().hasAll(['name', 'email', 'message']) &&
+             data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 150 &&
+             data.message is string && data.message.size() >= 5 && data.message.size() <= 3000;
+    }
+
+    // Validation Blueprint for EstimatorSession
+    function isValidEstimatorSession(data) {
+      return data.keys().hasAll(['userId', 'totalOneTime']) &&
+             data.userId is string && data.userId.size() <= 128 &&
+             data.totalOneTime is number && data.totalOneTime >= 0;
+    }
+
+    // Validation Blueprint for ContactSubmission
+    function isValidContactSubmission(data) {
+      return data.keys().hasAll(['name', 'email', 'message']) &&
+             data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() >= 5 && data.email.size() <= 150 &&
+             data.message is string && data.message.size() >= 5 && data.message.size() <= 3000;
+    }
+
+    // Validation Blueprint for ActivityEvent
+    function isValidActivityEvent(data) {
+      return data.keys().hasAll(['eventName']) &&
+             data.eventName is string && data.eventName.size() >= 2 && data.eventName.size() <= 64;
+    }
+
+    // Validation Blueprint for Testimonial
     function isValidTestimonial(data) {
       return data.keys().hasAll(['clientName', 'clientRole', 'companyName', 'rating', 'content', 'projectCategory']) &&
              data.clientName is string && data.clientName.size() >= 2 && data.clientName.size() <= 100 &&
@@ -26,21 +77,56 @@ service cloud.firestore {
              data.projectCategory is string && data.projectCategory.size() >= 2 && data.projectCategory.size() <= 50;
     }
 
-    // Testimonials Collection Rules
-    match /testimonials/{testimonialId} {
-      // Anyone can read client feedback testimonials
-      allow read: if true;
-      
-      // Allow submitting feedback if payload meets validation schema
-      allow create: if isValidId(testimonialId) && isValidTestimonial(incoming());
-      
-      // Update and delete restricted
-      allow update, delete: if false;
+    // USERS COLLECTION
+    match /users/{userId} {
+      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow list: if isAdmin();
+      // Block users from self-assigning admin role
+      allow create: if isSignedIn() && request.auth.uid == userId && isValidUser(incoming()) && incoming().role == 'USER';
+      allow update: if isSignedIn() && (request.auth.uid == userId || isAdmin()) && isValidUser(incoming()) &&
+                    (isAdmin() || incoming().role == existing().role);
+      allow delete: if isSignedIn() && (request.auth.uid == userId || isAdmin());
     }
 
-    // Default deny all other paths
-    match /{document=**} {
-      allow read, write: if false;
+    // PROJECT REQUESTS COLLECTION
+    match /project_requests/{requestId} {
+      allow create: if isValidId(requestId) && isValidProjectRequest(incoming());
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow update, delete: if isAdmin();
+    }
+
+    // ESTIMATOR SESSIONS COLLECTION
+    match /estimator_sessions/{sessionId} {
+      allow create: if isValidId(sessionId) && isValidEstimatorSession(incoming());
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow update, delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+
+    // CONTACT SUBMISSIONS COLLECTION
+    match /contact_submissions/{submissionId} {
+      allow create: if isValidId(submissionId) && isValidContactSubmission(incoming());
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ACTIVITY EVENTS COLLECTION
+    match /activity_events/{eventId} {
+      allow create: if isValidId(eventId) && isValidActivityEvent(incoming());
+      allow read, update, delete: if isAdmin();
+    }
+
+    // TESTIMONIALS COLLECTION
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow create: if isValidId(testimonialId) && isValidTestimonial(incoming());
+      allow update, delete: if isAdmin();
+    }
+
+    // ADMINS LOOKUP COLLECTION
+    match /admins/{adminId} {
+      allow read: if isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow write: if isAdmin();
     }
   }
 }

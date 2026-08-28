@@ -11,6 +11,9 @@ import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './context/ToastContext';
 import { RoleProvider } from './context/RoleContext';
+import { LanguageProvider } from './context/LanguageContext';
+import { AuthProvider } from './context/AuthContext';
+import { AuthModal } from './components/AuthModal';
 import { RoleQuickSwitcher } from './components/RoleQuickSwitcher';
 import { updatePageSEO, syncUrlSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
@@ -40,6 +43,8 @@ const FAQ = lazy(() => import('./pages/FAQ').then((m) => ({ default: m.FAQ })));
 const GoogleSheetsManager = lazy(() => import('./pages/GoogleSheetsManager').then((m) => ({ default: m.GoogleSheetsManager })));
 const Blog = lazy(() => import('./pages/Blog').then((m) => ({ default: m.Blog })));
 const Locations = lazy(() => import('./pages/Locations').then((m) => ({ default: m.Locations })));
+const Terms = lazy(() => import('./pages/Terms').then((m) => ({ default: m.Terms })));
+const Privacy = lazy(() => import('./pages/Privacy').then((m) => ({ default: m.Privacy })));
 const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
 
 export default function App() {
@@ -88,7 +93,9 @@ export default function App() {
       'faq',
       'sheets',
       'blog',
-      'locations'
+      'locations',
+      'terms',
+      'privacy'
     ];
     return validPages.includes(raw as PageId) ? (raw as PageId) : null;
   };
@@ -140,7 +147,6 @@ export default function App() {
     let timeoutId: NodeJS.Timeout | null = null;
     let observer: IntersectionObserver | null = null;
 
-    // Debounced scroll handler to prevent excessive re-renders during high-frequency scrolling
     const handleScroll = () => {
       if (timeoutId !== null) return;
       timeoutId = setTimeout(() => {
@@ -148,10 +154,9 @@ export default function App() {
         const heroThreshold = 350;
         const isPast = window.scrollY > heroThreshold;
         setIsScrolledPastHero((prev) => (prev !== isPast ? isPast : prev));
-      }, 40); // 40ms throttle/debounce frame
+      }, 40);
     };
 
-    // IntersectionObserver for efficient viewport detection when hero element exists
     const heroElement = document.getElementById('hero-section') || document.querySelector('main section');
     if (heroElement && 'IntersectionObserver' in window) {
       observer = new IntersectionObserver(
@@ -189,14 +194,12 @@ export default function App() {
       window.location.hash = targetHash;
     }
 
-    // Instant page transition without artificial delays or preloader overlays
     if (page !== currentPage) {
       setCurrentPage(page);
       if (!hash) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } else if (hash) {
-      // If already on target page, scroll directly to target ID element
       const targetId = hash.replace('#', '');
       const el = document.getElementById(targetId);
       if (el) {
@@ -218,7 +221,6 @@ export default function App() {
     handleNavigate('contact');
   };
 
-  // Suspense fallback tailored per active page
   const getPageSuspenseFallback = (page: PageId) => {
     switch (page) {
       case 'services':
@@ -248,125 +250,133 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <RoleProvider>
-        <div className="min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-cyan-500 selection:text-slate-950 relative overflow-x-hidden pb-16 lg:pb-0">
-        
-        {/* Luxury Scroll Progress Bar */}
-        <motion.div
-          className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 z-[100] origin-left shadow-[0_0_12px_rgba(34,211,238,0.8)]"
-          style={{ scaleX: scrollYProgress }}
-        />
+      <LanguageProvider>
+        <AuthProvider>
+          <RoleProvider>
+            <div className="min-h-screen bg-[#fcfcf9] dark:bg-[#080b11] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 selection:bg-orange-500 selection:text-white relative overflow-x-hidden pb-16 lg:pb-0">
+            
+            {/* Luxury Scroll Progress Bar */}
+            <motion.div
+              className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-600 via-amber-500 to-orange-400 z-[100] origin-left shadow-[0_0_12px_rgba(249,115,22,0.8)]"
+              style={{ scaleX: scrollYProgress }}
+            />
 
-        {/* Global Futuristic Enterprise Background Layer */}
-        <GlobalBackgroundLayer />
+            {/* Global Futuristic Enterprise Background Layer */}
+            <GlobalBackgroundLayer />
 
-        {/* Floating Navigation & Header Controls */}
-        <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
+            {/* Floating Navigation & Header Controls */}
+            <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
 
-        {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
-        <main className="flex-1 relative z-10 pt-16 sm:pt-20 transition-all duration-300">
-          <ErrorBoundary>
-            <Suspense fallback={getPageSuspenseFallback(currentPage)}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentPage}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {currentPage === 'home' && (
-                    <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
-                  )}
-                  {currentPage === 'about' && <About onNavigate={handleNavigate} />}
-                  {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
-                  {currentPage === 'systems' && <AiSystems onNavigate={handleNavigate} />}
-                  {currentPage === 'process' && <Process onNavigate={handleNavigate} />}
-                  {currentPage === 'courses' && <Courses onNavigate={handleNavigate} />}
-                  {currentPage === 'pricing' && (
-                    <Pricing
-                      onNavigateToContactWithItem={handleNavigateToContactWithItem}
-                      onNavigateToMaintenance={() => handleNavigate('maintenance')}
-                    />
-                  )}
-                  {currentPage === 'portfolio' && (
-                    <Portfolio onNavigate={handleNavigate} />
-                  )}
-                  {currentPage === 'apps' && (
-                    <AppStudio
-                      onNavigateToContactWithItem={handleNavigateToContactWithItem}
-                      onNavigate={handleNavigate}
-                    />
-                  )}
-                  {currentPage === 'maintenance' && (
-                    <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
-                  )}
-                  {currentPage === 'gallery' && (
-                    <Gallery onNavigate={handleNavigate} />
-                  )}
-                  {currentPage === 'sheets' && (
-                    <GoogleSheetsManager onNavigate={handleNavigate} />
-                  )}
-                  {currentPage === 'contact' && (
-                    <Contact initialMessage={contactInitialMessage} onNavigate={handleNavigate} />
-                  )}
-                  {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
-                  {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
-                  {currentPage === 'locations' && <Locations onNavigate={handleNavigate} />}
-                  {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
-                </motion.div>
-              </AnimatePresence>
-            </Suspense>
-          </ErrorBoundary>
-        </main>
+            {/* Main Page Area with AnimatePresence transition and instant Suspense fallback */}
+            <main className="flex-1 relative z-10 pt-16 sm:pt-20 transition-all duration-300">
+              <ErrorBoundary>
+                <Suspense fallback={getPageSuspenseFallback(currentPage)}>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentPage}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {currentPage === 'home' && (
+                        <Home onNavigate={handleNavigate} isScrolledPastHero={isScrolledPastHero} />
+                      )}
+                      {currentPage === 'about' && <About onNavigate={handleNavigate} />}
+                      {currentPage === 'services' && <Services onNavigate={handleNavigate} />}
+                      {currentPage === 'systems' && <AiSystems onNavigate={handleNavigate} />}
+                      {currentPage === 'process' && <Process onNavigate={handleNavigate} />}
+                      {currentPage === 'courses' && <Courses onNavigate={handleNavigate} />}
+                      {currentPage === 'pricing' && (
+                        <Pricing
+                          onNavigateToContactWithItem={handleNavigateToContactWithItem}
+                          onNavigateToMaintenance={() => handleNavigate('maintenance')}
+                        />
+                      )}
+                      {currentPage === 'portfolio' && (
+                        <Portfolio onNavigate={handleNavigate} />
+                      )}
+                      {currentPage === 'apps' && (
+                        <AppStudio
+                          onNavigateToContactWithItem={handleNavigateToContactWithItem}
+                          onNavigate={handleNavigate}
+                        />
+                      )}
+                      {currentPage === 'maintenance' && (
+                        <Maintenance onNavigateToContactWithItem={handleNavigateToContactWithItem} />
+                      )}
+                      {currentPage === 'gallery' && (
+                        <Gallery onNavigate={handleNavigate} />
+                      )}
+                      {currentPage === 'sheets' && (
+                        <GoogleSheetsManager onNavigate={handleNavigate} />
+                      )}
+                      {currentPage === 'contact' && (
+                        <Contact initialMessage={contactInitialMessage} onNavigate={handleNavigate} />
+                      )}
+                      {currentPage === 'faq' && <FAQ onNavigate={handleNavigate} />}
+                      {currentPage === 'blog' && <Blog onNavigate={handleNavigate} />}
+                      {currentPage === 'locations' && <Locations onNavigate={handleNavigate} />}
+                      {currentPage === 'terms' && <Terms onNavigate={handleNavigate} />}
+                      {currentPage === 'privacy' && <Privacy onNavigate={handleNavigate} />}
+                      {currentPage === 'notfound' && <NotFound onNavigate={handleNavigate} />}
+                    </motion.div>
+                  </AnimatePresence>
+                </Suspense>
+              </ErrorBoundary>
+            </main>
 
-        {/* Floating Quick Role Switcher (Mosey Awwwards Experience on all pages) */}
-        <RoleQuickSwitcher onNavigate={handleNavigate} />
+            {/* Global User Authentication Modal */}
+            <AuthModal onNavigate={handleNavigate} />
 
-        {/* Mobile Sticky Quick Action Bar */}
-        <MobileQuickActionBar
-          currentPage={currentPage}
-          onNavigate={handleNavigate}
-          onOpenSchedule={() => setIsScheduleCallOpen(true)}
-        />
+            {/* Floating Quick Role Switcher */}
+            <RoleQuickSwitcher onNavigate={handleNavigate} />
 
-        {/* Schedule 1-on-1 Discovery Call Modal */}
-        <ScheduleCallModal
-          isOpen={isScheduleCallOpen}
-          onClose={() => setIsScheduleCallOpen(false)}
-          currentPage={currentPage}
-        />
+            {/* Mobile Sticky Quick Action Bar */}
+            <MobileQuickActionBar
+              currentPage={currentPage}
+              onNavigate={handleNavigate}
+              onOpenSchedule={() => setIsScheduleCallOpen(true)}
+            />
 
-        {/* Global Command Palette (Cmd + K / Spotlight Search) */}
-        <CommandPalette
-          isOpen={isCommandPaletteOpen}
-          onClose={() => setIsCommandPaletteOpen(false)}
-          onNavigate={handleNavigate}
-        />
+            {/* Schedule 1-on-1 Discovery Call Modal */}
+            <ScheduleCallModal
+              isOpen={isScheduleCallOpen}
+              onClose={() => setIsScheduleCallOpen(false)}
+              currentPage={currentPage}
+            />
 
-        {/* Global WhatsApp Diagnostics Modal */}
-        <WhatsAppDiagnosticsModal
-          isOpen={isWhatsAppDiagOpen}
-          onClose={() => setIsWhatsAppDiagOpen(false)}
-        />
+            {/* Global Command Palette (Cmd + K / Spotlight Search) */}
+            <CommandPalette
+              isOpen={isCommandPaletteOpen}
+              onClose={() => setIsCommandPaletteOpen(false)}
+              onNavigate={handleNavigate}
+            />
 
-        {/* Floating WhatsApp Action */}
-        <FloatingWhatsApp currentPage={currentPage} />
+            {/* Global WhatsApp Diagnostics Modal */}
+            <WhatsAppDiagnosticsModal
+              isOpen={isWhatsAppDiagOpen}
+              onClose={() => setIsWhatsAppDiagOpen(false)}
+            />
 
-        {/* Scroll To Top Action Button */}
-        <ScrollToTopButton />
+            {/* Floating WhatsApp Action */}
+            <FloatingWhatsApp currentPage={currentPage} />
 
-        {/* Real-world Web Vitals & Performance Telemetry Tracker */}
-        <PagePerformanceTracker currentPage={currentPage} />
+            {/* Scroll To Top Action Button */}
+            <ScrollToTopButton />
 
-        {/* Internal Web Vitals Performance Monitor */}
-        <PerformanceMonitor />
+            {/* Real-world Web Vitals & Performance Telemetry Tracker */}
+            <PagePerformanceTracker currentPage={currentPage} />
 
-        {/* Footer */}
-        <Footer onNavigate={handleNavigate} />
-      </div>
-      </RoleProvider>
+            {/* Internal Web Vitals Performance Monitor */}
+            <PerformanceMonitor />
+
+            {/* Footer */}
+            <Footer onNavigate={handleNavigate} />
+          </div>
+          </RoleProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </ToastProvider>
   );
 }
-

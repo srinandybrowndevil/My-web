@@ -1,5 +1,265 @@
 {
   "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Authenticated user profile and role details for MUCO Labs platform",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Unique identifier of the Firebase Auth user"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "description": "Full name of the user"
+        },
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 150,
+          "description": "Email address of the user"
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Avatar photo URL"
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "enum": ["en", "ta"],
+          "description": "Preferred language for communications"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["USER", "CLIENT", "ADMIN", "SUPER_ADMIN"],
+          "description": "Access control role of the user"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "suspended", "pending"],
+          "description": "Account status"
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether email is verified"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Account creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last profile update timestamp"
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "description": "Last login timestamp"
+        }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "ProjectRequest": {
+      "title": "Project Request Submission",
+      "description": "Formal custom project request or RFP submitted to MUCO Labs",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Auth UID if submitted by authenticated user, or 'guest'"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "description": "Contact person name"
+        },
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 150,
+          "description": "Contact work email"
+        },
+        "company": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Company or business name"
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Contact phone number"
+        },
+        "projectType": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Category of project (e.g. Web, Mobile, AI, Cloud)"
+        },
+        "budget": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Selected or estimated budget tier"
+        },
+        "timeline": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Target delivery timeline"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 3000,
+          "description": "Detailed project description and scope requirements"
+        },
+        "sourcePage": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Page where request originated"
+        },
+        "language": {
+          "type": "string",
+          "enum": ["en", "ta"],
+          "description": "Language used during submission"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new", "reviewing", "contacted", "proposal_sent", "closed"],
+          "description": "Lead and inquiry status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of submission"
+        }
+      },
+      "required": ["name", "email", "message"]
+    },
+    "EstimatorSession": {
+      "title": "Saved Estimator Session",
+      "description": "Interactive quote estimate saved by a user",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "User UID who saved the estimate"
+        },
+        "selectedOptions": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "Serialized list of chosen modules"
+        },
+        "totalOneTime": {
+          "type": "number",
+          "description": "Total estimated one-time investment in INR"
+        },
+        "totalMonthly": {
+          "type": "number",
+          "description": "Total estimated recurring monthly investment in INR"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Custom notes for this estimate"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["userId", "totalOneTime"]
+    },
+    "ContactSubmission": {
+      "title": "Contact Submission",
+      "description": "Direct inquiry from MUCO Labs contact form",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "description": "Sender name"
+        },
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 150,
+          "description": "Sender email"
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Sender phone number"
+        },
+        "company": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Company name"
+        },
+        "serviceCategory": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Selected service interest"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 3000,
+          "description": "Inquiry message text"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["unread", "read", "replied"],
+          "description": "Inbox status"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Submission timestamp"
+        }
+      },
+      "required": ["name", "email", "message"]
+    },
+    "ActivityEvent": {
+      "title": "Authenticated Usage Event",
+      "description": "Product and feature usage telemetry event",
+      "type": "object",
+      "properties": {
+        "eventName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 64,
+          "description": "Name of event (e.g. user_signin, estimator_saved, cta_clicked)"
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "UID of the acting user or 'anonymous'"
+        },
+        "page": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Page route identifier"
+        },
+        "language": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "Active language code"
+        },
+        "metadata": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Serialized contextual metadata"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Server timestamp of the event"
+        }
+      },
+      "required": ["eventName"]
+    },
     "Testimonial": {
       "title": "Client Testimonial",
       "description": "Client feedback, rating, company details, and verified review for MUCO Labs projects.",
@@ -15,7 +275,7 @@
           "type": "string",
           "minLength": 2,
           "maxLength": 100,
-          "description": "Role or designation of the client (e.g. CEO, CTO, Product Manager)"
+          "description": "Role or designation of the client"
         },
         "companyName": {
           "type": "string",
@@ -57,6 +317,26 @@
     }
   },
   "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User accounts and security profiles"
+    },
+    "/project_requests/{requestId}": {
+      "schema": "ProjectRequest",
+      "description": "Inbound project inquiries and client RFPs"
+    },
+    "/estimator_sessions/{sessionId}": {
+      "schema": "EstimatorSession",
+      "description": "Saved project quote estimates"
+    },
+    "/contact_submissions/{submissionId}": {
+      "schema": "ContactSubmission",
+      "description": "Inbound contact form messages"
+    },
+    "/activity_events/{eventId}": {
+      "schema": "ActivityEvent",
+      "description": "Aggregated application and feature usage telemetry"
+    },
     "/testimonials/{testimonialId}": {
       "schema": "Testimonial",
       "description": "Public collection of client testimonials and reviews"

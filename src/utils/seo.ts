@@ -199,6 +199,24 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     ogType: 'website',
     twitterCard: 'summary_large_image'
   },
+  terms: {
+    title: 'Terms and Conditions | MUCO Labs Commercial Master Agreement',
+    description: 'Official terms and commercial conditions governing custom software engineering, standard 50% advance milestone agreements, and code ownership with MUCO Labs.',
+    keywords: 'MUCO Labs terms of service, software development agreement, payment milestones, code IP ownership, legal terms',
+    ogImage: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&h=630&q=85',
+    ogImageAlt: 'MUCO Labs Terms of Service and Commercial Agreement',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
+  },
+  privacy: {
+    title: 'Privacy Policy & DPDP Act 2023 Compliance | MUCO Labs',
+    description: 'Our data protection commitments, client privacy rights, DPDP Act 2023 compliance, and zero third-party telemetry selling standards at MUCO Labs.',
+    keywords: 'MUCO Labs privacy policy, DPDP Act 2023, data protection, privacy compliance India, client confidentiality',
+    ogImage: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&h=630&q=85',
+    ogImageAlt: 'MUCO Labs Privacy Policy and Data Protection',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
+  },
   notfound: {
     title: '404 - Page Not Found | MUCO Labs',
     description: 'The requested page could not be located on MUCO Labs. Navigate back to explore our custom software, AI solutions, and engineering services.',

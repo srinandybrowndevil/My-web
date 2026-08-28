@@ -1,7 +1,8 @@
 import React from 'react';
 import { PageId } from '../types';
-import { Phone, Mail, MapPin, Globe, ArrowUpRight, ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import { Phone, Mail, MapPin, Globe, ArrowUpRight, ShieldCheck, Heart, Sparkles, Scale, Shield } from 'lucide-react';
 import { MucoLogo } from './MucoLogo';
+import { useLanguage } from '../context/LanguageContext';
 
 // Service Mapping for Pricing page deep-linking
 const FOOTER_SERVICES = [
@@ -51,8 +52,11 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { t } = useLanguage();
+
   const handleNav = (page: PageId, hash?: string) => {
     onNavigate(page, undefined, hash);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLocationNav = (cityId?: string, comboId?: string) => {
@@ -64,6 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       window.location.hash = '#locations';
     }
     onNavigate('locations');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -84,8 +89,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <span>Srinivash Mahalingam</span>
               </div>
               <div className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800">
-                <span className="font-semibold text-slate-200">Established:</span>
-                <span>2026</span>
+                <span className="font-semibold text-slate-200">Standard SLA:</span>
+                <span className="text-orange-400">50% Advance / Milestone</span>
               </div>
             </div>
           </div>
@@ -95,26 +100,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <p className="text-xs font-bold text-white uppercase tracking-wider">Navigation</p>
             <ul className="space-y-2 text-xs">
               {[
-                { id: 'home', label: 'Home Page' },
-                { id: 'systems', label: 'Autonomous AI Systems' },
-                { id: 'services', label: 'All Services' },
-                { id: 'portfolio', label: 'Project Portfolio' },
-                { id: 'process', label: 'Our 8-Step Process' },
-                { id: 'about', label: 'About MUCO Labs' },
-                { id: 'locations', label: 'Locations & Hubs' },
-                { id: 'courses', label: 'Courses & Bootcamps' },
-                { id: 'apps', label: 'Publish to App Stores' },
-                { id: 'pricing', label: 'Pricing Calculator' },
-                { id: 'maintenance', label: 'Maintenance Plans' },
-                { id: 'gallery', label: 'Our Leadership' },
-                { id: 'blog', label: 'Blog & Insights' },
-                { id: 'faq', label: 'Help & FAQ' },
-                { id: 'contact', label: 'Contact Us' }
+                { id: 'home', label: t.nav.home },
+                { id: 'systems', label: t.nav.systems },
+                { id: 'services', label: t.nav.services },
+                { id: 'portfolio', label: t.nav.work },
+                { id: 'process', label: t.nav.process },
+                { id: 'about', label: t.nav.about },
+                { id: 'locations', label: t.nav.locations },
+                { id: 'courses', label: t.nav.learn },
+                { id: 'apps', label: t.nav.apps },
+                { id: 'pricing', label: t.nav.pricing },
+                { id: 'maintenance', label: t.nav.maintenance },
+                { id: 'blog', label: t.nav.blog },
+                { id: 'faq', label: t.nav.faq },
+                { id: 'terms', label: t.nav.terms },
+                { id: 'privacy', label: t.nav.privacy },
+                { id: 'contact', label: t.nav.contact }
               ].map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => handleNav(link.id as PageId)}
-                    className="text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-1 group text-left"
+                    className="text-slate-400 hover:text-orange-400 transition-colors flex items-center gap-1 group text-left cursor-pointer"
                   >
                     <span className="group-hover:translate-x-0.5 transition-transform">
                       {link.label}
@@ -133,9 +139,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <li key={idx}>
                   <button
                     onClick={() => handleNav('pricing', service.targetId)}
-                    className="text-slate-400 hover:text-blue-400 transition-colors text-left group flex items-start gap-1.5 leading-snug"
+                    className="text-slate-400 hover:text-orange-400 transition-colors text-left group flex items-start gap-1.5 leading-snug cursor-pointer"
                   >
-                    <span className="text-blue-500/60 group-hover:text-blue-400 transition-colors">•</span>
+                    <span className="text-orange-500/60 group-hover:text-orange-400 transition-colors">•</span>
                     <span className="group-hover:translate-x-0.5 transition-transform">
                       {service.name}
                     </span>
@@ -150,21 +156,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <p className="text-xs font-bold text-white uppercase tracking-wider">Official Contact</p>
             <div className="space-y-2.5 text-xs">
               <a
-                href="tel:+916381809844"
-                className="flex items-start gap-2.5 text-slate-300 hover:text-blue-400 transition-colors group"
+                href="https://wa.me/916381809844?text=Hello%20MUCO%20Labs%2C%20I%20would%20like%20to%20discuss%20a%20project."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2.5 text-slate-300 hover:text-orange-400 transition-colors group"
               >
-                <Phone className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <Phone className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-medium">+91 6381809844</span>
-                  <span className="text-[10px] text-slate-500">Direct Founder & Support Line</span>
+                  <span className="block font-medium">+91 63818 09844</span>
+                  <span className="text-[10px] text-slate-500">Direct Phone &amp; WhatsApp</span>
                 </div>
               </a>
 
               <a
                 href="mailto:contact@mucolabs.com"
-                className="flex items-start gap-2.5 text-slate-300 hover:text-blue-400 transition-colors group"
+                className="flex items-start gap-2.5 text-slate-300 hover:text-orange-400 transition-colors group"
               >
-                <Mail className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <Mail className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-medium">contact@mucolabs.com</span>
                   <span className="text-[10px] text-slate-500">24h Email Response</span>
@@ -175,18 +183,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 href="https://mucolabs.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-slate-300 hover:text-blue-400 transition-colors"
+                className="flex items-center gap-2.5 text-slate-300 hover:text-orange-400 transition-colors"
               >
-                <Globe className="w-4 h-4 text-blue-400 shrink-0" />
+                <Globe className="w-4 h-4 text-orange-400 shrink-0" />
                 <span className="font-medium">mucolabs.com</span>
                 <ArrowUpRight className="w-3 h-3 text-slate-500" />
               </a>
 
               <div className="flex items-start gap-2.5 text-slate-400 pt-1">
-                <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-medium text-slate-300">Erode, Tamil Nadu</span>
-                  <span className="text-[10px] text-slate-500">India - 638001</span>
+                  <span className="block font-medium text-slate-300">Erode &amp; Perundurai Hub</span>
+                  <span className="text-[10px] text-slate-500">Tamil Nadu, India - 638052</span>
                 </div>
               </div>
             </div>
@@ -197,12 +205,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="py-8 border-b border-slate-800/80 space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+              <MapPin className="w-3.5 h-3.5 text-orange-400" />
               <span>Regional Technology Hubs & Local SEO</span>
             </span>
             <button
               onClick={() => handleLocationNav()}
-              className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors"
+              className="text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors cursor-pointer"
             >
               View All Locations Directory →
             </button>
@@ -213,7 +221,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <button
                 key={idx}
                 onClick={() => handleLocationNav(hub.cityId)}
-                className="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-400 transition-all"
+                className="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-orange-500/50 text-slate-300 hover:text-orange-400 transition-all cursor-pointer"
               >
                 {hub.name}
               </button>
@@ -226,7 +234,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <button
                 key={idx}
                 onClick={() => handleLocationNav(undefined, combo.comboId)}
-                className="hover:text-blue-400 transition-colors underline-offset-2 hover:underline text-left"
+                className="hover:text-orange-400 transition-colors underline-offset-2 hover:underline text-left cursor-pointer"
               >
                 {combo.name}
               </button>
@@ -234,20 +242,26 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar with Legal & DPDP Compliance */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} MUCO Labs. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} MUCO Labs Private Limited. All rights reserved.</p>
           <div className="flex items-center gap-4 flex-wrap">
             <button
-              onClick={() => window.dispatchEvent(new CustomEvent('muco:replay_intro'))}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 hover:border-cyan-400 transition-colors text-[11px] font-mono"
+              onClick={() => handleNav('terms')}
+              className="hover:text-orange-400 transition-colors cursor-pointer"
             >
-              <Sparkles className="w-3 h-3 text-amber-400" />
-              <span>Replay Broed Page Load</span>
+              {t.nav.terms}
             </button>
-            <span className="text-slate-700">|</span>
-            <span className="text-slate-400 font-medium">Founder & Chairman: Srinivash Mahalingam</span>
-            <span className="text-slate-700">|</span>
+            <span className="text-slate-700">&bull;</span>
+            <button
+              onClick={() => handleNav('privacy')}
+              className="hover:text-orange-400 transition-colors cursor-pointer"
+            >
+              {t.nav.privacy}
+            </button>
+            <span className="text-slate-700">&bull;</span>
+            <span className="text-slate-400 font-medium">Founder: Srinivash Mahalingam</span>
+            <span className="text-slate-700">&bull;</span>
             <span className="text-slate-500">Erode, TN, India</span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-export type PageId = 'home' | 'about' | 'services' | 'systems' | 'process' | 'courses' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets' | 'blog' | 'locations' | 'notfound';
+export type PageId = 'home' | 'about' | 'services' | 'systems' | 'process' | 'courses' | 'pricing' | 'portfolio' | 'apps' | 'maintenance' | 'gallery' | 'contact' | 'faq' | 'sheets' | 'blog' | 'locations' | 'terms' | 'privacy' | 'notfound';
 
 export type LocationId = 
   | 'erode' 

@@ -53,6 +53,8 @@ const PAGE_NAMES: Record<PageId, string> = {
   faq: 'Frequently Asked Questions',
   sheets: 'Google Sheets CRM',
   blog: 'Engineering Blog',
+  terms: 'Terms of Service',
+  privacy: 'Privacy Policy',
   notfound: '404 Error'
 };
 
