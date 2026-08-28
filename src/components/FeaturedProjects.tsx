@@ -5,13 +5,10 @@ import { ProjectItem, PageId } from '../types';
 import { Image } from './Image';
 import { CaseStudyDetailModal } from './CaseStudyDetailModal';
 import { 
-  Sparkles, 
   ArrowRight, 
-  Calendar, 
   CheckCircle2, 
   Building2, 
   ChevronRight, 
-  ExternalLink,
   Code2,
   Cpu,
   Bot,
@@ -35,7 +32,6 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
   // Select top featured projects from each domain
   const featuredList = INITIAL_PROJECTS.filter((proj) => {
     if (selectedCategory === 'All') {
-      // Pick 6 key flagship projects
       return ['proj-web-1', 'proj-mobile-1', 'proj-saas-1', 'proj-ai-1', 'proj-web-2', 'proj-mobile-2'].includes(proj.id);
     }
     return proj.category === selectedCategory;
@@ -44,49 +40,49 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Web Development':
-        return <Code2 className="w-3.5 h-3.5 text-amber-400" />;
+        return <Code2 className="w-3.5 h-3.5 text-orange-500" />;
       case 'Mobile App':
-        return <Cpu className="w-3.5 h-3.5 text-blue-400" />;
+        return <Cpu className="w-3.5 h-3.5 text-orange-500" />;
       case 'SaaS Platform':
-        return <Layers className="w-3.5 h-3.5 text-purple-400" />;
+        return <Layers className="w-3.5 h-3.5 text-orange-500" />;
       case 'AI & Automation':
-        return <Bot className="w-3.5 h-3.5 text-emerald-400" />;
+        return <Bot className="w-3.5 h-3.5 text-orange-500" />;
       default:
-        return <Globe className="w-3.5 h-3.5 text-amber-400" />;
+        return <Globe className="w-3.5 h-3.5 text-orange-500" />;
     }
   };
 
   return (
-    <section id="featured-projects" className="py-8 space-y-10">
+    <section id="featured-projects" className="py-20 sm:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-200 dark:border-white/10 pb-8">
         <div className="space-y-3 max-w-2xl">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-indigo-500/10 border border-amber-500/30 px-3.5 py-1.5 rounded-full text-amber-400 font-bold text-xs">
-            <Award className="w-4 h-4 text-amber-400" />
-            <span>Showcase of Engineering Excellence</span>
+          <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-3.5 py-1 rounded-full text-orange-600 dark:text-orange-400 font-mono font-bold text-xs uppercase tracking-widest">
+            <Award className="w-3.5 h-3.5" />
+            <span>SELECTED PRODUCTION SYSTEMS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-            Featured <span className="gold-text-gradient">Projects & Case Studies</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.1]">
+            SELECTED WORK.
           </h2>
 
-          <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-            Explore production-grade software applications, mobile platforms, enterprise SaaS engines, and AI solutions engineered by MUCO Labs.
+          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            Explore scalable enterprise platforms, mobile applications, multi-tenant SaaS engines, and autonomous AI systems delivered for global clients.
           </p>
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-amber-500/20 backdrop-blur-md">
+        <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 dark:bg-white/5 p-1.5 rounded-2xl border border-slate-200 dark:border-white/10">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
             return (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all duration-300 ${
+                className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black shadow-lg shadow-amber-500/20'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {cat}
@@ -96,135 +92,85 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
         </div>
       </div>
 
-      {/* Projects Grid with Framer Motion Staggered Entrance */}
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-50px" }}
-        variants={{
-          hidden: {},
-          show: {
-            transition: {
-              staggerChildren: 0.12
-            }
-          }
-        }}
-      >
-        {featuredList.map((project) => (
+      {/* Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredList.map((project, idx) => (
           <motion.div
             key={project.id}
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
-            }}
-            whileHover={{ y: -6, transition: { duration: 0.25 } }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: idx * 0.08 }}
             onMouseEnter={() => setHoveredProjectId(project.id)}
             onMouseLeave={() => setHoveredProjectId(null)}
-            className="group relative glass-morphism-card glass-card-hover rounded-3xl overflow-hidden flex flex-col justify-between"
+            className="group relative rounded-3xl bg-white dark:bg-[#0e131f] border border-slate-200/80 dark:border-white/10 overflow-hidden flex flex-col justify-between hover:border-orange-500/40 transition-all duration-300 shadow-sm hover:shadow-xl dark:hover:shadow-2xl"
           >
-            {/* Card Image Header with Overlay */}
+            {/* Card Image Header */}
             <div className="relative h-52 w-full overflow-hidden bg-slate-950">
               <Image
                 src={project.image}
                 alt={project.title}
                 fallbackSrc="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
-                className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
 
-              {/* Gradient Scrim */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
 
               {/* Top Badges */}
-              <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 z-10">
-                <span className="inline-flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-md border border-amber-500/30 px-3 py-1 rounded-full text-[10px] font-black uppercase text-amber-300">
+              <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2 z-10">
+                <span className="inline-flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold uppercase text-slate-200">
                   {getCategoryIcon(project.category)}
                   <span>{project.category}</span>
                 </span>
 
-                <span className="inline-flex items-center gap-1 bg-emerald-950/90 border border-emerald-500/40 text-emerald-400 px-2.5 py-1 rounded-full text-[10px] font-black">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                <span className="inline-flex items-center gap-1 bg-white/10 backdrop-blur-md border border-white/10 text-white px-2.5 py-1 rounded-full text-[10px] font-mono font-bold">
                   <span>{project.year}</span>
                 </span>
               </div>
-
-              {/* Hover Quick Overlay Action */}
-              <motion.div 
-                className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm p-5 flex flex-col justify-center items-center text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none group-hover:pointer-events-auto"
-                animate={{ opacity: hoveredProjectId === project.id ? 1 : 0 }}
-              >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-1">Key Impact</span>
-                <p className="text-xs font-bold text-white max-w-xs mb-3 line-clamp-2">
-                  "{project.highlights[0] || project.description}"
-                </p>
-                
-                <div className="flex flex-wrap justify-center gap-1.5 mb-4 max-w-xs">
-                  {project.techStack.map((tech, i) => (
-                    <span key={i} className="text-[9px] font-extrabold bg-amber-500/10 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {onNavigate && (
-                  <button
-                    onClick={() => onNavigate('portfolio')}
-                    className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs px-4 py-2 rounded-xl shadow-lg transition-transform transform active:scale-95"
-                  >
-                    <span>View Case Study</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </motion.div>
             </div>
 
             {/* Card Content Body */}
-            <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+            <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-[11px] text-slate-400 font-semibold">
-                  <Building2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-orange-600 dark:text-orange-400 font-semibold">
+                  <Building2 className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">{project.client}</span>
                 </div>
 
-                <h3 className="text-base font-black text-white group-hover:text-amber-400 transition-colors line-clamp-1">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors line-clamp-1">
                   {project.title}
                 </h3>
 
-                <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed font-normal">
+                <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-normal">
                   {project.description}
                 </p>
               </div>
 
-              {/* Tech Stack Pills Footer */}
-              <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
+              {/* Tech Stack & CTA */}
+              <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between gap-2">
                 <div className="flex flex-wrap gap-1">
-                  {project.techStack.slice(0, 3).map((tech, idx) => (
+                  {project.techStack.slice(0, 3).map((tech, i) => (
                     <span
-                      key={idx}
-                      className="text-[10px] font-semibold bg-slate-800/80 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700/60"
+                      key={i}
+                      className="text-[10px] font-medium bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md"
                     >
                       {tech}
                     </span>
                   ))}
-                  {project.techStack.length > 3 && (
-                    <span className="text-[10px] font-bold text-slate-400 px-1 py-0.5">
-                      +{project.techStack.length - 3}
-                    </span>
-                  )}
                 </div>
 
                 <button
                   onClick={() => setSelectedModalProject(project)}
-                  className="text-[11px] font-black text-amber-400 hover:text-amber-300 flex items-center gap-1 shrink-0 group-hover:translate-x-1 transition-transform cursor-pointer"
+                  className="text-xs font-bold text-orange-600 dark:text-orange-400 hover:text-orange-500 flex items-center gap-1 shrink-0 cursor-pointer"
                 >
-                  <span>Deep Dive</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>View Details</span>
+                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Case Study Detail Modal */}
       <CaseStudyDetailModal
@@ -239,15 +185,15 @@ export const FeaturedProjects: React.FC<FeaturedProjectsProps> = ({ onNavigate }
         }}
       />
 
-      {/* Footer Navigation CTA to full Portfolio */}
+      {/* Footer CTA */}
       {onNavigate && (
-        <div className="text-center pt-2">
+        <div className="text-center pt-4">
           <button
             onClick={() => onNavigate('portfolio')}
-            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-400 hover:text-amber-300 font-black text-xs px-6 py-3 rounded-2xl border border-amber-500/30 shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-950 font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer group"
           >
-            <span>Explore All 15+ Projects in Portfolio</span>
-            <ArrowRight className="w-4 h-4 text-amber-400" />
+            <span>Explore All Work in Portfolio</span>
+            <ArrowRight className="w-4 h-4 text-orange-500 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       )}

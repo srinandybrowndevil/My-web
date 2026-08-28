@@ -137,23 +137,23 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
   // Primary desktop navbar links
   const primaryNavLinks: { id: PageId; label: string; icon: React.ElementType }[] = [
-    { id: 'systems', label: 'AI Systems', icon: Sparkles },
+    { id: 'portfolio', label: 'Work', icon: Layout },
     { id: 'services', label: 'Services', icon: Layers },
-    { id: 'portfolio', label: 'Portfolio', icon: Layout },
+    { id: 'systems', label: 'Systems', icon: Sparkles },
     { id: 'process', label: 'Process', icon: GitCommit },
     { id: 'about', label: 'About', icon: Building },
-    { id: 'locations', label: 'Locations', icon: MapPin },
+    { id: 'courses', label: 'Learn', icon: GraduationCap },
     { id: 'pricing', label: 'Pricing', icon: Tag }
   ];
 
   // Secondary "More" links for desktop
   const secondaryNavLinks: { id: PageId; label: string; desc: string; icon: React.ElementType }[] = [
-    { id: 'courses', label: 'Courses & Learn', desc: 'Academy bootcamps & practical training', icon: GraduationCap },
     { id: 'apps', label: 'Publish Apps', desc: 'iOS App Store & Google Play publishing', icon: Smartphone },
     { id: 'maintenance', label: 'Maintenance & SLA', desc: '24/7 server health & dedicated support', icon: ShieldCheck },
-    { id: 'gallery', label: 'Our Team & Culture', desc: 'Behind the scenes at MUCO Labs', icon: Users },
+    { id: 'gallery', label: 'Team & Culture', desc: 'Behind the scenes at MUCO Labs', icon: Users },
+    { id: 'locations', label: 'Regional Hubs', desc: 'Erode & Tamil Nadu industrial technology hubs', icon: MapPin },
     { id: 'blog', label: 'Engineering Blog', desc: 'Insights, tech breakdowns & tutorials', icon: FileText },
-    { id: 'faq', label: 'Frequently Asked', desc: 'Common answers & project queries', icon: HelpCircle }
+    { id: 'faq', label: 'FAQ', desc: 'Common answers & project queries', icon: HelpCircle }
   ];
 
   // All navigation routes for mobile drawer and search
@@ -161,7 +161,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     { id: 'home', label: 'Home', icon: Home },
     ...primaryNavLinks,
     ...secondaryNavLinks.map(s => ({ id: s.id, label: s.label, icon: s.icon })),
-    { id: 'contact', label: 'Contact & Estimate', icon: Send }
+    { id: 'contact', label: 'Start a Project', icon: Send }
   ];
 
   // Search Index Data
@@ -256,49 +256,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
 
   return (
     <>
-      {/* TOP EDGE CURSOR HOVER SENSOR (Trigger Pop-up on Touch/Hover) */}
-      <div
-        className="fixed top-0 left-0 right-0 h-4 sm:h-6 z-50 pointer-events-auto"
-        onMouseEnter={() => setIsCursorNearTop(true)}
-        onTouchStart={() => setIsCursorNearTop(true)}
-        aria-hidden="true"
-      />
-
-      {/* MINIMAL FLOATING NOTCH INDICATOR (Appears when navbar is tucked away to invite cursor touch) */}
-      <AnimatePresence>
-        {!isNavbarVisible && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            onMouseEnter={() => setIsCursorNearTop(true)}
-            onClick={() => setIsCursorNearTop(true)}
-            className="fixed top-2 left-1/2 -translate-x-1/2 z-40 cursor-pointer pointer-events-auto"
-          >
-            <div className="px-3.5 py-1.5 rounded-full bg-slate-950/90 dark:bg-[#070b16]/95 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)] backdrop-blur-xl flex items-center gap-2 text-cyan-400 hover:text-white transition-all hover:scale-105">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-              <span className="text-[11px] font-bold tracking-wide">Menu</span>
-              <ChevronDown className="w-3 h-3 text-cyan-400" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* FIXED TOP NAVIGATION BAR (Auto Pop-up on cursor touch/hover) */}
-      <motion.header
-        initial={false}
-        animate={{
-          y: isNavbarVisible ? 0 : -95,
-          opacity: isNavbarVisible ? 1 : 0
-        }}
-        transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          setIsCursorNearTop(false);
-        }}
-        className="fixed top-0 left-0 right-0 h-16 sm:h-20 bg-white/95 dark:bg-[#030712]/95 backdrop-blur-2xl border-b border-slate-200/80 dark:border-slate-800/80 z-40 transition-colors shadow-lg dark:shadow-2xl dark:shadow-cyan-950/20"
+      {/* FIXED TOP NAVIGATION BAR */}
+      <header
+        className={`fixed top-0 left-0 right-0 h-16 sm:h-20 z-40 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-[#fcfcf9]/95 dark:bg-[#080b11]/95 backdrop-blur-2xl border-b border-slate-200/80 dark:border-white/10 shadow-sm dark:shadow-2xl'
+            : 'bg-[#fcfcf9]/80 dark:bg-[#080b11]/80 backdrop-blur-xl border-b border-slate-200/40 dark:border-white/5'
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
           
@@ -312,17 +276,17 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
           </button>
 
           {/* CENTER: DESKTOP NAVIGATION LINKS */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
             {primaryNavLinks.map((item) => {
               const isActive = currentPage === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`px-3 py-2 rounded-xl text-xs xl:text-sm font-bold transition-all cursor-pointer ${
+                  className={`px-3.5 py-2 rounded-xl text-xs xl:text-[13px] font-semibold tracking-wide transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-slate-100 dark:bg-slate-800 text-cyan-600 dark:text-cyan-400 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
+                      ? 'bg-slate-900 text-white dark:bg-white/10 dark:text-orange-400 font-bold shadow-sm'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
                   }`}
                 >
                   {item.label}
@@ -334,14 +298,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             <div className="relative" ref={moreMenuRef}>
               <button
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                className={`px-3 py-2 rounded-xl text-xs xl:text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                className={`px-3.5 py-2 rounded-xl text-xs xl:text-[13px] font-semibold tracking-wide flex items-center gap-1.5 transition-all cursor-pointer ${
                   secondaryNavLinks.some(s => s.id === currentPage)
-                    ? 'bg-slate-100 dark:bg-slate-800 text-cyan-600 dark:text-cyan-400'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/70 dark:hover:bg-slate-800/60'
+                    ? 'bg-slate-900 text-white dark:bg-white/10 dark:text-orange-400'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
                 }`}
               >
                 <span>More</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMoreMenuOpen ? 'rotate-180 text-cyan-400' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMoreMenuOpen ? 'rotate-180 text-orange-400' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -351,7 +315,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.96 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full right-0 mt-2 w-72 bg-white dark:bg-[#070b16] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 z-50 space-y-1"
+                    className="absolute top-full right-0 mt-2 w-72 bg-white dark:bg-[#0e131f] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 z-50 space-y-1"
                   >
                     {secondaryNavLinks.map((sec) => {
                       const Icon = sec.icon;
@@ -362,11 +326,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                           onClick={() => handleNavClick(sec.id)}
                           className={`w-full text-left p-2.5 rounded-xl flex items-start gap-3 transition-colors cursor-pointer ${
                             isSecActive
-                              ? 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400'
-                              : 'hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300'
+                              ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400'
+                              : 'hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300'
                           }`}
                         >
-                          <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-cyan-500 shrink-0 mt-0.5">
+                          <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-orange-500 shrink-0 mt-0.5">
                             <Icon className="w-4 h-4" />
                           </div>
                           <div>
@@ -391,11 +355,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             {/* Quick Search Trigger */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all cursor-pointer text-xs"
+              className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-2 transition-all cursor-pointer text-xs"
               aria-label="Open search dialog"
             >
-              <Search className="w-4 h-4 text-cyan-500" />
-              <span className="hidden md:inline font-semibold">Search</span>
+              <Search className="w-4 h-4 text-orange-500" />
+              <span className="hidden md:inline font-medium">Search</span>
               <kbd className="hidden md:inline text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                 ⌘K
               </kbd>
@@ -404,12 +368,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
             {/* Theme Toggle */}
             <ThemeToggle />
 
-            {/* Get Estimate CTA Button */}
+            {/* Start a Project CTA Button */}
             <button
               onClick={() => handleNavClick('contact')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/20 transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
-              <span>Get Estimate</span>
+              <span>Start a Project</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
 
@@ -419,12 +383,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white cursor-pointer"
               aria-label="Open navigation menu"
             >
-              <Menu className="w-5 h-5 text-cyan-500" />
+              <Menu className="w-5 h-5 text-orange-500" />
             </button>
           </div>
 
         </div>
-      </motion.header>
+      </header>
 
       {/* MOBILE SLIDE-IN DRAWER MENU (< lg screen) */}
       <AnimatePresence>
