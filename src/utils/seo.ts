@@ -81,7 +81,7 @@ export function setHreflangTags(canonicalUrl: string) {
 
 export const PAGE_METADATA: Record<PageId, PageMetadata> = {
   home: {
-    title: 'Best Website Development in Erode | Top Web Design, SEO & Software Company | MUCO Labs',
+    title: 'Best Website Development & Software in Erode | MUCO Labs',
     description: 'Looking for the best website development company in Erode? MUCO Labs delivers top-rated web design, local SEO optimization, mobile apps, custom ERP software, AI solutions, AutoCAD drafting & digital marketing in Erode, Tamil Nadu.',
     keywords: 'best website development in erode, website development company in erode, web design in erode, web development erode, SEO company in erode, SEO optimization erode, local SEO services in erode, mobile app development company in erode, android app developers in erode, software development company in erode, custom software erode, enterprise ERP developers erode, AI solutions erode, AI chatbot development erode, AutoCAD design in erode, 2D 3D CAD drafting erode, digital marketing company in erode, Google Ads agency erode, logo design branding erode, IT consulting erode, MUCO Labs Erode, top web designers in erode',
     ogImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -90,7 +90,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   about: {
-    title: 'About MUCO Labs | Top Technology Firm in Erode, Tamil Nadu | Leadership',
+    title: 'About MUCO Labs | Software & AI Engineering Firm',
     description: 'Discover MUCO Labs, founded by Srinivash Mahalingam in Erode, Tamil Nadu, India. Explore our engineering philosophy, corporate leadership, core values, and rapid technological innovation.',
     keywords: 'MUCO Labs team, Srinivash Mahalingam, Erode software company, MUCO Labs India, software development company India, IT consulting Tamil Nadu, web development company Erode, leadership vision',
     ogImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -99,7 +99,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   locations: {
-    title: 'Locations Served | Best Website Development, SEO & Software in Erode & Tamil Nadu | MUCO Labs',
+    title: 'Locations Served | Web & Software Services | MUCO Labs',
     description: 'Explore custom software development, mobile apps, enterprise ERP, web design, and local SEO services across Erode, Perundurai, Bhavani, Gobichettipalayam, Sathyamangalam, and Chennimalai.',
     keywords: 'best website development in erode, software company Erode, web design Erode, web development Perundurai, software company Bhavani, web development Gobichettipalayam, SEO company Erode, AI development Erode, AutoCAD design Erode',
     ogImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -108,7 +108,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   services: {
-    title: 'Services in Erode | Website Development, Mobile Apps, SEO, AI & Software | MUCO Labs',
+    title: 'Services in Erode | Web, Mobile, SEO & AI | MUCO Labs',
     description: 'Explore MUCO Labs full suite of services in Erode: Next.js website development, Android/iOS mobile apps, local SEO & Google ranking, AI automation, custom ERP software, AutoCAD drafting, and performance marketing in Erode.',
     keywords: 'Website Development Erode, Mobile App Development Erode, SEO Services Erode, AI Development Erode, Cloud Service Management, AutoCAD Design Erode, CAD Drafting Erode, CRM Development Erode, ERP Solutions Erode, Digital Marketing Erode, IT Consulting Erode',
     ogImage: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -135,7 +135,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   courses: {
-    title: 'Mastery Courses & Engineering Bootcamps | MUCO Labs & Way2Me Academy',
+    title: 'Tech Courses & Coding Bootcamps | MUCO Labs & Way2Me',
     description: 'Master in-demand industry skills with practical training in Full-Stack Web Development, Mobile Apps (Flutter/React Native), Generative AI & LLMs, Cloud Infrastructure, and AutoCAD Drafting led by Way2Me CEO Yogaharikaran & MUCO Labs.',
     keywords: 'MUCO Labs courses, Way2Me Academy, Yogaharikaran, Web Development course, React Nextjs course, AI Bootcamp, Flutter training, AutoCAD course, Tamil Nadu tech institute, software engineering mentorship',
     ogImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -144,7 +144,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   portfolio: {
-    title: 'Portfolio & Case Studies | Featured Software Engineering & AI Projects | MUCO Labs',
+    title: 'Portfolio & Case Studies | Software Projects | MUCO Labs',
     description: 'Explore live client projects, scalable SaaS architectures, AI platforms, and enterprise solutions developed by MUCO Labs for global and regional enterprises.',
     keywords: 'MUCO Labs portfolio, software case studies, web development showcase, mobile app portfolio, client success stories, SaaS case studies, enterprise software showcase',
     ogImage: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -153,7 +153,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   apps: {
-    title: 'App Store & Google Play Store Publishing Services | MUCO Labs',
+    title: 'App Store & Play Store Publishing Services | MUCO Labs',
     description: 'End-to-end mobile application publishing, compliance review, App Store Optimization (ASO), and release management for iOS and Android platforms by MUCO Labs.',
     keywords: 'App Store submission, Google Play publishing, Android App Development, iOS release management, mobile app deployment, MUCO Labs apps, ASO optimization',
     ogImage: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -162,7 +162,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   pricing: {
-    title: 'Software Development Pricing & Transparent Packages | MUCO Labs',
+    title: 'Software Development Pricing & Packages | MUCO Labs',
     description: 'Explore crystal-clear, transparent pricing packages for Web Apps, Mobile Development, AI Integration, and Enterprise Custom Software with detailed timelines and deliverables.',
     keywords: 'software development cost, website design pricing, app development estimate, MUCO Labs packages, IT consulting pricing India, web app quote',
     ogImage: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -171,7 +171,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   maintenance: {
-    title: 'Cloud Service Management & Annual Maintenance Contracts (AMC) | MUCO Labs',
+    title: 'Cloud Management & Software AMC Services | MUCO Labs',
     description: 'Ensure 99.9% application uptime, continuous security patching, database optimization, automated backups, and 24/7 DevOps technical monitoring with MUCO AMC plans.',
     keywords: 'Cloud Service Management, Cloud Computing, software AMC, server maintenance, Technical Support, IT maintenance contract, DevOps management, uptime monitoring',
     ogImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -180,7 +180,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   gallery: {
-    title: 'Executive Roster & Workplace Gallery | MUCO Labs India',
+    title: 'Executive Roster & Workplace Gallery | MUCO Labs',
     description: 'Meet the executive leadership team, software architects, AI researchers, and explore the creative engineering labs of MUCO Labs in Erode, Tamil Nadu, India.',
     keywords: 'MUCO Labs executive team, team gallery, software engineering labs, MUCO Labs photo gallery, tech leadership India, workplace culture',
     ogImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -189,7 +189,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   faq: {
-    title: 'Frequently Asked Questions (FAQ) | MUCO Labs Software Engineering',
+    title: 'FAQ | Software Engineering & Development | MUCO Labs',
     description: 'Get answers to essential questions regarding code ownership, development methodologies, payment milestones, security compliance, and ongoing support.',
     keywords: 'MUCO Labs FAQ, software development questions, web app development process, project timeline FAQ, IT support FAQ, code ownership FAQ',
     ogImage: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -198,7 +198,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   contact: {
-    title: 'Contact MUCO Labs | Get a Free Technical Consultation & Quote',
+    title: 'Contact MUCO Labs | Free Consultation & Project Quote',
     description: 'Connect with MUCO Labs engineering leadership to discuss your software, AI automation, or cloud initiative. Email: contact@mucolabs.com | Direct: +91 6381809844.',
     keywords: 'contact MUCO Labs, hire software developers, software development company contact, IT consulting Erode, request proposal MUCO, start a project',
     ogImage: 'https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -207,7 +207,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   sheets: {
-    title: 'Google Sheets CRM Sync & Real-Time Lead Hub | MUCO Labs',
+    title: 'Google Sheets CRM Sync & Real-Time Hub | MUCO Labs',
     description: 'Securely sync and export client inquiries, service requests, and project estimations directly into Google Spreadsheets with OAuth integration.',
     keywords: 'Google Sheets integration, Google Drive API, export leads to sheets, MUCO Labs spreadsheet manager, CRM automation',
     ogImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -216,7 +216,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   blog: {
-    title: 'MUCO Labs Insights & Blog | AI Trends, Web Engineering & Cloud Architecture',
+    title: 'MUCO Labs Blog | AI Trends & Software Engineering',
     description: 'Read the latest technical articles, AI automation benchmarks, full-stack tutorials, and digital strategy insights published by MUCO Labs engineers.',
     keywords: 'MUCO Labs blog, software development blog, AI trends, cloud computing tutorials, web design articles, IT insights, tech guides',
     ogImage: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -225,7 +225,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   terms: {
-    title: 'Terms and Conditions | MUCO Labs Commercial Master Agreement',
+    title: 'Terms and Conditions | Master Agreement | MUCO Labs',
     description: 'Official terms and commercial conditions governing custom software engineering, standard 50% advance milestone agreements, and code ownership with MUCO Labs.',
     keywords: 'MUCO Labs terms of service, software development agreement, payment milestones, code IP ownership, legal terms',
     ogImage: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -234,7 +234,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
     twitterCard: 'summary_large_image'
   },
   privacy: {
-    title: 'Privacy Policy & DPDP Act 2023 Compliance | MUCO Labs',
+    title: 'Privacy Policy & DPDP Act Compliance | MUCO Labs',
     description: 'Our data protection commitments, client privacy rights, DPDP Act 2023 compliance, and zero third-party telemetry selling standards at MUCO Labs.',
     keywords: 'MUCO Labs privacy policy, DPDP Act 2023, data protection, privacy compliance India, client confidentiality',
     ogImage: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&h=630&q=85',
@@ -309,10 +309,26 @@ export function updatePageSEO(page: PageId) {
 }
 
 /**
+ * Safely format title tag to never exceed maximum character limit (default 60 chars)
+ */
+export function formatSeoTitle(primary: string, brand: string = 'MUCO Labs', maxChars: number = 60): string {
+  const cleanPrimary = primary.trim();
+  const full = `${cleanPrimary} | ${brand}`;
+  if (full.length <= maxChars) return full;
+
+  const allowedLength = maxChars - brand.length - 3;
+  if (allowedLength > 10) {
+    const truncated = cleanPrimary.slice(0, allowedLength).replace(/\s+[^\s]*$/, '');
+    return `${truncated} | ${brand}`;
+  }
+  return cleanPrimary.slice(0, maxChars);
+}
+
+/**
  * Dynamically update SEO and Schema for a specific location hub
  */
 export function updateLocationSEO(location: LocationData) {
-  const locTitle = `${location.headline} | MUCO Labs ${location.name}`;
+  const locTitle = formatSeoTitle(location.headline, `MUCO Labs ${location.name}`, 60);
   const locDesc = location.overview;
   const locUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/locations?city=${location.id}` 
@@ -378,8 +394,9 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
     ? `${window.location.origin}/locations?combo=${combo.id}`
     : `https://mucolabs.com/locations?combo=${combo.id}`;
   const keywords = `${combo.serviceName} in ${combo.locationName}, ${combo.serviceName} company ${combo.locationName}, best ${combo.serviceName} in ${combo.locationName}, ${combo.targetIndustries.join(', ')}`;
+  const comboTitle = combo.seoTitle.length > 60 ? formatSeoTitle(combo.serviceName, `MUCO Labs ${combo.locationName}`, 60) : combo.seoTitle;
 
-  document.title = combo.seoTitle;
+  document.title = comboTitle;
 
   setMetaTag('name', 'description', combo.metaDescription);
   setMetaTag('name', 'keywords', keywords);
@@ -391,7 +408,7 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
 
   // Open Graph
   setMetaTag('property', 'og:site_name', 'MUCO Labs');
-  setMetaTag('property', 'og:title', combo.seoTitle);
+  setMetaTag('property', 'og:title', comboTitle);
   setMetaTag('property', 'og:description', combo.metaDescription);
   setMetaTag('property', 'og:type', 'website');
   setMetaTag('property', 'og:url', pageUrl);
@@ -401,7 +418,7 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
 
   // Twitter
   setMetaTag('name', 'twitter:card', 'summary_large_image');
-  setMetaTag('name', 'twitter:title', combo.seoTitle);
+  setMetaTag('name', 'twitter:title', comboTitle);
   setMetaTag('name', 'twitter:description', combo.metaDescription);
 
   setCanonicalUrl(pageUrl);
@@ -429,7 +446,7 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
  * Dynamically inject unique Open Graph and Twitter social sharing metadata for team member profiles
  */
 export function updateMemberSEO(member: TeamMember) {
-  const memberTitle = `${member.name} - ${member.titleRole} | MUCO Labs Executive Roster`;
+  const memberTitle = formatSeoTitle(`${member.name} - ${member.titleRole}`, 'MUCO Labs', 60);
   const memberDesc = `${member.name} serves as ${member.titleRole} (${member.affiliation}) at MUCO Labs. Discover leadership insights, responsibilities, and professional background.`;
   const profileUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/gallery?member=${encodeURIComponent(member.id)}` 
@@ -492,7 +509,7 @@ export function updateMemberSEO(member: TeamMember) {
  * Dynamically inject unique Open Graph and Twitter social sharing metadata for Blog Posts
  */
 export function updateBlogPostSEO(post: BlogPost) {
-  const postTitle = `${post.title} | MUCO Labs Blog`;
+  const postTitle = formatSeoTitle(post.title, 'MUCO Labs Blog', 60);
   const postDesc = post.excerpt;
   const postUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/blog?post=${encodeURIComponent(post.slug)}`
@@ -553,7 +570,7 @@ export function updateBlogPostSEO(post: BlogPost) {
  * Dynamically inject SEO metadata for an individual IT service
  */
 export function updateServiceSEO(service: DetailedService) {
-  const serviceTitle = `${service.title} | ${service.tagline} | MUCO Labs`;
+  const serviceTitle = formatSeoTitle(service.title, 'MUCO Labs', 60);
   const serviceDesc = service.description.length > 155 
     ? `${service.description.slice(0, 155)}...` 
     : service.description;
@@ -599,7 +616,7 @@ export function updateServiceSEO(service: DetailedService) {
  * Dynamically inject SEO metadata for a tech course/bootcamp
  */
 export function updateCourseSEO(course: CourseItem) {
-  const courseTitle = `${course.title} (${course.duration}) | Way2Me & MUCO Labs Bootcamp`;
+  const courseTitle = formatSeoTitle(course.title, 'MUCO Labs Bootcamp', 60);
   const courseDesc = course.description;
   const courseUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/courses?id=${encodeURIComponent(course.id)}`
@@ -641,7 +658,7 @@ export function updateCourseSEO(course: CourseItem) {
  * Dynamically inject SEO metadata for a client portfolio project
  */
 export function updateProjectSEO(project: ProjectItem) {
-  const projTitle = `${project.title} (${project.category}) | MUCO Labs Portfolio`;
+  const projTitle = formatSeoTitle(project.title, 'MUCO Labs Portfolio', 60);
   const projDesc = project.description;
   const projUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/portfolio?id=${encodeURIComponent(project.id)}`
