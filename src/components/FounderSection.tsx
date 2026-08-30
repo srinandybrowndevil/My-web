@@ -33,7 +33,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({ onNavigate }) =>
               <img
                 src={FOUNDER_INFO.image}
                 alt={FOUNDER_INFO.name}
-                className="w-full h-full object-cover object-top filter grayscale contrast-105 hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full object-cover object-top contrast-105 hover:scale-105 transition-transform duration-500"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />

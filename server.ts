@@ -157,6 +157,15 @@ async function startServer() {
   // Enable Gzip/Brotli HTTP compression for optimal network speed
   app.use(compression());
 
+  // Canonical host enforcement: 301 redirect www.mucolabs.com to https://mucolabs.com
+  app.use((req, res, next) => {
+    const host = req.headers.host || '';
+    if (host.startsWith('www.mucolabs.com')) {
+      return res.redirect(301, `https://mucolabs.com${req.originalUrl}`);
+    }
+    next();
+  });
+
   // Performance & Security Headers
   app.use((req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');

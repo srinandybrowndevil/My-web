@@ -242,16 +242,8 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${member.name} - MUCO Labs Leadership`
   }));
 
-  return [
-    ...mainPages,
-    ...locationPages,
-    ...serviceLocationPages,
-    ...servicePages,
-    ...coursePages,
-    ...projectPages,
-    ...blogPages,
-    ...teamPages
-  ];
+  // Clean, public-facing canonical routes for production sitemap (excluding query params, fragments, and private routes)
+  return mainPages;
 }
 
 export function generateSitemapXml(urls: SitemapUrlEntry[] = getAllSitemapEntries()): string {
