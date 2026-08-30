@@ -40,7 +40,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onNavigate }) => {
     resendVerificationEmail,
     signOut 
   } = useAuth();
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language } = useLanguage();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -243,37 +243,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onNavigate }) => {
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
-                      <span className="text-[10px] text-slate-400 uppercase font-bold block mb-1">Language Preference</span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setLanguage('en')}
-                          className={`px-2.5 py-1 rounded-lg text-[11px] font-bold ${
-                            language === 'en'
-                              ? 'bg-orange-500 text-white'
-                              : 'bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-300'
-                          }`}
-                        >
-                          English
-                        </button>
-                        <button
-                          onClick={() => setLanguage('ta')}
-                          className={`px-2.5 py-1 rounded-lg text-[11px] font-bold ${
-                            language === 'ta'
-                              ? 'bg-orange-500 text-white'
-                              : 'bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-300'
-                          }`}
-                        >
-                          தமிழ்
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
-                      <span className="text-[10px] text-slate-400 uppercase font-bold block mb-1">Standard Payment SLA</span>
-                      <span className="font-bold text-slate-900 dark:text-white">50% Advance / Milestone</span>
-                    </div>
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                    <span className="text-[10px] text-slate-400 uppercase font-bold block mb-1">Standard Payment SLA</span>
+                    <span className="font-bold text-slate-900 dark:text-white">50% Advance / Milestone Framework</span>
                   </div>
 
                   <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">

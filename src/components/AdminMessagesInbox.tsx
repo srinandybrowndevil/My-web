@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Mail, RefreshCw, Trash2, CheckCircle, Search, Clock, User, Phone, Building, DollarSign, X, ExternalLink, ShieldCheck, Inbox, Download, FileSpreadsheet, Zap, TrendingUp, Activity, MessageCircle } from 'lucide-react';
 import { GoogleSheetsHub } from './GoogleSheetsHub';
 import { PerformanceTrendsDashboard } from './PerformanceTrendsDashboard';
-import { WhatsAppDiagnosticsModal } from './WhatsAppDiagnosticsModal';
 import { getPerformanceAverages } from '../services/analytics';
 
 export interface SavedMessage {
@@ -31,7 +30,6 @@ export const AdminMessagesInbox: React.FC<AdminMessagesInboxProps> = ({ isOpen, 
   const [filterStatus, setFilterStatus] = useState<string>('All');
   const [selectedMessage, setSelectedMessage] = useState<SavedMessage | null>(null);
   const [showSheetsModal, setShowSheetsModal] = useState<boolean>(false);
-  const [showWhatsAppModal, setShowWhatsAppModal] = useState<boolean>(false);
   const [perfSummary, setPerfSummary] = useState(getPerformanceAverages());
 
   useEffect(() => {
@@ -226,7 +224,7 @@ export const AdminMessagesInbox: React.FC<AdminMessagesInboxProps> = ({ isOpen, 
                 </button>
 
                 <button
-                  onClick={() => setShowWhatsAppModal(true)}
+                  onClick={() => window.dispatchEvent(new CustomEvent('muco:open_whatsapp_diag'))}
                   className="px-3 py-2 bg-emerald-700/80 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-100 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-emerald-950/40"
                   title="Open WhatsApp Error Logger & Telemetry Diagnostics"
                 >
@@ -440,7 +438,6 @@ export const AdminMessagesInbox: React.FC<AdminMessagesInboxProps> = ({ isOpen, 
       </div>
 
       <GoogleSheetsHub isOpen={showSheetsModal} onClose={() => setShowSheetsModal(false)} />
-      <WhatsAppDiagnosticsModal isOpen={showWhatsAppModal} onClose={() => setShowWhatsAppModal(false)} />
     </div>
   );
 };

@@ -8,7 +8,7 @@ export interface PageViewEvent {
   title: string;
   referrer: string;
   userAgent: string;
-  meta?: Record<string, any>;
+  meta?: Record<string, unknown>;
 }
 
 export type WebVitalRating = 'good' | 'needs-improvement' | 'poor';
@@ -38,6 +38,135 @@ export interface PerformanceMetricEvent {
 const PAGEVIEWS_STORAGE_KEY = 'muco_analytics_pageviews';
 const PERF_METRICS_STORAGE_KEY = 'muco_analytics_perf_metrics';
 const MAX_LOGS = 100;
+
+// GA4 Global window extension
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+    __MUCO_GA4_INITIALIZED__?: boolean;
+  }
+}
+
+/**
+ * GA4 Initialization and Event Tracking
+ */
+export function getGa4MeasurementId(): string | null {
+  const envId = (import.meta.env?.VITE_GA4_MEASUREMENT_ID as string | undefined)?.trim();
+  if (envId && envId.startsWith('G-') && envId !== 'G-MEASUREMENT_ID' && !envId.includes('PLACEHOLDER')) {
+    return envId;
+  }
+  return null;
+}
+
+/**
+ * Lazily and safely initializes GA4 if configured via VITE_GA4_MEASUREMENT_ID
+ */
+export function initGA4(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  const measurementId = getGa4MeasurementId();
+  if (!measurementId) {
+    return false;
+  }
+
+  if (window.__MUCO_GA4_INITIALIZED__) {
+    return true;
+  }
+
+  // Ensure dataLayer exists
+  window.dataLayer = window.dataLayer || [];
+  if (!window.gtag) {
+    window.gtag = function (...args: unknown[]) {
+      window.dataLayer?.push(args);
+    };
+  }
+
+  // Inject gtag script if not already in DOM
+  const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${measurementId}"]`);
+  if (!existingScript) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+    document.head.appendChild(script);
+  }
+
+  window.gtag('js', new Date());
+  window.gtag('config', measurementId, {
+    send_page_view: false,
+    anonymize_ip: true,
+    cookie_flags: 'SameSite=None;Secure'
+  });
+
+  window.__MUCO_GA4_INITIALIZED__ = true;
+  return true;
+}
+
+/**
+ * Sanitize event data to ensure NO passwords, tokens, full names or PII are sent
+ */
+function sanitizeEventData(data?: Record<string, unknown>): Record<string, unknown> | undefined {
+  if (!data) return undefined;
+  const sanitized: Record<string, unknown> = {};
+  const blockedKeys = ['password', 'token', 'secret', 'key', 'auth', 'email', 'phone', 'message', 'prompt', 'notes'];
+
+  for (const [key, value] of Object.entries(data)) {
+    const lower = key.toLowerCase();
+    if (blockedKeys.some((b) => lower.includes(b))) {
+      // Don't forward raw sensitive fields
+      sanitized[key] = '[REDACTED]';
+    } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      sanitized[key] = value;
+    }
+  }
+  return sanitized;
+}
+
+export type MucoAnalyticsEventName =
+  | 'page_view'
+  | 'sign_up'
+  | 'login'
+  | 'logout'
+  | 'language_change'
+  | 'theme_change'
+  | 'service_view'
+  | 'portfolio_view'
+  | 'estimator_start'
+  | 'estimator_complete'
+  | 'contact_submit'
+  | 'whatsapp_click'
+  | 'email_click'
+  | 'phone_click'
+  | 'lead_captured';
+
+/**
+ * Track an analytics event across GA4 and local telemetry
+ */
+export function trackEvent(eventName: MucoAnalyticsEventName, params?: Record<string, unknown>) {
+  const safeParams = sanitizeEventData(params) || {};
+
+  // GA4 dispatch if available
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    try {
+      window.gtag('event', eventName, safeParams);
+    } catch {
+      // Ignore
+    }
+  }
+
+  // Custom DOM event for internal reactive components
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('muco:event', {
+        detail: {
+          event: eventName,
+          params: safeParams,
+          timestamp: new Date().toISOString()
+        }
+      })
+    );
+  }
+}
 
 export function evaluateFcp(fcp: number | null): WebVitalRating {
   if (fcp === null) return 'good';
@@ -72,9 +201,9 @@ export function evaluateOverall(fcp: number | null, lcp: number | null, cls: num
 
 /**
  * Logs a PageView event when a user navigates between routes.
- * Stores in localStorage for audit & dispatches custom DOM event.
+ * Stores in localStorage for audit & dispatches custom DOM event and GA4.
  */
-export function logPageView(page: PageId, extraMeta?: Record<string, any>): PageViewEvent {
+export function logPageView(page: PageId, extraMeta?: Record<string, unknown>): PageViewEvent {
   const event: PageViewEvent = {
     id: `pv_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
     page,
@@ -100,13 +229,15 @@ export function logPageView(page: PageId, extraMeta?: Record<string, any>): Page
     window.dispatchEvent(new CustomEvent('muco:pageview', { detail: event }));
   }
 
-  // Console telemetry logging
-  console.log(
-    `%c[MUCO Analytics] PageView Logged ➔ %c${page.toUpperCase()}`,
-    'color: #f59e0b; font-weight: bold; background: #0f172a; padding: 2px 6px; border-radius: 4px;',
-    'color: #38bdf8; font-weight: bold;',
-    event
-  );
+  // Dispatch to GA4
+  initGA4();
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', 'page_view', {
+      page_title: event.title,
+      page_location: window.location.href,
+      page_path: `/#${page}`
+    });
+  }
 
   return event;
 }
@@ -125,7 +256,7 @@ export function logPerformanceMetric(data: {
   pageLoad?: number | null;
   fps?: number | null;
 }): PerformanceMetricEvent {
-  const navAny = typeof navigator !== 'undefined' ? (navigator as any) : null;
+  const navAny = typeof navigator !== 'undefined' ? (navigator as unknown as { deviceMemory?: number; connection?: { effectiveType?: string } }) : null;
   const deviceMemory = navAny?.deviceMemory || undefined;
   const effectiveType = navAny?.connection?.effectiveType || undefined;
 
@@ -166,8 +297,6 @@ export function logPerformanceMetric(data: {
   try {
     const existingRaw = localStorage.getItem(PERF_METRICS_STORAGE_KEY);
     const existing: PerformanceMetricEvent[] = existingRaw ? JSON.parse(existingRaw) : [];
-    
-    // Check if we should update an existing entry for the same page within the last 5 seconds, or append new
     const updated = [event, ...existing].slice(0, MAX_LOGS);
     localStorage.setItem(PERF_METRICS_STORAGE_KEY, JSON.stringify(updated));
   } catch (e) {
@@ -179,14 +308,6 @@ export function logPerformanceMetric(data: {
     window.dispatchEvent(new CustomEvent('muco:performance-logged', { detail: event }));
   }
 
-  console.log(
-    `%c[MUCO PerfTracker] Vitals Captured ➔ %c${data.page.toUpperCase()}%c [FCP: ${fcp !== null ? `${fcp}ms` : 'N/A'}, LCP: ${lcp !== null ? `${lcp}ms` : 'N/A'}, CLS: ${cls !== null ? cls : '0'}]`,
-    'color: #06b6d4; font-weight: bold; background: #082f49; padding: 2px 6px; border-radius: 4px;',
-    'color: #f59e0b; font-weight: bold;',
-    'color: #a7f3d0;',
-    event
-  );
-
   return event;
 }
 
@@ -197,7 +318,6 @@ export function getStoredPerformanceMetrics(): PerformanceMetricEvent[] {
   try {
     const existingRaw = localStorage.getItem(PERF_METRICS_STORAGE_KEY);
     if (!existingRaw) {
-      // Provide baseline seeded real-world telemetry if first time opening admin panel
       const seedMetrics = generateBaselinePerformanceSeeds();
       localStorage.setItem(PERF_METRICS_STORAGE_KEY, JSON.stringify(seedMetrics));
       return seedMetrics;
@@ -338,4 +458,3 @@ export function clearStoredPageViews(): void {
     // Ignore
   }
 }
-

@@ -64,6 +64,7 @@ export const AnimatedMetrics: React.FC = () => {
     const duration = 1600; // ms
     const startTime = performance.now();
 
+    let animId: number;
     const updateCounters = (now: number) => {
       const progress = Math.min(1, (now - startTime) / duration);
       const easeOut = 1 - Math.pow(1 - progress, 3); // Cubic ease out
@@ -78,13 +79,16 @@ export const AnimatedMetrics: React.FC = () => {
       );
 
       if (progress < 1) {
-        requestAnimationFrame(updateCounters);
+        animId = requestAnimationFrame(updateCounters);
       } else {
         setCounters(METRICS_DATA.map((m) => m.targetValue));
       }
     };
 
-    requestAnimationFrame(updateCounters);
+    animId = requestAnimationFrame(updateCounters);
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+    };
   }, [isInView]);
 
   return (

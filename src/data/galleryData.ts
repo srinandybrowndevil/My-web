@@ -1,8 +1,8 @@
-import founderPortrait from '../assets/images/srinivashni.png';
-import vinothPortrait from '../assets/images/vinotom.png';
-import chandruPortrait from '../assets/images/chandru.png';
-import marimuthuPortrait from '../assets/images/marimuthuapk.png';
-import venkateshPortrait from '../assets/images/venka.jpeg';
+import founderPortrait from '../assets/images/srinivashni.webp';
+import vinothPortrait from '../assets/images/vinotom.webp';
+import chandruPortrait from '../assets/images/chandru.webp';
+import marimuthuPortrait from '../assets/images/marimuthuapk.webp';
+import venkateshPortrait from '../assets/images/venka.webp';
 
 export interface GalleryItem {
   id: string;

@@ -53,7 +53,7 @@ interface SearchItem {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
-  const { t, language, setLanguage, toggleLanguage } = useLanguage();
+  const { t } = useLanguage();
   const { currentUser, userProfile, openAuthModal } = useAuth();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -371,16 +371,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
               </kbd>
             </button>
 
-            {/* Language Switcher */}
-            <button
-              onClick={toggleLanguage}
-              className="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-orange-500/40 text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
-              title="Switch Language / மொழியை மாற்றவும்"
-            >
-              <Globe className="w-3.5 h-3.5 text-orange-500" />
-              <span>{language === 'en' ? 'தமிழ்' : 'EN'}</span>
-            </button>
-
             {/* User Auth Trigger */}
             {currentUser ? (
               <button
@@ -463,28 +453,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                   </button>
                 </div>
 
-                {/* SEARCH & LANGUAGE ROW IN DRAWER */}
-                <div className="flex items-center gap-2 mb-4">
+                {/* SEARCH BAR IN DRAWER */}
+                <div className="mb-4">
                   <button
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       setIsSearchOpen(true);
                     }}
-                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold flex items-center justify-between cursor-pointer"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold flex items-center justify-between cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
                       <Search className="w-4 h-4 text-orange-500" />
                       <span>{t.nav.searchPlaceholder.slice(0, 18)}...</span>
                     </span>
                     <span className="font-mono text-[10px] bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">⌘K</span>
-                  </button>
-
-                  <button
-                    onClick={toggleLanguage}
-                    className="px-3 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-white flex items-center gap-1"
-                  >
-                    <Globe className="w-3.5 h-3.5 text-orange-500" />
-                    <span>{language === 'en' ? 'தமிழ்' : 'EN'}</span>
                   </button>
                 </div>
 

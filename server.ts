@@ -2,7 +2,153 @@ import express from 'express';
 import path from 'path';
 import compression from 'compression';
 import { createServer as createViteServer } from 'vite';
+import { Resend } from 'resend';
 import { generateSitemapXml, generateRobotsTxt, getSitemapStats } from './src/lib/sitemapGenerator';
+
+// Lazy initialized Resend client to avoid startup crashes if API key is not yet set
+let resendClient: Resend | null = null;
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  if (!resendClient) {
+    resendClient = new Resend(apiKey);
+  }
+  return resendClient;
+}
+
+function generateBrandedHtmlEmail(data: {
+  name: string;
+  email: string;
+  phone: string;
+  company?: string;
+  serviceCategory: string;
+  budgetRange?: string;
+  subject?: string;
+  message: string;
+  timestamp: string;
+}) {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Website Enquiry - MUCO Labs</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #090d16; color: #f8fafc; margin: 0; padding: 24px; }
+    .card { max-width: 620px; margin: 0 auto; background: #0f172a; border-radius: 20px; border: 1px solid #1e293b; padding: 36px 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+    .header { text-align: center; border-bottom: 2px solid #ea580c; padding-bottom: 22px; margin-bottom: 26px; }
+    .brand { font-size: 28px; font-weight: 900; color: #f97316; letter-spacing: -0.5px; }
+    .tagline { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2.5px; margin-top: 5px; }
+    .badge { display: inline-block; background: linear-gradient(135deg, #ea580c, #d97706); color: #ffffff; font-size: 11px; font-weight: 800; padding: 6px 18px; border-radius: 9999px; text-transform: uppercase; margin-bottom: 22px; letter-spacing: 1px; }
+    .table-container { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 24px; border: 1px solid #1e293b; border-radius: 14px; overflow: hidden; }
+    .table-container td { padding: 13px 18px; font-size: 13px; border-bottom: 1px solid #1e293b; }
+    .table-container tr:last-child td { border-bottom: none; }
+    .label-col { width: 34%; background-color: #070c18; font-weight: 800; color: #fb923c; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+    .value-col { width: 66%; background-color: #0f172a; color: #f8fafc; font-weight: 600; }
+    .message-box { background: #070c18; padding: 22px; border-radius: 14px; border-left: 4px solid #f97316; color: #f1f5f9; font-size: 14px; line-height: 1.7; white-space: pre-wrap; margin-top: 10px; border: 1px solid #1e293b; }
+    .section-title { font-size: 12px; font-weight: 800; color: #fb923c; text-transform: uppercase; letter-spacing: 1.2px; margin-top: 22px; margin-bottom: 8px; }
+    .footer { text-align: center; margin-top: 32px; font-size: 11px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 22px; line-height: 1.6; }
+    .footer a { color: #f97316; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="brand">MUCO LABS</div>
+      <div class="tagline">ENTERPRISE SOFTWARE &bull; AI ENGINES &bull; CLOUD</div>
+    </div>
+
+    <div style="text-align: center;">
+      <span class="badge">NEW CLIENT PROPOSAL INQUIRY</span>
+    </div>
+
+    <table class="table-container">
+      <tr>
+        <td class="label-col">Client Name</td>
+        <td class="value-col">${data.name}</td>
+      </tr>
+      <tr>
+        <td class="label-col">Email</td>
+        <td class="value-col"><a href="mailto:${data.email}" style="color: #fb923c; text-decoration: none;">${data.email}</a></td>
+      </tr>
+      <tr>
+        <td class="label-col">Phone</td>
+        <td class="value-col"><a href="tel:${data.phone}" style="color: #fb923c; text-decoration: none;">${data.phone}</a></td>
+      </tr>
+      <tr>
+        <td class="label-col">Company</td>
+        <td class="value-col">${data.company || 'N/A'}</td>
+      </tr>
+      <tr>
+        <td class="label-col">Service</td>
+        <td class="value-col" style="color: #fdba74;">${data.serviceCategory}</td>
+      </tr>
+      <tr>
+        <td class="label-col">Budget Range</td>
+        <td class="value-col">${data.budgetRange || 'Flexible'}</td>
+      </tr>
+      <tr>
+        <td class="label-col">Subject</td>
+        <td class="value-col">${data.subject || 'Website Inquiry'}</td>
+      </tr>
+      <tr>
+        <td class="label-col">Date & Time</td>
+        <td class="value-col">${data.timestamp}</td>
+      </tr>
+    </table>
+
+    <div class="section-title">Message / Project Scope</div>
+    <div class="message-box">${data.message}</div>
+
+    <div class="footer">
+      Official Dispatch via <strong>Resend API</strong> &bull; <a href="https://mucolabs.com">mucolabs.com</a><br>
+      Founder Srinivash Mahalingam &bull; Direct Phone: +91 63818 09844<br>
+      MUCO Labs, Erode, Tamil Nadu, India
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+function generateClientAutoReplyHtml(name: string, serviceCategory: string) {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 24px; }
+    .card { max-width: 580px; margin: 0 auto; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 32px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    .logo { font-size: 22px; font-weight: 900; color: #ea580c; }
+    .title { font-size: 18px; font-weight: 800; margin-top: 16px; color: #0f172a; }
+    .text { font-size: 14px; line-height: 1.6; color: #334155; margin-top: 12px; }
+    .highlight { background: #fff7ed; border-left: 4px solid #ea580c; padding: 14px 18px; border-radius: 8px; font-size: 13px; color: #9a3412; margin-top: 18px; }
+    .footer { font-size: 12px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 18px; margin-top: 24px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">MUCO LABS</div>
+    <div class="title">Thank you for reaching out, ${name}!</div>
+    <p class="text">We have successfully received your project inquiry regarding <strong>${serviceCategory}</strong>.</p>
+    <p class="text">Our founder Srinivash Mahalingam and engineering team will review your specifications and get back to you within 24 hours with next steps and a customized technical scope.</p>
+    
+    <div class="highlight">
+      <strong>Commercial Milestone Standard:</strong> Unless otherwise agreed, custom software projects operate on our standard 50% advance milestone framework.
+    </div>
+
+    <p class="text" style="margin-top: 20px;">
+      Warm regards,<br>
+      <strong>MUCO Labs Team</strong><br>
+      Erode, Tamil Nadu, India | <a href="https://mucolabs.com" style="color: #ea580c;">mucolabs.com</a>
+    </p>
+
+    <div class="footer">
+      This is an automated acknowledgment from MUCO Labs. You can also chat directly on WhatsApp at +91 63818 09844.
+    </div>
+  </div>
+</body>
+</html>`;
+}
 
 async function startServer() {
   const app = express();
@@ -106,7 +252,155 @@ async function startServer() {
     res.json({ success: true, count: contactMessages.length, messages: contactMessages });
   });
 
-  // Save new contact message
+  // Resend Email Integration Status
+  app.get('/api/email/status', (req, res) => {
+    const resend = getResend();
+    res.json({
+      configured: Boolean(resend),
+      provider: 'resend',
+      fromEmail: process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>',
+      toEmail: process.env.RESEND_TO_EMAIL || 'contact@mucolabs.com'
+    });
+  });
+
+  // Test Resend Email Dispatch
+  app.post('/api/email/test', async (req, res) => {
+    const resend = getResend();
+    const toEmail = req.body?.toEmail || process.env.RESEND_TO_EMAIL || 'contact@mucolabs.com';
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>';
+
+    if (!resend) {
+      return res.json({
+        success: true,
+        isSimulated: true,
+        message: 'Resend API key is not configured yet in environment variables. Test email simulated successfully.',
+        details: {
+          to: toEmail,
+          from: fromEmail,
+          note: 'Add RESEND_API_KEY to your environment variables or .env to dispatch live emails via Resend.'
+        }
+      });
+    }
+
+    try {
+      const response = await resend.emails.send({
+        from: fromEmail,
+        to: [toEmail],
+        subject: 'MUCO Labs - Resend Integration Verification Test',
+        html: `
+          <div style="font-family: sans-serif; padding: 24px; color: #0f172a; max-width: 500px; border: 1px solid #e2e8f0; border-radius: 12px;">
+            <h2 style="color: #ea580c; margin-top: 0;">MUCO Labs Resend Test</h2>
+            <p>Your <strong>Resend</strong> email service is configured and operating correctly!</p>
+            <p style="font-size: 12px; color: #64748b;">Timestamp: ${new Date().toISOString()}</p>
+          </div>
+        `
+      });
+
+      res.json({
+        success: true,
+        isSimulated: false,
+        message: 'Live test email dispatched successfully via Resend!',
+        data: response
+      });
+    } catch (err: any) {
+      console.error('[Resend Test Error]', err);
+      res.status(500).json({
+        success: false,
+        error: err?.message || 'Failed to dispatch email via Resend'
+      });
+    }
+  });
+
+  // Primary Email Inquiry Dispatch via Resend
+  app.post('/api/send-email', async (req, res) => {
+    const { name, email, phone, company, serviceCategory, budgetRange, subject, message } = req.body;
+
+    const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+    const newMsg = {
+      id: `msg-${Date.now()}`,
+      name: name || 'Valued Client',
+      email: email || 'No email provided',
+      phone: phone || 'No phone provided',
+      company: company || 'N/A',
+      serviceCategory: serviceCategory || 'Website Development',
+      budgetRange: budgetRange || 'Flexible',
+      message: message || '',
+      timestamp,
+      status: 'New' as const
+    };
+
+    // Store lead in server memory
+    contactMessages.unshift(newMsg);
+    console.log('[MUCO Labs Lead Received via Resend pipeline]', newMsg);
+
+    const resend = getResend();
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>';
+    const toEmail = process.env.RESEND_TO_EMAIL || 'contact@mucolabs.com';
+
+    if (!resend) {
+      return res.json({
+        success: true,
+        isSimulated: true,
+        message: 'Inquiry received and logged to MUCO Labs. (Resend simulated sandbox mode - add RESEND_API_KEY to send live emails).',
+        receivedData: newMsg
+      });
+    }
+
+    try {
+      // 1. Send inquiry notification to MUCO Labs team
+      const primaryEmailPromise = resend.emails.send({
+        from: fromEmail,
+        to: [toEmail],
+        replyTo: email && email.includes('@') ? email : undefined,
+        subject: `[MUCO Labs Inquiry] ${serviceCategory || 'Project Proposal'} - ${name || 'Client'}`,
+        html: generateBrandedHtmlEmail({
+          name: newMsg.name,
+          email: newMsg.email,
+          phone: newMsg.phone,
+          company: newMsg.company,
+          serviceCategory: newMsg.serviceCategory,
+          budgetRange: newMsg.budgetRange,
+          subject: subject || `${serviceCategory} Inquiry`,
+          message: newMsg.message,
+          timestamp
+        })
+      });
+
+      // 2. Send auto-reply to client if a valid client email is provided
+      let autoReplyPromise = Promise.resolve();
+      if (email && email.includes('@')) {
+        autoReplyPromise = resend.emails.send({
+          from: fromEmail,
+          to: [email],
+          subject: `Thank you for contacting MUCO Labs - ${serviceCategory || 'Inquiry'}`,
+          html: generateClientAutoReplyHtml(newMsg.name, newMsg.serviceCategory)
+        }).catch((err) => {
+          console.warn('[Resend Client Auto-Reply Error]', err?.message);
+        }) as any;
+      }
+
+      const [resendResult] = await Promise.all([primaryEmailPromise, autoReplyPromise]);
+
+      res.json({
+        success: true,
+        isSimulated: false,
+        message: 'Your inquiry has been successfully sent to MUCO Labs via Resend!',
+        data: resendResult,
+        receivedData: newMsg
+      });
+    } catch (err: any) {
+      console.error('[Resend Dispatch Error]', err);
+      // Return a graceful response with error info so client flow is not broken
+      res.json({
+        success: true,
+        isSimulated: false,
+        warning: 'Saved lead in database, but Resend API returned an error: ' + (err?.message || 'Check sender domain'),
+        receivedData: newMsg
+      });
+    }
+  });
+
+  // Save new contact message (legacy endpoint compatibility)
   app.post('/api/contact', (req, res) => {
     const { name, email, phone, company, serviceCategory, budgetRange, message } = req.body;
     

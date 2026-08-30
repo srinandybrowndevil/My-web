@@ -5,7 +5,6 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { ScrollToTopButton } from './components/ScrollToTopButton';
-import { PerformanceMonitor } from './components/PerformanceMonitor';
 import { ModernLoadingScreen } from './components/ModernLoadingScreen';
 import { GlobalBackgroundLayer } from './components/GlobalBackgroundLayer';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -13,18 +12,21 @@ import { ToastProvider } from './context/ToastContext';
 import { RoleProvider } from './context/RoleContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
-import { AuthModal } from './components/AuthModal';
 import { RoleQuickSwitcher } from './components/RoleQuickSwitcher';
 import { updatePageSEO, syncUrlSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 import { MobileQuickActionBar } from './components/MobileQuickActionBar';
-import { ScheduleCallModal } from './components/ScheduleCallModal';
-import { CommandPalette } from './components/CommandPalette';
-import { WhatsAppDiagnosticsModal } from './components/WhatsAppDiagnosticsModal';
 import { openWhatsApp } from './utils/whatsapp';
 import { ServicesSkeleton } from './components/skeletons/ServicesSkeleton';
 import { PortfolioSkeleton } from './components/skeletons/PortfolioSkeleton';
+
+// Lazy-loaded interactive modals & diagnostics for minimal initial bundle
+const AuthModal = lazy(() => import('./components/AuthModal').then((m) => ({ default: m.AuthModal })));
+const ScheduleCallModal = lazy(() => import('./components/ScheduleCallModal').then((m) => ({ default: m.ScheduleCallModal })));
+const CommandPalette = lazy(() => import('./components/CommandPalette').then((m) => ({ default: m.CommandPalette })));
+const WhatsAppDiagnosticsModal = lazy(() => import('./components/WhatsAppDiagnosticsModal').then((m) => ({ default: m.WhatsAppDiagnosticsModal })));
+const PerformanceMonitor = lazy(() => import('./components/PerformanceMonitor').then((m) => ({ default: m.PerformanceMonitor })));
 
 // Lazy-loaded route page components for optimal bundle splitting
 const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
@@ -59,6 +61,7 @@ export default function App() {
   useEffect(() => {
     const handleOpenSearch = () => setIsCommandPaletteOpen(true);
     const handleOpenWhatsAppDiag = () => setIsWhatsAppDiagOpen(true);
+    const handleOpenScheduleCall = () => setIsScheduleCallOpen(true);
     const handleOpenWhatsAppChat = () => {
       openWhatsApp({ pageName: currentPage });
     };
@@ -66,17 +69,20 @@ export default function App() {
     window.addEventListener('openSearchModal', handleOpenSearch);
     window.addEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
     window.addEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
+    window.addEventListener('muco:open_schedule_call', handleOpenScheduleCall);
+    window.addEventListener('openScheduleCallModal', handleOpenScheduleCall);
 
     return () => {
       window.removeEventListener('openSearchModal', handleOpenSearch);
       window.removeEventListener('muco:open_whatsapp_diag', handleOpenWhatsAppDiag);
       window.removeEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
+      window.removeEventListener('muco:open_schedule_call', handleOpenScheduleCall);
+      window.removeEventListener('openScheduleCallModal', handleOpenScheduleCall);
     };
   }, [currentPage]);
 
-  // Parse valid page from hash
-  const parsePageFromHash = (hash: string): PageId | null => {
-    const raw = hash.replace(/^#\/?/, '').split('/')[0].toLowerCase();
+  // Parse valid page from hash or pathname
+  const parsePageFromUrl = (): PageId | null => {
     const validPages: PageId[] = [
       'home',
       'about',
@@ -97,20 +103,36 @@ export default function App() {
       'terms',
       'privacy'
     ];
-    return validPages.includes(raw as PageId) ? (raw as PageId) : null;
+
+    // Check hash first (e.g. #services, #locations)
+    const hash = window.location.hash;
+    if (hash) {
+      const rawHash = hash.replace(/^#\/?/, '').split('?')[0].split('/')[0].toLowerCase();
+      if (validPages.includes(rawHash as PageId)) {
+        return rawHash as PageId;
+      }
+    }
+
+    // Check pathname (e.g. /services, /locations, /courses)
+    const pathname = window.location.pathname;
+    if (pathname && pathname !== '/') {
+      const rawPath = pathname.replace(/^\/+/, '').split('/')[0].toLowerCase();
+      if (validPages.includes(rawPath as PageId)) {
+        return rawPath as PageId;
+      }
+    }
+
+    return null;
   };
 
-  // Sync initial URL hash on mount & listen to popstate and hashchange
+  // Sync initial URL on mount & listen to popstate and hashchange
   useEffect(() => {
     const handleUrlSync = () => {
-      const hash = window.location.hash;
-      if (hash) {
-        const parsed = parsePageFromHash(hash);
-        if (parsed) {
-          setCurrentPage(parsed);
-        }
+      const parsed = parsePageFromUrl();
+      if (parsed) {
+        setCurrentPage(parsed);
       }
-      syncUrlSEO(hash);
+      syncUrlSEO(window.location.hash, parsed || 'home');
     };
 
     handleUrlSync();
@@ -118,11 +140,9 @@ export default function App() {
     const handlePopState = (e: PopStateEvent) => {
       if (e.state && e.state.page) {
         setCurrentPage(e.state.page);
-      } else if (window.location.hash) {
-        const parsed = parsePageFromHash(window.location.hash);
-        if (parsed) setCurrentPage(parsed);
       } else {
-        setCurrentPage('home');
+        const parsed = parsePageFromUrl();
+        setCurrentPage(parsed || 'home');
       }
       syncUrlSEO(window.location.hash);
     };
@@ -327,7 +347,9 @@ export default function App() {
             </main>
 
             {/* Global User Authentication Modal */}
-            <AuthModal onNavigate={handleNavigate} />
+            <Suspense fallback={null}>
+              <AuthModal onNavigate={handleNavigate} />
+            </Suspense>
 
             {/* Floating Quick Role Switcher */}
             <RoleQuickSwitcher onNavigate={handleNavigate} />
@@ -340,24 +362,30 @@ export default function App() {
             />
 
             {/* Schedule 1-on-1 Discovery Call Modal */}
-            <ScheduleCallModal
-              isOpen={isScheduleCallOpen}
-              onClose={() => setIsScheduleCallOpen(false)}
-              currentPage={currentPage}
-            />
+            <Suspense fallback={null}>
+              <ScheduleCallModal
+                isOpen={isScheduleCallOpen}
+                onClose={() => setIsScheduleCallOpen(false)}
+                currentPage={currentPage}
+              />
+            </Suspense>
 
             {/* Global Command Palette (Cmd + K / Spotlight Search) */}
-            <CommandPalette
-              isOpen={isCommandPaletteOpen}
-              onClose={() => setIsCommandPaletteOpen(false)}
-              onNavigate={handleNavigate}
-            />
+            <Suspense fallback={null}>
+              <CommandPalette
+                isOpen={isCommandPaletteOpen}
+                onClose={() => setIsCommandPaletteOpen(false)}
+                onNavigate={handleNavigate}
+              />
+            </Suspense>
 
             {/* Global WhatsApp Diagnostics Modal */}
-            <WhatsAppDiagnosticsModal
-              isOpen={isWhatsAppDiagOpen}
-              onClose={() => setIsWhatsAppDiagOpen(false)}
-            />
+            <Suspense fallback={null}>
+              <WhatsAppDiagnosticsModal
+                isOpen={isWhatsAppDiagOpen}
+                onClose={() => setIsWhatsAppDiagOpen(false)}
+              />
+            </Suspense>
 
             {/* Floating WhatsApp Action */}
             <FloatingWhatsApp currentPage={currentPage} />
@@ -369,7 +397,9 @@ export default function App() {
             <PagePerformanceTracker currentPage={currentPage} />
 
             {/* Internal Web Vitals Performance Monitor */}
-            <PerformanceMonitor />
+            <Suspense fallback={null}>
+              <PerformanceMonitor />
+            </Suspense>
 
             {/* Footer */}
             <Footer onNavigate={handleNavigate} />

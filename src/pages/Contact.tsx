@@ -3,12 +3,13 @@ import { Phone, Mail, MapPin, Globe, Send, MessageSquare, CheckCircle2, Building
 import { ContactFormData, PageId } from '../types';
 import { AdminMessagesInbox, SavedMessage } from '../components/AdminMessagesInbox';
 import { GoogleSheetsHub } from '../components/GoogleSheetsHub';
-import { EmailJSSettingsModal } from '../components/EmailJSSettingsModal';
+import { ResendSettingsModal } from '../components/ResendSettingsModal';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { MoseyRoleSelector } from '../components/MoseyRoleSelector';
 import { getAccessToken, appendLeadToSheet } from '../services/googleSheets';
-import { sendInquiryEmail, sendAutoReplyEmail, isEmailJSConfigured } from '../services/emailjs';
+import { sendInquiryEmail } from '../services/resendEmail';
 import { postToGoogleAppsScript } from '../services/googleAppsScript';
+import { submitContactForm } from '../services/firebase';
 import { useToast } from '../context/ToastContext';
 
 interface ContactProps {
@@ -34,7 +35,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showInboxModal, setShowInboxModal] = useState(false);
   const [showSheetsModal, setShowSheetsModal] = useState(false);
-  const [showEmailJSModal, setShowEmailJSModal] = useState(false);
+  const [showResendModal, setShowResendModal] = useState(false);
 
   useEffect(() => {
     if (initialMessage) {
@@ -98,31 +99,37 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
     }
 
     // Perform simultaneous dispatches
-    let emailJsSuccess = false;
+    let resendSuccess = false;
     let appsScriptSuccess = false;
 
     try {
-      const [emailJsRes, autoReplyRes, appsScriptRes] = await Promise.all([
-        // 1. Send Email to contact@mucolabs.com via EmailJS
+      // Record submission to Firestore
+      submitContactForm({
+        name: newMsgItem.name,
+        email: newMsgItem.email,
+        phone: newMsgItem.phone,
+        company: newMsgItem.company,
+        serviceCategory: newMsgItem.serviceCategory,
+        message: newMsgItem.message
+      }).catch((firestoreErr) => {
+        console.warn('[Firestore Contact Submission Notice]', firestoreErr);
+      });
+
+      const [resendRes, appsScriptRes] = await Promise.all([
+        // 1. Send Email to contact@mucolabs.com & client auto-reply via Resend Server API
         sendInquiryEmail(formData).catch((err) => {
-          console.warn('[EmailJS Primary Dispatch Error]', err);
-          return { success: false, text: 'EmailJS error' };
+          console.warn('[Resend Primary Dispatch Error]', err);
+          return { success: false, text: 'Resend error' };
         }),
 
-        // 2. Send Auto-Reply Email to Client
-        sendAutoReplyEmail(formData).catch((err) => {
-          console.warn('[EmailJS Auto Reply Error]', err);
-          return { success: false };
-        }),
-
-        // 3. Automatically Save Data into Google Sheets via Google Apps Script
+        // 2. Automatically Save Data into Google Sheets via Google Apps Script
         postToGoogleAppsScript(formData).catch((err) => {
           console.warn('[Google Apps Script POST Error]', err);
           return { success: false };
         })
       ]);
 
-      emailJsSuccess = Boolean(emailJsRes?.success);
+      resendSuccess = Boolean(resendRes?.success);
       appsScriptSuccess = Boolean(appsScriptRes?.success);
 
       // Also append to direct Google Sheet OAuth if connected
@@ -146,14 +153,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
         ).catch((err) => console.warn('OAuth Sheet append notice:', err));
       }
 
-      // Also post to internal Express backend API
-      fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      }).catch(() => {});
-
-      if (emailJsSuccess || appsScriptSuccess) {
+      if (resendSuccess || appsScriptSuccess) {
         setIsSubmitted(true);
         showToast('Thank you! Your inquiry has been sent successfully.', 'success', 'Submitted');
       } else {
@@ -183,8 +183,8 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
       {/* Google Sheets Lead Hub Modal */}
       <GoogleSheetsHub isOpen={showSheetsModal} onClose={() => setShowSheetsModal(false)} />
 
-      {/* EmailJS Settings & Template Hub Modal */}
-      <EmailJSSettingsModal isOpen={showEmailJSModal} onClose={() => setShowEmailJSModal(false)} />
+      {/* Resend Email Architecture & Diagnostic Hub Modal */}
+      <ResendSettingsModal isOpen={showResendModal} onClose={() => setShowResendModal(false)} />
 
       {/* Header Banner */}
       <section className="text-center max-w-3xl mx-auto px-4 pt-8 space-y-3">
@@ -520,11 +520,11 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
           </button>
           <span>•</span>
           <button
-            onClick={() => setShowEmailJSModal(true)}
-            className="text-slate-400 hover:text-cyan-400 transition-colors font-medium flex items-center gap-1"
+            onClick={() => setShowResendModal(true)}
+            className="text-slate-400 hover:text-orange-400 transition-colors font-medium flex items-center gap-1 cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>EmailJS Setup</span>
+            <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+            <span>Resend Email Status</span>
           </button>
         </div>
       </section>

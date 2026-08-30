@@ -5,8 +5,6 @@ import { PageId } from '../types';
 import { openWhatsApp, WHATSAPP_NUMBER } from '../utils/whatsapp';
 import { logWhatsAppInquiryToGoogleSheets } from '../services/whatsAppSheetsLogger';
 import { useEngagementNudge } from '../hooks/useEngagementNudge';
-import { ScheduleCallModal } from './ScheduleCallModal';
-import { WhatsAppDiagnosticsModal } from './WhatsAppDiagnosticsModal';
 
 interface FloatingWhatsAppProps {
   currentPage: PageId;
@@ -349,7 +347,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                       onClick={() => {
                         setShowSettings(false);
                         setIsOpen(false);
-                        setShowDiagnosticsModal(true);
+                        window.dispatchEvent(new CustomEvent('muco:open_whatsapp_diag'));
                       }}
                       className="w-full py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 text-[11px] font-bold border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
                     >
@@ -428,7 +426,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                         type="button"
                         onClick={() => {
                           setIsOpen(false);
-                          setShowScheduleModal(true);
+                          window.dispatchEvent(new CustomEvent('muco:open_schedule_call'));
                         }}
                         className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 font-bold text-xs py-2.5 px-3 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm group"
                       >
@@ -560,19 +558,6 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
           <span className={`absolute -top-1 -right-1 w-3.5 h-3.5 ${currentTheme.badge} border-2 border-white dark:border-slate-900 rounded-full`} />
         </motion.button>
       </motion.div>
-
-      {/* Simulated 15m Calendaring Modal */}
-      <ScheduleCallModal
-        isOpen={showScheduleModal}
-        onClose={() => setShowScheduleModal(false)}
-        currentPage={currentPage}
-      />
-
-      {/* WhatsApp Error Logging & Deep-Link Diagnostics Modal */}
-      <WhatsAppDiagnosticsModal
-        isOpen={showDiagnosticsModal}
-        onClose={() => setShowDiagnosticsModal(false)}
-      />
     </motion.div>
   );
 };

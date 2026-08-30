@@ -41,7 +41,7 @@ export function setMetaTag(attrName: 'name' | 'property', attrValue: string, con
 }
 
 /**
- * Helper function to set canonical URL tag
+ * Helper function to set canonical URL tag and sync hreflang tags
  */
 export function setCanonicalUrl(url: string) {
   if (typeof document === 'undefined') return;
@@ -52,6 +52,31 @@ export function setCanonicalUrl(url: string) {
     document.head.appendChild(link);
   }
   link.setAttribute('href', url);
+  setHreflangTags(url);
+}
+
+/**
+ * Helper function to configure multilingual hreflang link tags (Tamil, English, x-default)
+ */
+export function setHreflangTags(canonicalUrl: string) {
+  if (typeof document === 'undefined') return;
+
+  const languages = [
+    { lang: 'en', href: canonicalUrl },
+    { lang: 'ta', href: canonicalUrl },
+    { lang: 'x-default', href: canonicalUrl }
+  ];
+
+  languages.forEach(({ lang, href }) => {
+    let link = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`);
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', lang);
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', href);
+  });
 }
 
 export const PAGE_METADATA: Record<PageId, PageMetadata> = {
@@ -233,7 +258,8 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
  */
 export function updatePageSEO(page: PageId) {
   const metadata = PAGE_METADATA[page] || PAGE_METADATA.home;
-  const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}/#${page}` : `https://mucolabs.com/#${page}`;
+  const canonicalPath = page === 'home' ? '/' : `/${page}`;
+  const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}${canonicalPath}` : `https://mucolabs.com${canonicalPath}`;
   const ogImage = metadata.ogImage;
   const ogImageAlt = metadata.ogImageAlt || `${metadata.title} - MUCO Labs`;
   const ogType = metadata.ogType || 'website';
@@ -289,8 +315,8 @@ export function updateLocationSEO(location: LocationData) {
   const locTitle = `${location.headline} | MUCO Labs ${location.name}`;
   const locDesc = location.overview;
   const locUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/#locations?city=${location.id}` 
-    : `https://mucolabs.com/#locations?city=${location.id}`;
+    ? `${window.location.origin}/locations?city=${location.id}` 
+    : `https://mucolabs.com/locations?city=${location.id}`;
   const locKeywords = `software company in ${location.name}, website development ${location.name}, web design ${location.name}, mobile app development ${location.name}, SEO company ${location.name}, ERP software ${location.name}, AI development ${location.name}, ${location.district} software agency`;
 
   document.title = locTitle;
@@ -349,8 +375,8 @@ export function updateLocationSEO(location: LocationData) {
  */
 export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
   const pageUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/#locations?combo=${combo.id}`
-    : `https://mucolabs.com/#locations?combo=${combo.id}`;
+    ? `${window.location.origin}/locations?combo=${combo.id}`
+    : `https://mucolabs.com/locations?combo=${combo.id}`;
   const keywords = `${combo.serviceName} in ${combo.locationName}, ${combo.serviceName} company ${combo.locationName}, best ${combo.serviceName} in ${combo.locationName}, ${combo.targetIndustries.join(', ')}`;
 
   document.title = combo.seoTitle;
@@ -406,8 +432,8 @@ export function updateMemberSEO(member: TeamMember) {
   const memberTitle = `${member.name} - ${member.titleRole} | MUCO Labs Executive Roster`;
   const memberDesc = `${member.name} serves as ${member.titleRole} (${member.affiliation}) at MUCO Labs. Discover leadership insights, responsibilities, and professional background.`;
   const profileUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/#gallery?member=${encodeURIComponent(member.id)}` 
-    : `https://mucolabs.com/#gallery?member=${member.id}`;
+    ? `${window.location.origin}/gallery?member=${encodeURIComponent(member.id)}` 
+    : `https://mucolabs.com/gallery?member=${member.id}`;
   const memberImage = member.image;
   const imageAlt = `${member.name} - ${member.titleRole} at MUCO Labs`;
 
@@ -469,8 +495,8 @@ export function updateBlogPostSEO(post: BlogPost) {
   const postTitle = `${post.title} | MUCO Labs Blog`;
   const postDesc = post.excerpt;
   const postUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/#blog?post=${encodeURIComponent(post.slug)}`
-    : `https://mucolabs.com/#blog?post=${post.slug}`;
+    ? `${window.location.origin}/blog?post=${encodeURIComponent(post.slug)}`
+    : `https://mucolabs.com/blog?post=${post.slug}`;
   const postImage = post.image;
   const imageAlt = `${post.title} - Article by ${post.author.name}`;
 
@@ -532,8 +558,8 @@ export function updateServiceSEO(service: DetailedService) {
     ? `${service.description.slice(0, 155)}...` 
     : service.description;
   const serviceUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/#services?id=${encodeURIComponent(service.id)}`
-    : `https://mucolabs.com/#services?id=${service.id}`;
+    ? `${window.location.origin}/services?id=${encodeURIComponent(service.id)}`
+    : `https://mucolabs.com/services?id=${service.id}`;
   const keywords = `${service.title}, ${service.technologies.join(', ')}, software development Erode, MUCO Labs ${service.title}`;
 
   document.title = serviceTitle;
@@ -576,8 +602,8 @@ export function updateCourseSEO(course: CourseItem) {
   const courseTitle = `${course.title} (${course.duration}) | Way2Me & MUCO Labs Bootcamp`;
   const courseDesc = course.description;
   const courseUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/#courses?id=${encodeURIComponent(course.id)}`
-    : `https://mucolabs.com/#courses?id=${course.id}`;
+    ? `${window.location.origin}/courses?id=${encodeURIComponent(course.id)}`
+    : `https://mucolabs.com/courses?id=${course.id}`;
   const keywords = `${course.title}, ${course.technologies.join(', ')}, ${course.category}, Way2Me Academy, Yogaharikaran, tech training Tamil Nadu`;
 
   document.title = courseTitle;
@@ -618,8 +644,8 @@ export function updateProjectSEO(project: ProjectItem) {
   const projTitle = `${project.title} (${project.category}) | MUCO Labs Portfolio`;
   const projDesc = project.description;
   const projUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/#portfolio?id=${encodeURIComponent(project.id)}`
-    : `https://mucolabs.com/#portfolio?id=${project.id}`;
+    ? `${window.location.origin}/portfolio?id=${encodeURIComponent(project.id)}`
+    : `https://mucolabs.com/portfolio?id=${project.id}`;
 
   document.title = projTitle;
 
@@ -654,7 +680,7 @@ export function updateProjectSEO(project: ProjectItem) {
 
 /**
  * Global URL Hash & Route SEO Synchronizer:
- * Inspects hash query parameters (?combo=..., ?city=..., ?id=..., ?post=..., ?member=...)
+ * Inspects both pathname (/services, /locations) and hash query parameters (?combo=..., ?city=..., ?id=..., ?post=..., ?member=...)
  * and automatically sets exact unique metadata, schema markup, and canonical tags.
  */
 export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
@@ -662,11 +688,15 @@ export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
 
   const currentHash = targetHash !== undefined ? targetHash : window.location.hash;
   const [routePart, queryPart] = currentHash.replace(/^#\/?/, '').split('?');
-  const pageCandidate = (routePart || fallbackPage || 'home').toLowerCase() as PageId;
-  const urlParams = new URLSearchParams(queryPart || '');
+  const pathPart = window.location.pathname.replace(/^\/+/, '').split('/')[0];
+  const pageCandidate = (routePart || pathPart || fallbackPage || 'home').toLowerCase() as PageId;
+  
+  const hashSearchParams = new URLSearchParams(queryPart || '');
+  const windowSearchParams = new URLSearchParams(window.location.search || '');
+  const getParam = (key: string) => hashSearchParams.get(key) || windowSearchParams.get(key);
 
   // 1. High-Intent Service x Location Combination
-  const comboParam = urlParams.get('combo');
+  const comboParam = getParam('combo');
   if (comboParam) {
     const matchingCombo = SERVICE_LOCATIONS_DATA.find(
       (c) => c.id.toLowerCase() === comboParam.toLowerCase()
@@ -678,14 +708,14 @@ export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
   }
 
   // 2. Specific Regional Location Hub
-  const cityParam = urlParams.get('city') || urlParams.get('loc');
+  const cityParam = getParam('city') || getParam('loc');
   if (cityParam && LOCATIONS_DATA[cityParam.toLowerCase() as any]) {
     updateLocationSEO(LOCATIONS_DATA[cityParam.toLowerCase() as any]);
     return;
   }
 
   // 3. Blog Article
-  const postParam = urlParams.get('post');
+  const postParam = getParam('post');
   if (postParam) {
     const matchingPost = BLOG_POSTS.find(
       (p) => p.slug.toLowerCase() === postParam.toLowerCase()
@@ -697,7 +727,7 @@ export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
   }
 
   // 4. Core Service Detail
-  const serviceIdParam = urlParams.get('id');
+  const serviceIdParam = getParam('id');
   if (pageCandidate === 'services' && serviceIdParam) {
     const matchingService = CORE_SERVICES.find(
       (s) => s.id.toLowerCase() === serviceIdParam.toLowerCase()
@@ -731,7 +761,7 @@ export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
   }
 
   // 7. Team Member Profile
-  const memberParam = urlParams.get('member');
+  const memberParam = getParam('member');
   if (pageCandidate === 'gallery' && memberParam) {
     const matchingMember = TEAM_MEMBERS.find(
       (m) => m.id.toLowerCase() === memberParam.toLowerCase()
@@ -744,8 +774,9 @@ export function syncUrlSEO(targetHash?: string, fallbackPage?: PageId): void {
 
   // 8. Fallback to standard top-level page SEO
   const validPages: PageId[] = [
-    'home', 'about', 'services', 'courses', 'pricing', 'portfolio',
-    'apps', 'maintenance', 'gallery', 'contact', 'faq', 'sheets', 'blog', 'locations'
+    'home', 'about', 'services', 'systems', 'process', 'courses', 'pricing', 'portfolio',
+    'apps', 'maintenance', 'gallery', 'contact', 'faq', 'sheets', 'blog', 'locations',
+    'terms', 'privacy', 'notfound'
   ];
   const targetPage: PageId = validPages.includes(pageCandidate) ? pageCandidate : (fallbackPage || 'home');
   updatePageSEO(targetPage);

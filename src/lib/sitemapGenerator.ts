@@ -7,6 +7,15 @@ import { COURSES_DATA } from '../data/coursesData';
 
 export const DOMAIN = 'https://mucolabs.com';
 
+// Executive leadership and key team profiles
+export const TEAM_MEMBERS_SITEMAP = [
+  { id: 'team-founder', name: 'Srinivash Mahalingam (Founder & Chairman)' },
+  { id: 'team-2', name: 'Mr. Vinoth (Senior Developer & AutoCAD Designer)' },
+  { id: 'team-3', name: 'Mr. Chandru (Digital Marketing Head & Company Operations)' },
+  { id: 'team-4', name: 'Mr. Marimuthu (Telecalling Head & Accounts Head)' },
+  { id: 'team-5', name: 'Mr. Venkatesh (Marketing & HR Manager)' }
+];
+
 export interface SitemapUrlEntry {
   loc: string;
   lastmod: string;
@@ -23,7 +32,7 @@ export function getCurrentDateFormatted(): string {
 export function getAllSitemapEntries(): SitemapUrlEntry[] {
   const currentDate = getCurrentDateFormatted();
 
-  // 1. Core Top-Level Pillar Pages
+  // 1. Core Top-Level Pillar Pages (Clean Canonical Paths)
   const mainPages: SitemapUrlEntry[] = [
     {
       loc: `${DOMAIN}/`,
@@ -34,7 +43,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'MUCO Labs - Custom Software, AI Automation & Web Development Erode'
     },
     {
-      loc: `${DOMAIN}/#about`,
+      loc: `${DOMAIN}/about`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -42,7 +51,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'About MUCO Labs - Leadership, Mission & Engineering Standards'
     },
     {
-      loc: `${DOMAIN}/#locations`,
+      loc: `${DOMAIN}/locations`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.95',
@@ -50,7 +59,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Regional Technology Hubs & Local SEO Directory (Erode & Kongu Region)'
     },
     {
-      loc: `${DOMAIN}/#services`,
+      loc: `${DOMAIN}/services`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.95',
@@ -58,7 +67,23 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Enterprise & Startup IT Services Catalog'
     },
     {
-      loc: `${DOMAIN}/#courses`,
+      loc: `${DOMAIN}/systems`,
+      lastmod: currentDate,
+      changefreq: 'weekly',
+      priority: '0.90',
+      category: 'Core Page',
+      title: 'Autonomous AI Systems & Neural Workflows - MUCO AI Studio'
+    },
+    {
+      loc: `${DOMAIN}/process`,
+      lastmod: currentDate,
+      changefreq: 'weekly',
+      priority: '0.85',
+      category: 'Core Page',
+      title: 'Our 8-Step Engineering & Delivery Process - MUCO Labs'
+    },
+    {
+      loc: `${DOMAIN}/courses`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.90',
@@ -66,7 +91,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Technology Courses, Bootcamps & Way2Me Academy Partnerships'
     },
     {
-      loc: `${DOMAIN}/#portfolio`,
+      loc: `${DOMAIN}/portfolio`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -74,7 +99,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Production Case Studies & Client Project Portfolio'
     },
     {
-      loc: `${DOMAIN}/#pricing`,
+      loc: `${DOMAIN}/pricing`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -82,7 +107,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Transparent Pricing Calculator & Quotation Estimator'
     },
     {
-      loc: `${DOMAIN}/#apps`,
+      loc: `${DOMAIN}/apps`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.80',
@@ -90,7 +115,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Mobile App Publishing to Google Play Store & Apple App Store'
     },
     {
-      loc: `${DOMAIN}/#maintenance`,
+      loc: `${DOMAIN}/maintenance`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.80',
@@ -98,7 +123,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: '24/7 Cloud Support, SLA & Annual Maintenance Contracts (AMC)'
     },
     {
-      loc: `${DOMAIN}/#gallery`,
+      loc: `${DOMAIN}/gallery`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.75',
@@ -106,7 +131,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Our Executive Leadership, Mentors & Engineering Team'
     },
     {
-      loc: `${DOMAIN}/#blog`,
+      loc: `${DOMAIN}/blog`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.90',
@@ -114,7 +139,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Engineering Blog, Tech Insights & Local Business Growth Guides'
     },
     {
-      loc: `${DOMAIN}/#faq`,
+      loc: `${DOMAIN}/faq`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.70',
@@ -122,18 +147,34 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Frequently Asked Questions & Client Onboarding Guide'
     },
     {
-      loc: `${DOMAIN}/#contact`,
+      loc: `${DOMAIN}/contact`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.90',
       category: 'Core Page',
       title: 'Contact MUCO Labs - Consultation & Direct Quotation'
+    },
+    {
+      loc: `${DOMAIN}/terms`,
+      lastmod: currentDate,
+      changefreq: 'monthly',
+      priority: '0.50',
+      category: 'Core Page',
+      title: 'Terms of Service - MUCO Labs'
+    },
+    {
+      loc: `${DOMAIN}/privacy`,
+      lastmod: currentDate,
+      changefreq: 'monthly',
+      priority: '0.50',
+      category: 'Core Page',
+      title: 'Privacy Policy - MUCO Labs'
     }
   ];
 
   // 2. Regional Town & City Hub Pages (8 Regional Hubs)
   const locationPages: SitemapUrlEntry[] = ALL_LOCATIONS.map((loc) => ({
-    loc: `${DOMAIN}/#locations?city=${encodeURIComponent(loc.id)}`,
+    loc: `${DOMAIN}/locations?city=${encodeURIComponent(loc.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.95',
@@ -143,7 +184,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
 
   // 3. High-Intent Commercial Service x Location Combos (17+ Combinations)
   const serviceLocationPages: SitemapUrlEntry[] = SERVICE_LOCATIONS_DATA.map((combo) => ({
-    loc: `${DOMAIN}/#locations?combo=${encodeURIComponent(combo.id)}`,
+    loc: `${DOMAIN}/locations?combo=${encodeURIComponent(combo.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.92',
@@ -153,7 +194,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
 
   // 4. Core Detailed IT Services (12+ Services)
   const servicePages: SitemapUrlEntry[] = CORE_SERVICES.map((service) => ({
-    loc: `${DOMAIN}/#services?id=${encodeURIComponent(service.id)}`,
+    loc: `${DOMAIN}/services?id=${encodeURIComponent(service.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.90',
@@ -163,7 +204,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
 
   // 5. Mastery Courses & Bootcamps (7+ Courses)
   const coursePages: SitemapUrlEntry[] = COURSES_DATA.map((course) => ({
-    loc: `${DOMAIN}/#courses?id=${encodeURIComponent(course.id)}`,
+    loc: `${DOMAIN}/courses?id=${encodeURIComponent(course.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.88',
@@ -173,7 +214,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
 
   // 6. Portfolio Projects
   const projectPages: SitemapUrlEntry[] = INITIAL_PROJECTS.map((project) => ({
-    loc: `${DOMAIN}/#portfolio?id=${encodeURIComponent(project.id)}`,
+    loc: `${DOMAIN}/portfolio?id=${encodeURIComponent(project.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.80',
@@ -183,7 +224,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
 
   // 7. Blog Articles & Technical Guides
   const blogPages: SitemapUrlEntry[] = BLOG_POSTS.map((post) => ({
-    loc: `${DOMAIN}/#blog?post=${encodeURIComponent(post.slug)}`,
+    loc: `${DOMAIN}/blog?post=${encodeURIComponent(post.slug)}`,
     lastmod: post.publishedDate ? new Date(post.publishedDate).toISOString().split('T')[0] || currentDate : currentDate,
     changefreq: 'weekly',
     priority: '0.85',
@@ -192,16 +233,8 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
   }));
 
   // 8. Leadership & Key Team Members
-  const teamMemberIds = [
-    { id: 'team-founder', name: 'Srinivash Mahalingam (Founder & Managing Director)' },
-    { id: 'team-vinoth', name: 'Vinoth K (Lead Full-Stack Architect)' },
-    { id: 'team-chandru', name: 'Chandru S (Chief AI & Cloud Systems Engineer)' },
-    { id: 'team-marimuthu', name: 'Marimuthu R (Head of Mobile App Development)' },
-    { id: 'team-venkatesh', name: 'Venkatesh P (Lead UI/UX Designer & Product Strategist)' }
-  ];
-
-  const teamPages: SitemapUrlEntry[] = teamMemberIds.map((member) => ({
-    loc: `${DOMAIN}/#gallery?member=${encodeURIComponent(member.id)}`,
+  const teamPages: SitemapUrlEntry[] = TEAM_MEMBERS_SITEMAP.map((member) => ({
+    loc: `${DOMAIN}/gallery?member=${encodeURIComponent(member.id)}`,
     lastmod: currentDate,
     changefreq: 'monthly',
     priority: '0.75',

@@ -15,8 +15,6 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('muco_language') as Language;
       if (saved === 'en' || saved === 'ta') return saved;
-      // Auto-detect browser language if Tamil
-      if (navigator.language.startsWith('ta')) return 'ta';
     }
     return 'en';
   });
