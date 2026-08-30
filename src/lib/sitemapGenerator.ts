@@ -40,7 +40,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'daily',
       priority: '1.0',
       category: 'Core Page',
-      title: 'MUCO Labs - Custom Software, AI Automation & Web Development Erode'
+      title: 'MUCO Labs | Custom Software, Web & AI Engineering'
     },
     {
       loc: `${DOMAIN}/about`,
@@ -48,7 +48,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.85',
       category: 'Core Page',
-      title: 'About MUCO Labs - Leadership, Mission & Engineering Standards'
+      title: 'About MUCO Labs | Software & AI Engineering Firm'
     },
     {
       loc: `${DOMAIN}/locations`,
@@ -56,7 +56,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.95',
       category: 'Core Page',
-      title: 'Regional Technology Hubs & Local SEO Directory (Erode & Kongu Region)'
+      title: 'Locations Served | Web & Software Services | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/services`,
@@ -64,7 +64,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.95',
       category: 'Core Page',
-      title: 'Enterprise & Startup IT Services Catalog'
+      title: 'Services in Erode | Web, Mobile, SEO & AI | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/systems`,
@@ -72,7 +72,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.90',
       category: 'Core Page',
-      title: 'Autonomous AI Systems & Neural Workflows - MUCO AI Studio'
+      title: 'Autonomous AI Systems & Neural Workflows | MUCO AI'
     },
     {
       loc: `${DOMAIN}/process`,
@@ -80,7 +80,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.85',
       category: 'Core Page',
-      title: 'Our 8-Step Engineering & Delivery Process - MUCO Labs'
+      title: 'Our 8-Step Engineering & Delivery Process | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/courses`,
@@ -88,7 +88,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.90',
       category: 'Core Page',
-      title: 'Technology Courses, Bootcamps & Way2Me Academy Partnerships'
+      title: 'Tech Courses & Coding Bootcamps | MUCO Labs & Way2Me'
     },
     {
       loc: `${DOMAIN}/portfolio`,
@@ -96,7 +96,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.85',
       category: 'Core Page',
-      title: 'Production Case Studies & Client Project Portfolio'
+      title: 'Portfolio & Case Studies | Software Projects | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/pricing`,
@@ -104,7 +104,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.85',
       category: 'Core Page',
-      title: 'Transparent Pricing Calculator & Quotation Estimator'
+      title: 'Software Development Pricing & Packages | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/apps`,
@@ -112,7 +112,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.80',
       category: 'Core Page',
-      title: 'Mobile App Publishing to Google Play Store & Apple App Store'
+      title: 'App Store & Play Store Publishing Services | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/maintenance`,
@@ -120,7 +120,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.80',
       category: 'Core Page',
-      title: '24/7 Cloud Support, SLA & Annual Maintenance Contracts (AMC)'
+      title: 'Cloud Management & Software AMC Services | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/gallery`,
@@ -128,7 +128,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'monthly',
       priority: '0.75',
       category: 'Core Page',
-      title: 'Our Executive Leadership, Mentors & Engineering Team'
+      title: 'Executive Roster & Workplace Gallery | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/blog`,
@@ -136,7 +136,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'weekly',
       priority: '0.90',
       category: 'Core Page',
-      title: 'Engineering Blog, Tech Insights & Local Business Growth Guides'
+      title: 'MUCO Labs Blog | AI Trends & Software Engineering'
     },
     {
       loc: `${DOMAIN}/faq`,
@@ -144,7 +144,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'monthly',
       priority: '0.70',
       category: 'Core Page',
-      title: 'Frequently Asked Questions & Client Onboarding Guide'
+      title: 'FAQ | Software Engineering & Development | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/contact`,
@@ -152,7 +152,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'monthly',
       priority: '0.90',
       category: 'Core Page',
-      title: 'Contact MUCO Labs - Consultation & Direct Quotation'
+      title: 'Contact MUCO Labs | Free Consultation & Project Quote'
     },
     {
       loc: `${DOMAIN}/terms`,
@@ -160,7 +160,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'monthly',
       priority: '0.50',
       category: 'Core Page',
-      title: 'Terms of Service - MUCO Labs'
+      title: 'Terms and Conditions | Master Agreement | MUCO Labs'
     },
     {
       loc: `${DOMAIN}/privacy`,
@@ -168,7 +168,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       changefreq: 'monthly',
       priority: '0.50',
       category: 'Core Page',
-      title: 'Privacy Policy - MUCO Labs'
+      title: 'Privacy Policy & DPDP Act Compliance | MUCO Labs'
     }
   ];
 
@@ -179,7 +179,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     changefreq: 'weekly',
     priority: '0.95',
     category: 'Location Hub',
-    title: `${loc.name} Technology Hub • ${loc.district}, Tamil Nadu (${loc.pincode})`
+    title: `${loc.name} Technology Hub • ${loc.district}, TN`
   }));
 
   // 3. High-Intent Commercial Service x Location Combos (17+ Combinations)
@@ -189,7 +189,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     changefreq: 'weekly',
     priority: '0.92',
     category: 'Service x Location',
-    title: `${combo.serviceName} in ${combo.locationName} (${combo.startingPrice})`
+    title: `${combo.serviceName} in ${combo.locationName} | MUCO Labs`
   }));
 
   // 4. Core Detailed IT Services (12+ Services)

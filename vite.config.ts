@@ -17,20 +17,18 @@ function seoAndAnalyticsPlugin(): Plugin {
       const bingToken = process.env.VITE_BING_WEBMASTER_VERIFICATION;
       const ga4Id = process.env.VITE_GA4_MEASUREMENT_ID;
 
-      let gscHtml = '<!-- Google Search Console: Set VITE_GOOGLE_SEARCH_CONSOLE_VERIFICATION in .env to enable -->';
+      const extraTags: string[] = [];
+
       if (gscToken && gscToken.trim() !== '' && !gscToken.includes('TOKEN') && !gscToken.includes('PLACEHOLDER')) {
-        gscHtml = `<meta name="google-site-verification" content="${gscToken.trim()}" />`;
+        extraTags.push(`    <meta name="google-site-verification" content="${gscToken.trim()}" />`);
       }
 
-      let bingHtml = '<!-- Bing Webmaster: Set VITE_BING_WEBMASTER_VERIFICATION in .env to enable -->';
       if (bingToken && bingToken.trim() !== '' && !bingToken.includes('TOKEN') && !bingToken.includes('PLACEHOLDER')) {
-        bingHtml = `<meta name="msvalidate.01" content="${bingToken.trim()}" />`;
+        extraTags.push(`    <meta name="msvalidate.01" content="${bingToken.trim()}" />`);
       }
 
-      let ga4Html = '<!-- GA4: Set VITE_GA4_MEASUREMENT_ID (e.g. G-XXXXXXXXXX) in .env to enable -->';
       if (ga4Id && ga4Id.startsWith('G-') && ga4Id !== 'G-MEASUREMENT_ID') {
-        ga4Html = `
-    <!-- Google Analytics 4 (GA4) Integration -->
+        extraTags.push(`    <!-- Google Analytics 4 (GA4) Integration -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id.trim()}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -40,13 +38,14 @@ function seoAndAnalyticsPlugin(): Plugin {
         send_page_view: false,
         anonymize_ip: true
       });
-    </script>`;
+    </script>`);
       }
 
-      return html
-        .replace(/<!-- %VITE_GOOGLE_SEARCH_CONSOLE_VERIFICATION% -->|<!-- Google Search Console Verification Placeholder -->\s*<meta name="google-site-verification"[^>]*\/>/g, gscHtml)
-        .replace(/<!-- %VITE_BING_WEBMASTER_VERIFICATION% -->|<!-- Bing Webmaster Tools Verification Placeholder -->\s*<meta name="msvalidate\.01"[^>]*\/>/g, bingHtml)
-        .replace(/<!-- %VITE_GA4_INJECTION% -->|<!-- Google Analytics \(GA4\) Integration Placeholder -->[\s\S]*?-->/g, ga4Html);
+      if (extraTags.length > 0) {
+        return html.replace('</head>', `${extraTags.join('\n')}\n  </head>`);
+      }
+
+      return html;
     },
   };
 }
