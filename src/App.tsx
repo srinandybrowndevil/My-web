@@ -15,39 +15,58 @@ import { AuthProvider } from './context/AuthContext';
 import { RoleQuickSwitcher } from './components/RoleQuickSwitcher';
 import { updatePageSEO, syncUrlSEO } from './utils/seo';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
+import { useAppReadiness } from './hooks/useAppReadiness';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 import { MobileQuickActionBar } from './components/MobileQuickActionBar';
 import { openWhatsApp } from './utils/whatsapp';
 import { ServicesSkeleton } from './components/skeletons/ServicesSkeleton';
 import { PortfolioSkeleton } from './components/skeletons/PortfolioSkeleton';
 
-// Lazy-loaded interactive modals & diagnostics for minimal initial bundle
-const AuthModal = lazy(() => import('./components/AuthModal').then((m) => ({ default: m.AuthModal })));
-const ScheduleCallModal = lazy(() => import('./components/ScheduleCallModal').then((m) => ({ default: m.ScheduleCallModal })));
-const CommandPalette = lazy(() => import('./components/CommandPalette').then((m) => ({ default: m.CommandPalette })));
-const WhatsAppDiagnosticsModal = lazy(() => import('./components/WhatsAppDiagnosticsModal').then((m) => ({ default: m.WhatsAppDiagnosticsModal })));
-const PerformanceMonitor = lazy(() => import('./components/PerformanceMonitor').then((m) => ({ default: m.PerformanceMonitor })));
+// Resilient lazy import wrapper with automatic retry for network resiliency
+function lazyWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>,
+  retries = 2,
+  interval = 800
+): React.LazyExoticComponent<T> {
+  return lazy(() =>
+    factory().catch((error) => {
+      if (retries > 0) {
+        return new Promise((resolve) => setTimeout(resolve, interval)).then(() =>
+          lazyWithRetry(factory, retries - 1, interval * 1.5)._init(factory as any)
+        );
+      }
+      throw error;
+    })
+  );
+}
 
-// Lazy-loaded route page components for optimal bundle splitting
-const Home = lazy(() => import('./pages/Home').then((m) => ({ default: m.Home })));
-const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })));
-const Services = lazy(() => import('./pages/Services').then((m) => ({ default: m.Services })));
-const AiSystems = lazy(() => import('./pages/AiSystems').then((m) => ({ default: m.AiSystems })));
-const Process = lazy(() => import('./pages/Process').then((m) => ({ default: m.Process })));
-const Courses = lazy(() => import('./pages/Courses').then((m) => ({ default: m.Courses })));
-const Pricing = lazy(() => import('./pages/Pricing').then((m) => ({ default: m.Pricing })));
-const Portfolio = lazy(() => import('./pages/Portfolio').then((m) => ({ default: m.Portfolio })));
-const AppStudio = lazy(() => import('./pages/AppStudio').then((m) => ({ default: m.AppStudio })));
-const Maintenance = lazy(() => import('./pages/Maintenance').then((m) => ({ default: m.Maintenance })));
-const Gallery = lazy(() => import('./pages/Gallery').then((m) => ({ default: m.Gallery })));
-const Contact = lazy(() => import('./pages/Contact').then((m) => ({ default: m.Contact })));
-const FAQ = lazy(() => import('./pages/FAQ').then((m) => ({ default: m.FAQ })));
-const GoogleSheetsManager = lazy(() => import('./pages/GoogleSheetsManager').then((m) => ({ default: m.GoogleSheetsManager })));
-const Blog = lazy(() => import('./pages/Blog').then((m) => ({ default: m.Blog })));
-const Locations = lazy(() => import('./pages/Locations').then((m) => ({ default: m.Locations })));
-const Terms = lazy(() => import('./pages/Terms').then((m) => ({ default: m.Terms })));
-const Privacy = lazy(() => import('./pages/Privacy').then((m) => ({ default: m.Privacy })));
-const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
+// Lazy-loaded interactive modals & diagnostics for minimal initial bundle
+const AuthModal = lazyWithRetry(() => import('./components/AuthModal').then((m) => ({ default: m.AuthModal })));
+const ScheduleCallModal = lazyWithRetry(() => import('./components/ScheduleCallModal').then((m) => ({ default: m.ScheduleCallModal })));
+const CommandPalette = lazyWithRetry(() => import('./components/CommandPalette').then((m) => ({ default: m.CommandPalette })));
+const WhatsAppDiagnosticsModal = lazyWithRetry(() => import('./components/WhatsAppDiagnosticsModal').then((m) => ({ default: m.WhatsAppDiagnosticsModal })));
+const PerformanceMonitor = lazyWithRetry(() => import('./components/PerformanceMonitor').then((m) => ({ default: m.PerformanceMonitor })));
+
+// Lazy-loaded route page components with resilient retries
+const Home = lazyWithRetry(() => import('./pages/Home').then((m) => ({ default: m.Home })));
+const About = lazyWithRetry(() => import('./pages/About').then((m) => ({ default: m.About })));
+const Services = lazyWithRetry(() => import('./pages/Services').then((m) => ({ default: m.Services })));
+const AiSystems = lazyWithRetry(() => import('./pages/AiSystems').then((m) => ({ default: m.AiSystems })));
+const Process = lazyWithRetry(() => import('./pages/Process').then((m) => ({ default: m.Process })));
+const Courses = lazyWithRetry(() => import('./pages/Courses').then((m) => ({ default: m.Courses })));
+const Pricing = lazyWithRetry(() => import('./pages/Pricing').then((m) => ({ default: m.Pricing })));
+const Portfolio = lazyWithRetry(() => import('./pages/Portfolio').then((m) => ({ default: m.Portfolio })));
+const AppStudio = lazyWithRetry(() => import('./pages/AppStudio').then((m) => ({ default: m.AppStudio })));
+const Maintenance = lazyWithRetry(() => import('./pages/Maintenance').then((m) => ({ default: m.Maintenance })));
+const Gallery = lazyWithRetry(() => import('./pages/Gallery').then((m) => ({ default: m.Gallery })));
+const Contact = lazyWithRetry(() => import('./pages/Contact').then((m) => ({ default: m.Contact })));
+const FAQ = lazyWithRetry(() => import('./pages/FAQ').then((m) => ({ default: m.FAQ })));
+const GoogleSheetsManager = lazyWithRetry(() => import('./pages/GoogleSheetsManager').then((m) => ({ default: m.GoogleSheetsManager })));
+const Blog = lazyWithRetry(() => import('./pages/Blog').then((m) => ({ default: m.Blog })));
+const Locations = lazyWithRetry(() => import('./pages/Locations').then((m) => ({ default: m.Locations })));
+const Terms = lazyWithRetry(() => import('./pages/Terms').then((m) => ({ default: m.Terms })));
+const Privacy = lazyWithRetry(() => import('./pages/Privacy').then((m) => ({ default: m.Privacy })));
+const NotFound = lazyWithRetry(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('home');
@@ -56,12 +75,17 @@ export default function App() {
   const [isScheduleCallOpen, setIsScheduleCallOpen] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isWhatsAppDiagOpen, setIsWhatsAppDiagOpen] = useState<boolean>(false);
+  const [isIntroReplayOpen, setIsIntroReplayOpen] = useState<boolean>(false);
+
+  // Deterministic application & asset readiness probe (Promise.all + fallback safety)
+  const readiness = useAppReadiness();
 
   // Listen to global events
   useEffect(() => {
     const handleOpenSearch = () => setIsCommandPaletteOpen(true);
     const handleOpenWhatsAppDiag = () => setIsWhatsAppDiagOpen(true);
     const handleOpenScheduleCall = () => setIsScheduleCallOpen(true);
+    const handleReplayIntro = () => setIsIntroReplayOpen(true);
     const handleOpenWhatsAppChat = () => {
       openWhatsApp({ pageName: currentPage });
     };
@@ -71,6 +95,7 @@ export default function App() {
     window.addEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
     window.addEventListener('muco:open_schedule_call', handleOpenScheduleCall);
     window.addEventListener('openScheduleCallModal', handleOpenScheduleCall);
+    window.addEventListener('muco:replay_intro', handleReplayIntro);
 
     return () => {
       window.removeEventListener('openSearchModal', handleOpenSearch);
@@ -78,6 +103,7 @@ export default function App() {
       window.removeEventListener('muco:open_whatsapp_chat', handleOpenWhatsAppChat);
       window.removeEventListener('muco:open_schedule_call', handleOpenScheduleCall);
       window.removeEventListener('openScheduleCallModal', handleOpenScheduleCall);
+      window.removeEventListener('muco:replay_intro', handleReplayIntro);
     };
   }, [currentPage]);
 
@@ -403,6 +429,21 @@ export default function App() {
 
             {/* Footer */}
             <Footer onNavigate={handleNavigate} />
+
+            {/* Awwwards-Inspired Cinematic Intro Replay Overlay */}
+            <AnimatePresence>
+              {isIntroReplayOpen && (
+                <ModernLoadingScreen
+                  fullScreenOverlay={true}
+                  size="fullscreen"
+                  label="MUCO LABS ARCHITECTURE"
+                  sublabel={readiness.stage || "HIGH-PRECISION DIGITAL SYSTEMS // READY"}
+                  autoDismissTimeoutMs={2200}
+                  onDismiss={() => setIsIntroReplayOpen(false)}
+                  onComplete={() => setIsIntroReplayOpen(false)}
+                />
+              )}
+            </AnimatePresence>
           </div>
           </RoleProvider>
         </AuthProvider>
