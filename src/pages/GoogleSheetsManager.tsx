@@ -129,7 +129,7 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
         setSelectedSheetId(files[0].id);
         setSelectedSheetMeta(files[0]);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to fetch spreadsheets:', err);
       setStatusMessage({ type: 'error', text: err.message || 'Could not load spreadsheets from Drive.' });
     } finally {
@@ -143,7 +143,7 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
     try {
       const data = await getSpreadsheetValues(token, sheetId, 'Sheet1!A1:Z100');
       setSheetData(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to load sheet values:', err);
       setStatusMessage({ type: 'error', text: 'Error reading sheet data. Ensure the spreadsheet contains valid ranges.' });
     } finally {
@@ -164,7 +164,7 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
         showToast(`Connected to Google Account (${result.user.email})`, 'success', 'Google Auth Success');
         fetchUserSpreadsheets(result.accessToken);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Login failed:', err);
       setStatusMessage({ type: 'error', text: err.message || 'Sign in failed. Please try again.' });
       showToast(err.message || 'Google authentication failed', 'error', 'Auth Failed');
@@ -216,7 +216,7 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
       // Refresh spreadsheet list
       await fetchUserSpreadsheets(accessToken);
       setSelectedSheetId(newSheet.spreadsheetId);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error creating spreadsheet:', err);
       setStatusMessage({ type: 'error', text: err.message || 'Failed to create spreadsheet.' });
       showToast(err.message || 'Failed to create spreadsheet', 'error', 'Creation Error');
@@ -276,7 +276,7 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
 
       // Reload sheet values
       await loadSheetValues(accessToken, selectedSheetId);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error adding row to sheet:', err);
       setStatusMessage({ type: 'error', text: err.message || 'Failed to append row to spreadsheet.' });
     }
@@ -341,7 +341,7 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
       const count = dataToExport.length > 1 ? dataToExport.length - 1 : dataToExport.length;
       showToast(`Successfully exported ${count} lead entry(s) to ${filename}`, 'success', 'CSV Downloaded');
       setStatusMessage({ type: 'success', text: `Downloaded CSV export file: "${filename}" (${count} records)` });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to export CSV:', err);
       showToast('Error generating CSV export file.', 'error', 'Export Error');
     }

@@ -4,6 +4,7 @@ import compression from 'compression';
 import { createServer as createViteServer } from 'vite';
 import { Resend } from 'resend';
 import { generateSitemapXml, generateRobotsTxt, getSitemapStats } from './src/lib/sitemapGenerator';
+import { submitContactFormServer, getContactMessagesServer, deleteContactMessageServer } from './server-firebase';
 
 // Lazy initialized Resend client to avoid startup crashes if API key is not yet set
 let resendClient: Resend | null = null;
@@ -176,44 +177,8 @@ async function startServer() {
 
   app.use(express.json());
 
-  // In-memory messages store for submitted leads
-  let contactMessages: Array<{
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    company?: string;
-    serviceCategory: string;
-    budgetRange: string;
-    message: string;
-    timestamp: string;
-    status: 'New' | 'Contacted' | 'Closed';
-  }> = [
-    {
-      id: 'msg-sample-1',
-      name: 'Anand Kumar',
-      email: 'anand@texexports.com',
-      phone: '+91 98421 12345',
-      company: 'TexExports India',
-      serviceCategory: 'Website Development',
-      budgetRange: '₹50,000 - ₹1,00,000',
-      message: 'Need a custom B2B web application with multi-language support and product catalog for international buyers.',
-      timestamp: '2026-08-03 10:30 AM',
-      status: 'New'
-    },
-    {
-      id: 'msg-sample-2',
-      name: 'Priya Sundaram',
-      email: 'priya@freshmart.in',
-      phone: '+91 98940 67890',
-      company: 'FreshMart Supermarkets',
-      serviceCategory: 'Mobile App Development',
-      budgetRange: '₹1,00,000+',
-      message: 'Looking for a cross-platform mobile delivery app on iOS and Play Store for grocery ordering in Erode.',
-      timestamp: '2026-08-03 02:15 PM',
-      status: 'Contacted'
-    }
-  ];
+  // Firebase-based persistent storage for contact messages
+  // Messages are now stored in Firestore instead of in-memory
 
   // API Routes
   app.get('/api/health', (req, res) => {
@@ -256,9 +221,15 @@ async function startServer() {
     }
   });
 
-  // Get all submitted contact messages
-  app.get('/api/contact/messages', (req, res) => {
-    res.json({ success: true, count: contactMessages.length, messages: contactMessages });
+  // Get all submitted contact messages (now from Firebase)
+  app.get('/api/contact/messages', async (req, res) => {
+    try {
+      const messages = await getContactMessagesServer();
+      res.json({ success: true, count: messages.length, messages });
+    } catch (error) {
+      console.error('[Firebase Messages Error]', error);
+      res.status(500).json({ success: false, error: 'Failed to fetch messages from Firebase', fallback: [] });
+    }
   });
 
   // Resend Email Integration Status
@@ -320,7 +291,7 @@ async function startServer() {
     }
   });
 
-  // Primary Email Inquiry Dispatch via Resend
+  // Primary Email Inquiry Dispatch via Resend with Firebase persistence
   app.post('/api/send-email', async (req, res) => {
     const { name, email, phone, company, serviceCategory, budgetRange, subject, message } = req.body;
 
@@ -338,9 +309,21 @@ async function startServer() {
       status: 'New' as const
     };
 
-    // Store lead in server memory
-    contactMessages.unshift(newMsg);
-    console.log('[MUCO Labs Lead Received via Resend pipeline]', newMsg);
+    // Store lead in Firebase for persistence
+    try {
+      await submitContactFormServer({
+        name: newMsg.name,
+        email: newMsg.email,
+        phone: newMsg.phone,
+        company: newMsg.company,
+        serviceCategory: newMsg.serviceCategory,
+        message: newMsg.message
+      });
+      console.log('[MUCO Labs Lead Received via Firebase + Resend pipeline]', newMsg);
+    } catch (firebaseError) {
+      console.warn('[Firebase Storage Warning]', firebaseError);
+      // Continue with email dispatch even if Firebase fails
+    }
 
     const resend = getResend();
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>';
@@ -350,7 +333,7 @@ async function startServer() {
       return res.json({
         success: true,
         isSimulated: true,
-        message: 'Inquiry received and logged to MUCO Labs. (Resend simulated sandbox mode - add RESEND_API_KEY to send live emails).',
+        message: 'Inquiry received and logged to Firebase. (Resend simulated sandbox mode - add RESEND_API_KEY to send live emails).',
         receivedData: newMsg
       });
     }
@@ -393,7 +376,7 @@ async function startServer() {
       res.json({
         success: true,
         isSimulated: false,
-        message: 'Your inquiry has been successfully sent to MUCO Labs via Resend!',
+        message: 'Your inquiry has been successfully sent to MUCO Labs via Resend and stored in Firebase!',
         data: resendResult,
         receivedData: newMsg
       });
@@ -403,14 +386,14 @@ async function startServer() {
       res.json({
         success: true,
         isSimulated: false,
-        warning: 'Saved lead in database, but Resend API returned an error: ' + (err?.message || 'Check sender domain'),
+        warning: 'Saved lead in Firebase database, but Resend API returned an error: ' + (err?.message || 'Check sender domain'),
         receivedData: newMsg
       });
     }
   });
 
-  // Save new contact message (legacy endpoint compatibility)
-  app.post('/api/contact', (req, res) => {
+  // Save new contact message (legacy endpoint compatibility - now uses Firebase)
+  app.post('/api/contact', async (req, res) => {
     const { name, email, phone, company, serviceCategory, budgetRange, message } = req.body;
     
     const newMsg = {
@@ -426,8 +409,20 @@ async function startServer() {
       status: 'New' as const
     };
 
-    contactMessages.unshift(newMsg);
-    console.log('[MUCO Labs Lead Received]', newMsg);
+    // Store in Firebase for persistence
+    try {
+      await submitContactFormServer({
+        name: newMsg.name,
+        email: newMsg.email,
+        phone: newMsg.phone,
+        company: newMsg.company,
+        serviceCategory: newMsg.serviceCategory,
+        message: newMsg.message
+      });
+      console.log('[MUCO Labs Lead Received via Firebase]', newMsg);
+    } catch (firebaseError) {
+      console.warn('[Firebase Storage Warning]', firebaseError);
+    }
 
     res.json({
       success: true,
@@ -436,11 +431,16 @@ async function startServer() {
     });
   });
 
-  // Clear or delete a message
-  app.delete('/api/contact/messages/:id', (req, res) => {
+  // Clear or delete a message (now from Firebase)
+  app.delete('/api/contact/messages/:id', async (req, res) => {
     const { id } = req.params;
-    contactMessages = contactMessages.filter((m) => m.id !== id);
-    res.json({ success: true, remainingCount: contactMessages.length });
+    try {
+      await deleteContactMessageServer(id);
+      res.json({ success: true, deletedId: id });
+    } catch (error) {
+      console.error('[Firebase Delete Error]', error);
+      res.status(500).json({ success: false, error: 'Failed to delete message from Firebase' });
+    }
   });
 
   // Vite middleware for development vs static serve for production

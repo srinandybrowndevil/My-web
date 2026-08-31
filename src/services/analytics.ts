@@ -60,46 +60,90 @@ export function getGa4MeasurementId(): string | null {
 }
 
 /**
+ * Enhanced GA4 initialization with error handling and validation
+ */
+export function initGA4Enhanced(): { success: boolean; measurementId: string | null; error?: string } {
+  try {
+    const measurementId = getGa4MeasurementId();
+    if (!measurementId) {
+      return { 
+        success: false, 
+        measurementId: null, 
+        error: 'GA4 measurement ID not configured or invalid' 
+      };
+    }
+
+    if (typeof window === 'undefined') {
+      return { 
+        success: false, 
+        measurementId, 
+        error: 'Window object not available (SSR context)' 
+      };
+    }
+
+    if (window.__MUCO_GA4_INITIALIZED__) {
+      return { success: true, measurementId };
+    }
+
+    // Ensure dataLayer exists
+    window.dataLayer = window.dataLayer || [];
+    if (!window.gtag) {
+      window.gtag = function (...args: unknown[]) {
+        window.dataLayer?.push(args);
+      };
+    }
+
+    // Inject gtag script if not already in DOM
+    const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${measurementId}"]`);
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      script.onerror = () => {
+        console.error('[GA4] Failed to load gtag script');
+      };
+      document.head.appendChild(script);
+    }
+
+    // Configure GA4 with enhanced privacy settings
+    window.gtag('js', new Date());
+    window.gtag('config', measurementId, {
+      send_page_view: false,
+      anonymize_ip: true,
+      cookie_flags: 'SameSite=None;Secure',
+      debug_mode: import.meta.env.DEV === 'true',
+      custom_map: {
+        custom_page_path: 'page_path',
+        custom_page_title: 'page_title'
+      }
+    });
+
+    window.__MUCO_GA4_INITIALIZED__ = true;
+    
+    // Track initialization event
+    window.gtag('event', 'ga4_initialized', {
+      timestamp: new Date().toISOString(),
+      environment: import.meta.env.MODE || 'unknown'
+    });
+
+    return { success: true, measurementId };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[GA4] Initialization failed:', errorMessage);
+    return { 
+      success: false, 
+      measurementId: getGa4MeasurementId(), 
+      error: errorMessage 
+    };
+  }
+}
+
+/**
  * Lazily and safely initializes GA4 if configured via VITE_GA4_MEASUREMENT_ID
  */
 export function initGA4(): boolean {
-  if (typeof window === 'undefined') return false;
-
-  const measurementId = getGa4MeasurementId();
-  if (!measurementId) {
-    return false;
-  }
-
-  if (window.__MUCO_GA4_INITIALIZED__) {
-    return true;
-  }
-
-  // Ensure dataLayer exists
-  window.dataLayer = window.dataLayer || [];
-  if (!window.gtag) {
-    window.gtag = function (...args: unknown[]) {
-      window.dataLayer?.push(args);
-    };
-  }
-
-  // Inject gtag script if not already in DOM
-  const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${measurementId}"]`);
-  if (!existingScript) {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-    document.head.appendChild(script);
-  }
-
-  window.gtag('js', new Date());
-  window.gtag('config', measurementId, {
-    send_page_view: false,
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=None;Secure'
-  });
-
-  window.__MUCO_GA4_INITIALIZED__ = true;
-  return true;
+  const result = initGA4Enhanced();
+  return result.success;
 }
 
 /**

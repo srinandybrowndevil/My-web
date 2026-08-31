@@ -173,7 +173,7 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         await loadSheets(result.accessToken);
         setStatusMessage({ type: 'success', text: `Successfully connected Google Account (${result.user.email})` });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatusMessage({ type: 'error', text: err.message || 'Google Sign-In failed.' });
     } finally {
       setIsLoggingIn(false);
@@ -208,7 +208,7 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         type: 'success', 
         text: `Created new Google Sheet "${newSheet.name}"! Client inquiries will sync here.` 
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatusMessage({ type: 'error', text: err.message || 'Failed to create Google Sheet.' });
     } finally {
       setIsCreatingSheet(false);
@@ -234,7 +234,7 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         localStorage.setItem('muco_active_sheets_id', newSheet.id);
         localStorage.setItem('muco_active_sheets_url', newSheet.webViewLink);
         setUserSheets((prev) => [newSheet, ...prev]);
-      } catch (err: any) {
+      } catch (err: unknown) {
         setStatusMessage({ type: 'error', text: 'Could not create spreadsheet for sync.' });
         setIsCreatingSheet(false);
         return;
@@ -260,7 +260,7 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         type: 'success', 
         text: `Exported ${count} client lead inquiry record(s) directly to Google Sheets!` 
       });
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatusMessage({ type: 'error', text: err.message || 'Error exporting to Google Sheets.' });
     } finally {
       setIsSyncing(false);

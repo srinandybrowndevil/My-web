@@ -99,9 +99,9 @@ export interface UserProfile {
   role: 'USER' | 'CLIENT' | 'ADMIN' | 'SUPER_ADMIN';
   status: 'active' | 'suspended' | 'pending';
   emailVerified: boolean;
-  createdAt: any;
-  updatedAt?: any;
-  lastLoginAt?: any;
+  createdAt: string | number | Date;
+  updatedAt?: string | number | Date;
+  lastLoginAt?: string | number | Date;
 }
 
 // Sync/Save User Profile in Firestore
@@ -235,7 +235,7 @@ export async function saveEstimatorSession(data: EstimatorSessionData): Promise<
 }
 
 // Fetch User's Saved Project Requests
-export async function fetchUserProjectRequests(userId: string): Promise<any[]> {
+export async function fetchUserProjectRequests(userId: string): Promise<Array<{ id: string; [key: string]: unknown }>> {
   const collectionPath = 'project_requests';
   try {
     const q = query(
@@ -243,7 +243,7 @@ export async function fetchUserProjectRequests(userId: string): Promise<any[]> {
       where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    const requests: any[] = [];
+    const requests: Array<{ id: string; [key: string]: unknown }> = [];
     snap.forEach((docSnap) => {
       requests.push({ id: docSnap.id, ...docSnap.data() });
     });
@@ -255,7 +255,7 @@ export async function fetchUserProjectRequests(userId: string): Promise<any[]> {
 }
 
 // Fetch User's Saved Estimator Sessions
-export async function fetchUserEstimates(userId: string): Promise<any[]> {
+export async function fetchUserEstimates(userId: string): Promise<Array<{ id: string; [key: string]: unknown }>> {
   const collectionPath = 'estimator_sessions';
   try {
     const q = query(
@@ -263,7 +263,7 @@ export async function fetchUserEstimates(userId: string): Promise<any[]> {
       where('userId', '==', userId)
     );
     const snap = await getDocs(q);
-    const estimates: any[] = [];
+    const estimates: Array<{ id: string; [key: string]: unknown }> = [];
     snap.forEach((docSnap) => {
       estimates.push({ id: docSnap.id, ...docSnap.data() });
     });
@@ -338,7 +338,7 @@ export interface TestimonialItem {
   content: string;
   projectCategory: string;
   verified?: boolean;
-  createdAt?: any;
+  createdAt?: string | number | Date;
 }
 
 export const DEFAULT_TESTIMONIALS: TestimonialItem[] = [

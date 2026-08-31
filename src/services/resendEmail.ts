@@ -12,7 +12,7 @@ export interface EmailSendResult {
   status?: number;
   text: string;
   isSimulated?: boolean;
-  data?: any;
+  data?: Record<string, unknown>;
   warning?: string;
 }
 
@@ -66,7 +66,7 @@ export async function sendInquiryEmail(formData: ContactFormData): Promise<Email
       data: data.data,
       warning: data.warning
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.warn('[Resend API Call Warning - Local Fallback]', err);
     return {
       success: true,
@@ -98,11 +98,11 @@ export async function sendTestEmail(toEmail?: string): Promise<EmailSendResult> 
       isSimulated: Boolean(data.isSimulated),
       data: data.data
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return {
       success: false,
       status: 500,
-      text: err?.message || 'Failed to reach Resend test endpoint',
+      text: err instanceof Error ? err.message : 'Failed to reach Resend test endpoint',
       isSimulated: false
     };
   }

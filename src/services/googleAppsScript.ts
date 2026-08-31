@@ -76,7 +76,7 @@ export async function postToGoogleAppsScript(formData: ContactFormData): Promise
       message: data.message || 'Row appended to Google Sheets via Apps Script',
       isSimulated: false
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.warn('[Google Apps Script POST Error]', err);
     // Even if CORS blocks response reading, the request usually succeeds in Google Apps Script!
     return {

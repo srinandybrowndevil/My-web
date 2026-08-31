@@ -32,7 +32,7 @@ export function getCurrentDateFormatted(): string {
 export function getAllSitemapEntries(): SitemapUrlEntry[] {
   const currentDate = getCurrentDateFormatted();
 
-  // 1. Core Top-Level Pillar Pages (Clean Canonical Paths)
+  // 1. Core Top-Level Pillar Pages (Hash-based SPA routes)
   const mainPages: SitemapUrlEntry[] = [
     {
       loc: `${DOMAIN}/`,
@@ -43,7 +43,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'MUCO Labs | Custom Software, Web & AI Engineering'
     },
     {
-      loc: `${DOMAIN}/about`,
+      loc: `${DOMAIN}/#about`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -51,7 +51,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'About MUCO Labs | Software & AI Engineering Firm'
     },
     {
-      loc: `${DOMAIN}/locations`,
+      loc: `${DOMAIN}/#locations`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.95',
@@ -59,7 +59,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Locations Served | Web & Software Services | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/services`,
+      loc: `${DOMAIN}/#services`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.95',
@@ -67,7 +67,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Services in Erode | Web, Mobile, SEO & AI | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/systems`,
+      loc: `${DOMAIN}/#systems`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.90',
@@ -75,7 +75,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Autonomous AI Systems & Neural Workflows | MUCO AI'
     },
     {
-      loc: `${DOMAIN}/process`,
+      loc: `${DOMAIN}/#process`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -83,7 +83,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Our 8-Step Engineering & Delivery Process | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/courses`,
+      loc: `${DOMAIN}/#courses`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.90',
@@ -91,7 +91,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Tech Courses & Coding Bootcamps | MUCO Labs & Way2Me'
     },
     {
-      loc: `${DOMAIN}/portfolio`,
+      loc: `${DOMAIN}/#portfolio`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -99,7 +99,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Portfolio & Case Studies | Software Projects | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/pricing`,
+      loc: `${DOMAIN}/#pricing`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.85',
@@ -107,7 +107,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Software Development Pricing & Packages | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/apps`,
+      loc: `${DOMAIN}/#apps`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.80',
@@ -115,7 +115,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'App Store & Play Store Publishing Services | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/maintenance`,
+      loc: `${DOMAIN}/#maintenance`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.80',
@@ -123,7 +123,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Cloud Management & Software AMC Services | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/gallery`,
+      loc: `${DOMAIN}/#gallery`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.75',
@@ -131,7 +131,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Executive Roster & Workplace Gallery | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/blog`,
+      loc: `${DOMAIN}/#blog`,
       lastmod: currentDate,
       changefreq: 'weekly',
       priority: '0.90',
@@ -139,7 +139,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'MUCO Labs Blog | AI Trends & Software Engineering'
     },
     {
-      loc: `${DOMAIN}/faq`,
+      loc: `${DOMAIN}/#faq`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.70',
@@ -147,7 +147,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'FAQ | Software Engineering & Development | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/contact`,
+      loc: `${DOMAIN}/#contact`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.90',
@@ -155,7 +155,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Contact MUCO Labs | Free Consultation & Project Quote'
     },
     {
-      loc: `${DOMAIN}/terms`,
+      loc: `${DOMAIN}/#terms`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.50',
@@ -163,7 +163,7 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
       title: 'Terms and Conditions | Master Agreement | MUCO Labs'
     },
     {
-      loc: `${DOMAIN}/privacy`,
+      loc: `${DOMAIN}/#privacy`,
       lastmod: currentDate,
       changefreq: 'monthly',
       priority: '0.50',
@@ -172,9 +172,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     }
   ];
 
-  // 2. Regional Town & City Hub Pages (8 Regional Hubs)
+  // 2. Regional Town & City Hub Pages (8 Regional Hubs) - using hash-based routes
   const locationPages: SitemapUrlEntry[] = ALL_LOCATIONS.map((loc) => ({
-    loc: `${DOMAIN}/locations?city=${encodeURIComponent(loc.id)}`,
+    loc: `${DOMAIN}/#locations?city=${encodeURIComponent(loc.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.95',
@@ -182,9 +182,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${loc.name} Technology Hub • ${loc.district}, TN`
   }));
 
-  // 3. High-Intent Commercial Service x Location Combos (17+ Combinations)
+  // 3. High-Intent Commercial Service x Location Combos (17+ Combinations) - using hash-based routes
   const serviceLocationPages: SitemapUrlEntry[] = SERVICE_LOCATIONS_DATA.map((combo) => ({
-    loc: `${DOMAIN}/locations?combo=${encodeURIComponent(combo.id)}`,
+    loc: `${DOMAIN}/#locations?combo=${encodeURIComponent(combo.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.92',
@@ -192,9 +192,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${combo.serviceName} in ${combo.locationName} | MUCO Labs`
   }));
 
-  // 4. Core Detailed IT Services (12+ Services)
+  // 4. Core Detailed IT Services (12+ Services) - using hash-based routes
   const servicePages: SitemapUrlEntry[] = CORE_SERVICES.map((service) => ({
-    loc: `${DOMAIN}/services?id=${encodeURIComponent(service.id)}`,
+    loc: `${DOMAIN}/#services?id=${encodeURIComponent(service.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.90',
@@ -202,9 +202,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${service.title} - ${service.tagline}`
   }));
 
-  // 5. Mastery Courses & Bootcamps (7+ Courses)
+  // 5. Mastery Courses & Bootcamps (7+ Courses) - using hash-based routes
   const coursePages: SitemapUrlEntry[] = COURSES_DATA.map((course) => ({
-    loc: `${DOMAIN}/courses?id=${encodeURIComponent(course.id)}`,
+    loc: `${DOMAIN}/#courses?id=${encodeURIComponent(course.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.88',
@@ -212,9 +212,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${course.title} (${course.duration}) - Way2Me & MUCO Labs`
   }));
 
-  // 6. Portfolio Projects
+  // 6. Portfolio Projects - using hash-based routes
   const projectPages: SitemapUrlEntry[] = INITIAL_PROJECTS.map((project) => ({
-    loc: `${DOMAIN}/portfolio?id=${encodeURIComponent(project.id)}`,
+    loc: `${DOMAIN}/#portfolio?id=${encodeURIComponent(project.id)}`,
     lastmod: currentDate,
     changefreq: 'weekly',
     priority: '0.80',
@@ -222,9 +222,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${project.title} (${project.category}) - ${project.client}`
   }));
 
-  // 7. Blog Articles & Technical Guides
+  // 7. Blog Articles & Technical Guides - using hash-based routes
   const blogPages: SitemapUrlEntry[] = BLOG_POSTS.map((post) => ({
-    loc: `${DOMAIN}/blog?post=${encodeURIComponent(post.slug)}`,
+    loc: `${DOMAIN}/#blog?post=${encodeURIComponent(post.slug)}`,
     lastmod: post.publishedDate ? new Date(post.publishedDate).toISOString().split('T')[0] || currentDate : currentDate,
     changefreq: 'weekly',
     priority: '0.85',
@@ -232,9 +232,9 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: post.title
   }));
 
-  // 8. Leadership & Key Team Members
+  // 8. Leadership & Key Team Members - using hash-based routes
   const teamPages: SitemapUrlEntry[] = TEAM_MEMBERS_SITEMAP.map((member) => ({
-    loc: `${DOMAIN}/gallery?member=${encodeURIComponent(member.id)}`,
+    loc: `${DOMAIN}/#gallery?member=${encodeURIComponent(member.id)}`,
     lastmod: currentDate,
     changefreq: 'monthly',
     priority: '0.75',
@@ -242,8 +242,17 @@ export function getAllSitemapEntries(): SitemapUrlEntry[] {
     title: `${member.name} - MUCO Labs Leadership`
   }));
 
-  // Clean, public-facing canonical routes for production sitemap (excluding query params, fragments, and private routes)
-  return mainPages;
+  // Combine all entries for comprehensive sitemap
+  return [
+    ...mainPages,
+    ...locationPages,
+    ...serviceLocationPages,
+    ...servicePages,
+    ...coursePages,
+    ...projectPages,
+    ...blogPages,
+    ...teamPages
+  ];
 }
 
 export function generateSitemapXml(urls: SitemapUrlEntry[] = getAllSitemapEntries()): string {
@@ -283,6 +292,37 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /sheets
 Disallow: /sheets/
+Disallow: /*?
+Disallow: /*#?
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Allow major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Disallow AI scrapers
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
 
 Sitemap: https://mucolabs.com/sitemap.xml
 `;

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx server.ts",
     "generate:sitemap": "tsx scripts/generate-sitemap.ts",
-    "build": "tsx scripts/generate-sitemap.ts && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "validate": "tsx scripts/validate-build.ts",
+    "build": "tsx scripts/validate-build.ts && tsx scripts/generate-sitemap.ts && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.cjs",
@@ -38,6 +39,8 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.3",
-    "@types/express": "^4.17.21"
+    "@types/express": "^4.17.21",
+    "@rollup/plugin-replace": "^5.0.5",
+    "vite-plugin-pwa": "^0.21.1"
   }
 }

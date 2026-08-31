@@ -14,6 +14,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { RoleQuickSwitcher } from './components/RoleQuickSwitcher';
 import { updatePageSEO, syncUrlSEO } from './utils/seo';
+import { usePageMetaTags } from './utils/pageMetaTags';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
 import { useAppReadiness } from './hooks/useAppReadiness';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
@@ -183,6 +184,9 @@ export default function App() {
 
   // Log page view events on route changes
   usePageViewLogger(currentPage);
+
+  // Update page meta tags on route changes
+  usePageMetaTags(currentPage);
 
   useEffect(() => {
     syncUrlSEO(window.location.hash, currentPage);

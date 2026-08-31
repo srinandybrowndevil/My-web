@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUserProfile(profile);
       showToast('Signed in successfully!', 'success', 'Welcome Back');
       closeAuthModal();
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password'
         ? 'Invalid email or password.'
         : err.code === 'auth/user-not-found'
@@ -106,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       logActivityEvent('user_signup', { uid: cred.user.uid, email: cred.user.email });
       showToast('Account created! Please verify your email.', 'success', 'Account Created');
       closeAuthModal();
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err.code === 'auth/email-already-in-use'
         ? 'An account with this email already exists.'
         : err.code === 'auth/weak-password'
@@ -124,7 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUserProfile(profile);
       showToast('Signed in with Google!', 'success', 'Welcome');
       closeAuthModal();
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (err.code !== 'auth/popup-closed-by-user') {
         showToast(err.message || 'Google sign-in failed.', 'error', 'Sign In Error');
       }
@@ -137,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await sendPasswordResetEmail(auth, email.trim());
       showToast('Password reset link sent to your email.', 'success', 'Check Your Inbox');
       logActivityEvent('password_reset_requested', { email });
-    } catch (err: any) {
+    } catch (err: unknown) {
       const msg = err.code === 'auth/user-not-found'
         ? 'No account found with this email.'
         : err.message || 'Failed to send reset link.';
@@ -151,7 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         await sendEmailVerification(auth.currentUser);
         showToast('Verification email resent.', 'success', 'Sent');
-      } catch (err: any) {
+      } catch (err: unknown) {
         showToast('Please wait a moment before requesting another email.', 'error', 'Rate Limited');
       }
     }
@@ -164,7 +164,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUserProfile(null);
       logActivityEvent('user_signout');
       showToast('Signed out successfully.', 'info', 'Signed Out');
-    } catch (err: any) {
+    } catch (err: unknown) {
       showToast('Error signing out.', 'error', 'Error');
     }
   };

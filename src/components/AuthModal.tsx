@@ -119,7 +119,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onNavigate }) => {
         await resetPassword(email);
         setSuccessMsg(t.auth.resetLinkSent);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setErrorMsg(err.message || 'Operation failed. Please try again.');
     } finally {
       setIsSubmitting(false);

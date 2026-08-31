@@ -117,7 +117,7 @@ export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNaviga
         notes: `Saved on ${new Date().toLocaleDateString('en-IN')}`
       });
       showToast('Quote saved to your MUCO account dashboard!', 'success', 'Saved');
-    } catch (err: any) {
+    } catch (err: unknown) {
       showToast('Could not save quote. Please try again.', 'error', 'Error');
     } finally {
       setIsSaving(false);
