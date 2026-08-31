@@ -28,16 +28,22 @@ function lazyWithRetry<T extends React.ComponentType<any>>(
   retries = 2,
   interval = 800
 ): React.LazyExoticComponent<T> {
-  return lazy(() =>
-    factory().catch((error) => {
-      if (retries > 0) {
-        return new Promise((resolve) => setTimeout(resolve, interval)).then(() =>
-          lazyWithRetry(factory, retries - 1, interval * 1.5)._init(factory as any)
-        );
+  return lazy(async () => {
+    let currentRetries = retries;
+    let currentInterval = interval;
+    while (true) {
+      try {
+        return await factory();
+      } catch (error) {
+        if (currentRetries <= 0) {
+          throw error;
+        }
+        currentRetries -= 1;
+        await new Promise((resolve) => setTimeout(resolve, currentInterval));
+        currentInterval *= 1.5;
       }
-      throw error;
-    })
-  );
+    }
+  });
 }
 
 // Lazy-loaded interactive modals & diagnostics for minimal initial bundle
