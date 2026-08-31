@@ -120,7 +120,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onNavigate }) => {
         setSuccessMsg(t.auth.resetLinkSent);
       }
     } catch (err: unknown) {
-      setErrorMsg(err.message || 'Operation failed. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : (err && typeof err === 'object' && 'message' in err) ? String((err as { message: unknown }).message) : 'Operation failed. Please try again.';
+      setErrorMsg(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

@@ -174,7 +174,8 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         setStatusMessage({ type: 'success', text: `Successfully connected Google Account (${result.user.email})` });
       }
     } catch (err: unknown) {
-      setStatusMessage({ type: 'error', text: err.message || 'Google Sign-In failed.' });
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Google Sign-In failed.' });
     } finally {
       setIsLoggingIn(false);
     }
@@ -209,7 +210,8 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         text: `Created new Google Sheet "${newSheet.name}"! Client inquiries will sync here.` 
       });
     } catch (err: unknown) {
-      setStatusMessage({ type: 'error', text: err.message || 'Failed to create Google Sheet.' });
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Failed to create Google Sheet.' });
     } finally {
       setIsCreatingSheet(false);
     }
@@ -261,7 +263,8 @@ export const GoogleSheetsHub: React.FC<GoogleSheetsHubProps> = ({ isOpen, onClos
         text: `Exported ${count} client lead inquiry record(s) directly to Google Sheets!` 
       });
     } catch (err: unknown) {
-      setStatusMessage({ type: 'error', text: err.message || 'Error exporting to Google Sheets.' });
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Error exporting to Google Sheets.' });
     } finally {
       setIsSyncing(false);
     }

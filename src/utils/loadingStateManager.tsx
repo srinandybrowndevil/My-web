@@ -152,7 +152,7 @@ export function useAsyncLoading<T extends (...args: unknown[]) => Promise<unknow
 
     try {
       updateProgress(10);
-      const result = await asyncFunction(...args);
+      const result = (await asyncFunction(...args)) as Awaited<ReturnType<T>>;
       updateProgress(90);
       
       setData(result);

@@ -76,11 +76,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       showToast('Signed in successfully!', 'success', 'Welcome Back');
       closeAuthModal();
     } catch (err: unknown) {
-      const msg = err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password'
+      const authErr = err as { code?: string; message?: string };
+      const msg = authErr.code === 'auth/invalid-credential' || authErr.code === 'auth/wrong-password'
         ? 'Invalid email or password.'
-        : err.code === 'auth/user-not-found'
+        : authErr.code === 'auth/user-not-found'
         ? 'No account found with this email.'
-        : err.message || 'Failed to sign in.';
+        : authErr.message || 'Failed to sign in.';
       showToast(msg, 'error', 'Sign In Failed');
       throw new Error(msg);
     }
@@ -107,11 +108,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       showToast('Account created! Please verify your email.', 'success', 'Account Created');
       closeAuthModal();
     } catch (err: unknown) {
-      const msg = err.code === 'auth/email-already-in-use'
+      const authErr = err as { code?: string; message?: string };
+      const msg = authErr.code === 'auth/email-already-in-use'
         ? 'An account with this email already exists.'
-        : err.code === 'auth/weak-password'
+        : authErr.code === 'auth/weak-password'
         ? 'Password must be at least 6 characters.'
-        : err.message || 'Failed to create account.';
+        : authErr.message || 'Failed to create account.';
       showToast(msg, 'error', 'Sign Up Failed');
       throw new Error(msg);
     }
@@ -125,8 +127,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       showToast('Signed in with Google!', 'success', 'Welcome');
       closeAuthModal();
     } catch (err: unknown) {
-      if (err.code !== 'auth/popup-closed-by-user') {
-        showToast(err.message || 'Google sign-in failed.', 'error', 'Sign In Error');
+      const authErr = err as { code?: string; message?: string };
+      if (authErr.code !== 'auth/popup-closed-by-user') {
+        showToast(authErr.message || 'Google sign-in failed.', 'error', 'Sign In Error');
       }
       throw err;
     }
@@ -138,9 +141,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       showToast('Password reset link sent to your email.', 'success', 'Check Your Inbox');
       logActivityEvent('password_reset_requested', { email });
     } catch (err: unknown) {
-      const msg = err.code === 'auth/user-not-found'
+      const authErr = err as { code?: string; message?: string };
+      const msg = authErr.code === 'auth/user-not-found'
         ? 'No account found with this email.'
-        : err.message || 'Failed to send reset link.';
+        : authErr.message || 'Failed to send reset link.';
       showToast(msg, 'error', 'Reset Failed');
       throw new Error(msg);
     }

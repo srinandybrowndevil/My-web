@@ -111,7 +111,7 @@ export function initGA4Enhanced(): { success: boolean; measurementId: string | n
       send_page_view: false,
       anonymize_ip: true,
       cookie_flags: 'SameSite=None;Secure',
-      debug_mode: import.meta.env.DEV === 'true',
+      debug_mode: Boolean(import.meta.env.DEV),
       custom_map: {
         custom_page_path: 'page_path',
         custom_page_title: 'page_title'

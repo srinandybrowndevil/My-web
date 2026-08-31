@@ -92,7 +92,7 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
     return () => clearTimeout(safetyTimer);
   }, [autoDismissTimeoutMs, fullScreenOverlay, isCompleted, hasTimedOut]);
 
-  // Asymptotically advancing progress counter (starts fast, slows as it approaches 98%)
+  // Asymptotically advancing progress counter
   useEffect(() => {
     if (typeof externalProgress === 'number' || isCompleted || hasTimedOut) return;
 
@@ -115,17 +115,18 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
     };
   }, [externalProgress, isCompleted, hasTimedOut]);
 
-  // Trigger onComplete when 100% is reached with clean unmount timer
+  // Trigger onComplete when 100% is reached with deterministic unmount timer
   useEffect(() => {
     if (activeProgress >= 100 && onComplete) {
+      const exitDelay = shouldReduceMotion ? 80 : 250;
       const completionTimer = setTimeout(() => {
         onComplete();
-      }, 250);
+      }, exitDelay);
       return () => clearTimeout(completionTimer);
     }
-  }, [activeProgress, onComplete]);
+  }, [activeProgress, onComplete, shouldReduceMotion]);
 
-  // Lock body scroll and register Escape key listener when fullScreenOverlay is active
+  // Handle body scroll locking and Escape key dismiss cleanly via classes
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape' && onDismiss) {
@@ -138,12 +139,12 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
   useEffect(() => {
     if (!fullScreenOverlay) return;
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // Use documentElement / body classList manipulation instead of inline style
+    document.body.classList.add('overflow-hidden');
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      document.body.classList.remove('overflow-hidden');
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [fullScreenOverlay, handleKeyDown]);
@@ -156,7 +157,7 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
         aria-live="polite"
         className={`inline-flex items-center gap-3 select-none pointer-events-auto ${className}`}
       >
-        <div className="relative w-6 h-6 flex items-center justify-center shrink-0">
+        <div className="relative w-6 h-6 flex items-center justify-center shrink-0 pointer-events-none">
           {/* Outer glowing cyan ring */}
           <motion.div
             animate={shouldReduceMotion ? {} : { rotate: 360 }}
@@ -203,7 +204,7 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
 
       {/* Giant Typography Counter Display */}
       <div className="relative my-2 sm:my-3">
-        <div className="absolute inset-0 bg-cyan-500/10 dark:bg-cyan-500/15 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute inset-0 bg-cyan-500/10 dark:bg-cyan-500/15 blur-3xl rounded-full pointer-events-none select-none" />
         <div className="relative font-mono font-black text-5xl sm:text-7xl md:text-8xl tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
           {activeProgress < 10 ? `0${activeProgress}` : activeProgress}
           <span className="text-2xl sm:text-4xl text-cyan-500 dark:text-cyan-400 ml-1 font-sans font-light">
@@ -220,7 +221,7 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
             initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
             animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: shouldReduceMotion ? 0.08 : 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="text-[11px] sm:text-xs font-mono font-bold tracking-wider text-cyan-600 dark:text-cyan-400 uppercase flex items-center gap-1.5"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
@@ -236,7 +237,7 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
 
       {/* Minimal Precision Progress Bar */}
       {showProgress && (
-        <div className="w-full max-w-xs mx-auto space-y-1.5 pt-3">
+        <div className="w-full max-w-xs mx-auto space-y-1.5 pt-3 pointer-events-none">
           <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800/80 rounded-full overflow-hidden p-0.5 border border-slate-300/40 dark:border-slate-700/60 shadow-inner">
             <motion.div
               className="h-full rounded-full bg-gradient-to-r from-blue-600 via-cyan-400 to-amber-400 shadow-[0_0_10px_rgba(6,182,212,0.8)]"
@@ -254,12 +255,12 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
         </div>
       )}
 
-      {/* Telemetry Status Strip (for large views) */}
+      {/* Telemetry Status Strip */}
       {showTelemetry && (size === 'lg' || size === 'fullscreen') && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.15 }}
+          transition={{ delay: shouldReduceMotion ? 0 : 0.15 }}
           className="pt-5 grid grid-cols-3 gap-2 text-left max-w-sm w-full"
         >
           <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80">
@@ -295,8 +296,8 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
       aria-live="polite"
       className={`flex flex-col items-center justify-center select-none pointer-events-auto ${className}`}
     >
-      <div className="relative flex items-center justify-center mb-6">
-        <div className="absolute w-36 h-36 rounded-full bg-cyan-500/20 blur-xl pointer-events-none" />
+      <div className="relative flex items-center justify-center mb-6 pointer-events-none">
+        <div className="absolute w-36 h-36 rounded-full bg-cyan-500/20 blur-xl pointer-events-none select-none" />
         <motion.div
           animate={shouldReduceMotion ? {} : { rotate: 360 }}
           transition={shouldReduceMotion ? {} : { repeat: Infinity, duration: 6, ease: 'linear' }}
@@ -322,7 +323,7 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
     </div>
   );
 
-  // Full Screen Glassmorphic Backdrop Overlay (Strictly managed via Tailwind classes, no inline styles)
+  // Full Screen Glassmorphic Backdrop Overlay (Strictly managed via Tailwind CSS classes)
   if (fullScreenOverlay) {
     return (
       <motion.div
@@ -332,20 +333,20 @@ export const ModernLoadingScreen: React.FC<ModernLoadingScreenProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-2xl px-4 pointer-events-auto"
+        transition={{ duration: shouldReduceMotion ? 0.08 : 0.22, ease: 'easeInOut' }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-2xl px-4 pointer-events-auto select-none"
       >
         <motion.div
-          initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.95, opacity: 0 }}
+          initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.96, opacity: 0 }}
           animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1 }}
-          exit={shouldReduceMotion ? { opacity: 0 } : { scale: 0.95, opacity: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { scale: 0.96, opacity: 0 }}
+          transition={{ duration: shouldReduceMotion ? 0.08 : 0.25, ease: 'easeOut' }}
           className="relative max-w-md w-full p-8 sm:p-10 rounded-3xl bg-slate-900/90 dark:bg-[#080d1a]/95 border border-cyan-500/30 shadow-[0_0_60px_rgba(6,182,212,0.18)] overflow-hidden pointer-events-auto"
         >
           {onDismiss && (
             <button
               onClick={onDismiss}
-              className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors z-10 pointer-events-auto cursor-pointer"
+              className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors z-10 pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
               title="Close loading overlay (Esc)"
               aria-label="Close loading overlay"
             >

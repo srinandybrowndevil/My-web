@@ -131,7 +131,8 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
       }
     } catch (err: unknown) {
       console.error('Failed to fetch spreadsheets:', err);
-      setStatusMessage({ type: 'error', text: err.message || 'Could not load spreadsheets from Drive.' });
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Could not load spreadsheets from Drive.' });
     } finally {
       setIsLoadingSheets(false);
     }
@@ -166,8 +167,9 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
       }
     } catch (err: unknown) {
       console.error('Login failed:', err);
-      setStatusMessage({ type: 'error', text: err.message || 'Sign in failed. Please try again.' });
-      showToast(err.message || 'Google authentication failed', 'error', 'Auth Failed');
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Sign in failed. Please try again.' });
+      showToast(msg || 'Google authentication failed', 'error', 'Auth Failed');
     } finally {
       setIsLoggingIn(false);
     }
@@ -218,8 +220,9 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
       setSelectedSheetId(newSheet.spreadsheetId);
     } catch (err: unknown) {
       console.error('Error creating spreadsheet:', err);
-      setStatusMessage({ type: 'error', text: err.message || 'Failed to create spreadsheet.' });
-      showToast(err.message || 'Failed to create spreadsheet', 'error', 'Creation Error');
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Failed to create spreadsheet.' });
+      showToast(msg || 'Failed to create spreadsheet', 'error', 'Creation Error');
     } finally {
       setIsCreatingSheet(false);
     }
@@ -278,7 +281,8 @@ export const GoogleSheetsManager: React.FC<GoogleSheetsManagerProps> = ({ onNavi
       await loadSheetValues(accessToken, selectedSheetId);
     } catch (err: unknown) {
       console.error('Error adding row to sheet:', err);
-      setStatusMessage({ type: 'error', text: err.message || 'Failed to append row to spreadsheet.' });
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatusMessage({ type: 'error', text: msg || 'Failed to append row to spreadsheet.' });
     }
   };
 

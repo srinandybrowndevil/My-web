@@ -99,9 +99,9 @@ export interface UserProfile {
   role: 'USER' | 'CLIENT' | 'ADMIN' | 'SUPER_ADMIN';
   status: 'active' | 'suspended' | 'pending';
   emailVerified: boolean;
-  createdAt: string | number | Date;
-  updatedAt?: string | number | Date;
-  lastLoginAt?: string | number | Date;
+  createdAt?: string | number | Date | unknown;
+  updatedAt?: string | number | Date | unknown;
+  lastLoginAt?: string | number | Date | unknown;
 }
 
 // Sync/Save User Profile in Firestore

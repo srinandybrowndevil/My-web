@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Target, Code2, Bot, Rocket, TrendingUp } from 'lucide-react';
 
 export interface InnovationStep {

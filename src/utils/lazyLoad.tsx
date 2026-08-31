@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, ComponentType } from 'react';
+import React, { Suspense, lazy, ComponentType, Component, ReactNode, ErrorInfo } from 'react';
 
 /**
  * Enhanced lazy loading utility with:
@@ -32,6 +32,37 @@ const defaultErrorComponent = ({ error, retry }: { error: Error; retry: () => vo
     </button>
   </div>
 );
+
+interface LazyErrorBoundaryProps {
+  children: ReactNode;
+  fallback: (error: Error) => ReactNode;
+}
+
+interface LazyErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class LazyErrorBoundary extends Component<LazyErrorBoundaryProps, LazyErrorBoundaryState> {
+  declare props: Readonly<LazyErrorBoundaryProps>;
+
+  state: LazyErrorBoundaryState = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error: Error): LazyErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Lazy load error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError && this.state.error) {
+      return this.props.fallback(this.state.error);
+    }
+    return this.props.children;
+  }
+}
 
 export function createLazyComponent<T extends ComponentType<any>>(
   importFn: () => Promise<{ default: T }>,
@@ -68,47 +99,22 @@ export function createLazyComponent<T extends ComponentType<any>>(
 
   const WrappedComponent = (props: React.ComponentProps<T>) => (
     <Suspense fallback={React.createElement(loadingComponent)}>
-      <ErrorBoundary 
+      <LazyErrorBoundary 
         fallback={(error) => React.createElement(errorComponent, { error, retry: () => window.location.reload() })}
       >
         <LazyComponent {...props} />
-      </ErrorBoundary>
+      </LazyErrorBoundary>
     </Suspense>
   );
 
-  return WrappedComponent as T;
-}
-
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback: (error: Error) => React.ReactNode },
-  { hasError: boolean; error: Error | null }
-> {
-  constructor(props: { children: React.ReactNode; fallback: (error: Error) => React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Lazy load error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError && this.state.error) {
-      return this.props.fallback(this.state.error);
-    }
-    return this.props.children;
-  }
+  return WrappedComponent as unknown as T;
 }
 
 /**
  * Intersection Observer hook for lazy loading
  */
 export function useIntersectionObserver(
-  ref: React.RefObject<Element>,
+  ref: React.RefObject<Element | null>,
   options: IntersectionObserverInit = {}
 ) {
   const [isVisible, setIsVisible] = React.useState(false);
