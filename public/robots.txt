@@ -3,78 +3,15 @@
 # Canonical Host: https://mucolabs.com
 # Founder & Chairman: Srinivash Mahalingam
 # Headquarters: Erode, Tamil Nadu, India - 638001
-# Focus: Custom Software, Web Development, Mobile Apps, Local SEO & AI Automation
+# Focus: Custom Software, Web Development, Mobile Apps & AI Automation
 # ==============================================================================
 
 User-agent: *
 Allow: /
-Allow: /#*
-Allow: /dist/
-Allow: /images/
-Allow: /assets/
-Allow: /favicon.ico
-Allow: /site.webmanifest
-Disallow: /sheets
-Disallow: /sheets/
-Disallow: /#sheets
-Disallow: /#sheets*
 Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
-Disallow: /api/*
-
-# Explicit Crawler Directives for Major Search Engines
-User-agent: Googlebot
-Allow: /
-Allow: /#*
 Disallow: /sheets
 Disallow: /sheets/
-Disallow: /#sheets*
-Disallow: /admin/
-Disallow: /api/
 
-User-agent: Googlebot-Image
-Allow: /
-Allow: /images/
-Allow: /assets/
-
-User-agent: Bingbot
-Allow: /
-Allow: /#*
-Disallow: /sheets
-Disallow: /sheets/
-Disallow: /#sheets*
-Disallow: /admin/
-Disallow: /api/
-
-User-agent: Slurp
-Allow: /
-Allow: /#*
-Disallow: /sheets
-Disallow: /#sheets*
-Disallow: /api/
-
-User-agent: DuckDuckBot
-Allow: /
-Allow: /#*
-Disallow: /sheets
-Disallow: /#sheets*
-Disallow: /api/
-
-User-agent: Baiduspider
-Allow: /
-Allow: /#*
-Disallow: /sheets
-Disallow: /#sheets*
-Disallow: /api/
-
-User-agent: YandexBot
-Allow: /
-Allow: /#*
-Disallow: /sheets
-Disallow: /#sheets*
-Disallow: /api/
-
-# Canonical Domain & Sitemap Reference
-Host: https://mucolabs.com
 Sitemap: https://mucolabs.com/sitemap.xml
