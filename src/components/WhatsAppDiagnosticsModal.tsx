@@ -111,6 +111,13 @@ export const WhatsAppDiagnosticsModal: React.FC<WhatsAppDiagnosticsModalProps> =
     });
   };
 
+  const runTestPathHeuristic = (path: string = 'services') => {
+    notifyUser(`Testing URL path heuristic for "/${path}"...`, 'info', 'Path Heuristic');
+    openWhatsApp({
+      path: path
+    });
+  };
+
   const filteredLogs = logs.filter((log) => {
     if (filterLevel === 'all') return true;
     return log.level === filterLevel;
@@ -228,7 +235,7 @@ export const WhatsAppDiagnosticsModal: React.FC<WhatsAppDiagnosticsModalProps> =
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
               <button
                 onClick={runTestStandard}
                 className="px-3 py-2 bg-slate-800/90 hover:bg-emerald-950/40 hover:border-emerald-500/50 border border-slate-700/80 rounded-xl text-left text-xs font-bold text-slate-200 transition-all flex items-center justify-between group"
@@ -237,7 +244,18 @@ export const WhatsAppDiagnosticsModal: React.FC<WhatsAppDiagnosticsModalProps> =
                   <span className="block text-emerald-400 text-[11px]">1. Standard Link</span>
                   <span className="text-[10px] text-slate-400 font-normal">Validates clean routing</span>
                 </div>
-                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-400" />
+                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-400 shrink-0" />
+              </button>
+
+              <button
+                onClick={() => runTestPathHeuristic('services')}
+                className="px-3 py-2 bg-slate-800/90 hover:bg-blue-950/40 hover:border-blue-500/50 border border-slate-700/80 rounded-xl text-left text-xs font-bold text-slate-200 transition-all flex items-center justify-between group"
+              >
+                <div>
+                  <span className="block text-blue-400 text-[11px]">2. /services Heuristic</span>
+                  <span className="text-[10px] text-slate-400 font-normal">Service-specific greeting</span>
+                </div>
+                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-400 shrink-0" />
               </button>
 
               <button
@@ -245,10 +263,10 @@ export const WhatsAppDiagnosticsModal: React.FC<WhatsAppDiagnosticsModalProps> =
                 className="px-3 py-2 bg-slate-800/90 hover:bg-amber-950/40 hover:border-amber-500/50 border border-slate-700/80 rounded-xl text-left text-xs font-bold text-slate-200 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <span className="block text-amber-400 text-[11px]">2. Stress URL (&gt;2.5k Chars)</span>
+                  <span className="block text-amber-400 text-[11px]">3. Stress Payload</span>
                   <span className="text-[10px] text-slate-400 font-normal">Tests auto-trim & toast</span>
                 </div>
-                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400" />
+                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400 shrink-0" />
               </button>
 
               <button
@@ -256,10 +274,10 @@ export const WhatsAppDiagnosticsModal: React.FC<WhatsAppDiagnosticsModalProps> =
                 className="px-3 py-2 bg-slate-800/90 hover:bg-cyan-950/40 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left text-xs font-bold text-slate-200 transition-all flex items-center justify-between group"
               >
                 <div>
-                  <span className="block text-cyan-400 text-[11px]">3. Unicode / Emoji Check</span>
+                  <span className="block text-cyan-400 text-[11px]">4. Unicode / Emoji</span>
                   <span className="text-[10px] text-slate-400 font-normal">Sanitizes surrogate pairs</span>
                 </div>
-                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-400" />
+                <Play className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-400 shrink-0" />
               </button>
             </div>
           </div>

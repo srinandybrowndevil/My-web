@@ -116,7 +116,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
       });
 
       const [resendRes, appsScriptRes] = await Promise.all([
-        // 1. Send Email to contact@mucolabs.com & client auto-reply via Resend Server API
+        // 1. Send Email to contact@mucolabs.in & client auto-reply via Resend Server API
         sendInquiryEmail(formData).catch((err) => {
           console.warn('[Resend Primary Dispatch Error]', err);
           return { success: false, text: 'Resend error' };
@@ -237,7 +237,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
 
                 {/* Email */}
                 <a
-                  href="mailto:contact@mucolabs.com"
+                  href="mailto:contact@mucolabs.in"
                   className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-slate-800/70 border border-slate-700/80 hover:border-blue-500 transition-all group"
                 >
                   <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
@@ -246,7 +246,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
                   <div>
                     <span className="text-[10px] text-slate-400 uppercase font-semibold block">Official Email</span>
                     <span className="text-sm font-extrabold text-white group-hover:text-blue-400 transition-colors">
-                      contact@mucolabs.com
+                      contact@mucolabs.in
                     </span>
                     <span className="text-[10px] text-slate-400 block">Fast 24h Response</span>
                   </div>
@@ -266,7 +266,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
 
                 {/* Website */}
                 <a
-                  href="https://mucolabs.com"
+                  href="https://mucolabs.in"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-slate-800/70 border border-slate-700/80 hover:border-blue-500 transition-all group"
@@ -277,7 +277,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
                   <div>
                     <span className="text-[10px] text-slate-400 uppercase font-semibold block">Website</span>
                     <span className="text-sm font-extrabold text-white group-hover:text-blue-400 transition-colors">
-                      mucolabs.com
+                      mucolabs.in
                     </span>
                   </div>
                 </a>
@@ -312,7 +312,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
                   Your inquiry has been sent successfully.
                 </p>
                 <p className="text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-                  Your inquiry has been delivered directly to <strong>contact@mucolabs.com</strong>. Our team will review your project details and respond within 24 hours.
+                  Your inquiry has been delivered directly to <strong>contact@mucolabs.in</strong>. Our team will review your project details and respond within 24 hours.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                   <button

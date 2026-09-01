@@ -29,7 +29,7 @@ export async function getResendStatus(): Promise<EmailStatus> {
       configured: false,
       provider: 'resend',
       fromEmail: 'MUCO Labs <onboarding@resend.dev>',
-      toEmail: 'contact@mucolabs.com'
+      toEmail: 'contact@mucolabs.in'
     };
   }
 }

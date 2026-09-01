@@ -55,8 +55,8 @@ export const MobileQuickActionBar: React.FC<MobileQuickActionBarProps> = ({
       bgColor: 'bg-emerald-950/40 border-emerald-500/30 hover:bg-emerald-900/50',
       action: () => {
         openWhatsApp({
-          customMessage:
-            'Hi MUCO Labs! I am browsing your website on mobile and would like to discuss a new software/web/AI project.'
+          path: currentPage,
+          pageName: currentPage
         });
       },
       ariaLabel: 'Chat on WhatsApp'

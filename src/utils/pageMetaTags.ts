@@ -21,7 +21,7 @@ export interface PageMetaTags {
   structuredData?: Record<string, unknown>;
 }
 
-const BASE_URL = 'https://mucolabs.com';
+const BASE_URL = 'https://mucolabs.in';
 
 const PAGE_META_DATA: Record<PageId, PageMetaTags> = {
   home: {

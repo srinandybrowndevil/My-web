@@ -18,7 +18,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-erode',
     primaryTargetPage: 'Locations (Website Development in Erode)',
     secondaryKeywords: [
       'best web development company Erode',
@@ -36,7 +36,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Erode',
     searchIntent: 'Commercial Investigation',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-erode',
     primaryTargetPage: 'Locations (Website Development in Erode)',
     secondaryKeywords: [
       'top rated web development firm Erode',
@@ -52,7 +52,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=custom-software-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=custom-software-erode',
     primaryTargetPage: 'Locations (Custom Software in Erode)',
     secondaryKeywords: [
       'custom software development Erode',
@@ -69,7 +69,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=mobile-app-development-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=mobile-app-development-erode',
     primaryTargetPage: 'Locations (Mobile App Development in Erode)',
     secondaryKeywords: [
       'Android app developers in Erode',
@@ -86,7 +86,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=seo-services-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=seo-services-erode',
     primaryTargetPage: 'Locations (SEO & Local SEO in Erode)',
     secondaryKeywords: [
       'local SEO services in Erode',
@@ -103,7 +103,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=digital-marketing-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=digital-marketing-erode',
     primaryTargetPage: 'Locations (Digital Marketing in Erode)',
     secondaryKeywords: [
       'social media marketing agency Erode',
@@ -120,7 +120,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Commercial Investigation',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=ai-development-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=ai-development-erode',
     primaryTargetPage: 'Locations (AI Development in Erode)',
     secondaryKeywords: [
       'AI chatbot development Erode',
@@ -137,7 +137,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=ecommerce-development-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=ecommerce-development-erode',
     primaryTargetPage: 'Locations (E-commerce Development in Erode)',
     secondaryKeywords: [
       'online store maker in Erode',
@@ -154,7 +154,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Commercial Investigation',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=ui-ux-design-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=ui-ux-design-erode',
     primaryTargetPage: 'Locations (UI/UX Design in Erode)',
     secondaryKeywords: [
       'Figma designer Erode',
@@ -171,7 +171,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=autocad-design-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=autocad-design-erode',
     primaryTargetPage: 'Locations (AutoCAD Design in Erode)',
     secondaryKeywords: [
       '2D 3D CAD drafting Erode',
@@ -189,7 +189,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=branding-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=branding-erode',
     primaryTargetPage: 'Locations (Branding & Logo Design in Erode)',
     secondaryKeywords: [
       'best logo designer in Erode',
@@ -207,7 +207,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Service',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=it-consulting-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=it-consulting-erode',
     primaryTargetPage: 'Locations (IT Consulting in Erode)',
     secondaryKeywords: [
       'WhatsApp API integration company Erode',
@@ -227,7 +227,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-erode',
     primaryTargetPage: 'Locations (Website Development in Erode)',
     secondaryKeywords: [
       'spinning mill website design Erode',
@@ -244,7 +244,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Erode',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?city=erode',
+    primaryUrl: 'https://mucolabs.in/#locations?city=erode',
     primaryTargetPage: 'Locations (Erode Hub)',
     secondaryKeywords: [
       'mandi trading software Erode',
@@ -260,7 +260,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Erode',
     searchIntent: 'Commercial Investigation',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=custom-software-erode',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=custom-software-erode',
     primaryTargetPage: 'Locations (Custom Software in Erode)',
     secondaryKeywords: [
       'clinic appointment booking app Erode',
@@ -278,7 +278,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Perundurai',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-perundurai',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-perundurai',
     primaryTargetPage: 'Locations (Website Development in Perundurai)',
     secondaryKeywords: [
       'SIPCOT web development company',
@@ -294,7 +294,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Bhavani',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-bhavani',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-bhavani',
     primaryTargetPage: 'Locations (Website Development in Bhavani)',
     secondaryKeywords: [
       'Bhavani carpet online store development',
@@ -310,7 +310,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Chennimalai',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-chennimalai',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-chennimalai',
     primaryTargetPage: 'Locations (Website Development in Chennimalai)',
     secondaryKeywords: [
       'bedsheet exporter website Chennimalai',
@@ -326,7 +326,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Commercial',
     location: 'Gobichettipalayam',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-gobichettipalayam',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-gobichettipalayam',
     primaryTargetPage: 'Locations (Website Development in Gobichettipalayam)',
     secondaryKeywords: [
       'web design Gobi',
@@ -342,7 +342,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Sathyamangalam',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=custom-software-sathyamangalam',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=custom-software-sathyamangalam',
     primaryTargetPage: 'Locations (Custom Software in Sathyamangalam)',
     secondaryKeywords: [
       'industrial software developers Sathyamangalam',
@@ -358,7 +358,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Kodumudi',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-kodumudi',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-kodumudi',
     primaryTargetPage: 'Locations (Website Development in Kodumudi)',
     secondaryKeywords: [
       'lodge room reservation website Kodumudi',
@@ -374,7 +374,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Industry-Specific',
     location: 'Modakurichi',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?combo=website-development-modakurichi',
+    primaryUrl: 'https://mucolabs.in/#locations?combo=website-development-modakurichi',
     primaryTargetPage: 'Locations (Website Development in Modakurichi)',
     secondaryKeywords: [
       'oil mill online store Modakurichi',
@@ -392,7 +392,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Problem-Solving',
     location: 'Erode',
     searchIntent: 'Informational',
-    primaryUrl: 'https://mucolabs.com/#blog?post=local-seo-google-maps-erode-guide',
+    primaryUrl: 'https://mucolabs.in/#blog?post=local-seo-google-maps-erode-guide',
     primaryTargetPage: 'Blog (Local SEO Guide for Erode Businesses)',
     secondaryKeywords: [
       'Google Maps listing for business in Erode',
@@ -408,7 +408,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Problem-Solving',
     location: 'Erode',
     searchIntent: 'Informational',
-    primaryUrl: 'https://mucolabs.com/#blog?post=how-erode-businesses-generate-leads-online',
+    primaryUrl: 'https://mucolabs.in/#blog?post=how-erode-businesses-generate-leads-online',
     primaryTargetPage: 'Blog (Lead Generation & Traffic Blueprint)',
     secondaryKeywords: [
       'generate leads online Erode',
@@ -426,7 +426,7 @@ export const SEO_KEYWORD_DATABASE: KeywordMapping[] = [
     category: 'Local-Intent',
     location: 'Erode & Tamil Nadu',
     searchIntent: 'Transactional',
-    primaryUrl: 'https://mucolabs.com/#locations?city=erode',
+    primaryUrl: 'https://mucolabs.in/#locations?city=erode',
     primaryTargetPage: 'Locations (Erode Headquarters)',
     secondaryKeywords: [
       'website design company near me',

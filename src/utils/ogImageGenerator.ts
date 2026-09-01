@@ -467,7 +467,7 @@ export async function renderOgCardToCanvas(
 
   // Bottom Right: Canonical URL & Verified Origin Badge
   ctx.save();
-  const domainText = 'mucolabs.com';
+  const domainText = 'mucolabs.in';
   ctx.font = 'bold 16px "Inter", "Segoe UI", system-ui, sans-serif';
   const domainMetrics = ctx.measureText(domainText);
   const domainX = WIDTH - pad - 40 - domainMetrics.width;

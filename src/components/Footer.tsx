@@ -3,6 +3,7 @@ import { PageId } from '../types';
 import { Phone, Mail, MapPin, Globe, ArrowUpRight, ShieldCheck, Heart, Sparkles, Scale, Shield } from 'lucide-react';
 import { MucoLogo } from './MucoLogo';
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp } from '../utils/whatsapp';
 
 // Service Mapping for Pricing page deep-linking
 const FOOTER_SERVICES = [
@@ -155,38 +156,37 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="space-y-3">
             <p className="text-xs font-bold text-white uppercase tracking-wider">Official Contact</p>
             <div className="space-y-2.5 text-xs">
-              <a
-                href="https://wa.me/916381809844?text=Hello%20MUCO%20Labs%2C%20I%20would%20like%20to%20discuss%20a%20project."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-2.5 text-slate-300 hover:text-orange-400 transition-colors group"
+              <button
+                type="button"
+                onClick={() => openWhatsApp()}
+                className="flex items-start gap-2.5 text-slate-300 hover:text-orange-400 transition-colors group text-left cursor-pointer"
               >
                 <Phone className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="block font-medium">+91 63818 09844</span>
                   <span className="text-[10px] text-slate-500">Direct Phone &amp; WhatsApp</span>
                 </div>
-              </a>
+              </button>
 
               <a
-                href="mailto:contact@mucolabs.com"
+                href="mailto:contact@mucolabs.in"
                 className="flex items-start gap-2.5 text-slate-300 hover:text-orange-400 transition-colors group"
               >
                 <Mail className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-medium">contact@mucolabs.com</span>
+                  <span className="block font-medium">contact@mucolabs.in</span>
                   <span className="text-[10px] text-slate-500">24h Email Response</span>
                 </div>
               </a>
 
               <a
-                href="https://mucolabs.com"
+                href="https://mucolabs.in"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 text-slate-300 hover:text-orange-400 transition-colors"
               >
                 <Globe className="w-4 h-4 text-orange-400 shrink-0" />
-                <span className="font-medium">mucolabs.com</span>
+                <span className="font-medium">mucolabs.in</span>
                 <ArrowUpRight className="w-3 h-3 text-slate-500" />
               </a>
 

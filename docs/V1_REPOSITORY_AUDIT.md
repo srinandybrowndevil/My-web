@@ -1177,7 +1177,7 @@ interface AppConfig {
   - `src/components/Footer.tsx:159`
   - `src/components/FloatingWhatsApp.tsx` (throughout)
 
-- **Email Addresses:** `'contact@mucolabs.com'` hard-coded in 15+ files
+- **Email Addresses:** `'contact@mucolabs.in'` hard-coded in 15+ files
   - `src/components/EstimateCalculator.tsx:89,219`
   - `src/components/GoogleSheetsHub.tsx:78,83`
   - `src/services/resendEmail.ts:31,32`
@@ -1200,7 +1200,7 @@ interface AppConfig {
 - **SEO Images:** Multiple OG image placeholders in `src/utils/seo.ts`
 
 #### **Hard-coded URLs and Domains**
-- **Domain:** `'https://mucolabs.com'` hard-coded in 20+ locations
+- **Domain:** `'https://mucolabs.in'` hard-coded in 20+ locations
   - `src/lib/sitemapGenerator.ts:8`
   - `src/utils/pageMetaTags.ts:24`
   - `src/utils/seo.ts` (multiple occurrences)

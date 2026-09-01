@@ -44,8 +44,8 @@ export const FOUNDER_INFO = {
   foundedYear: '2026',
   location: 'Erode, Tamil Nadu, India',
   phone: '+91 6381809844',
-  email: 'contact@mucolabs.com',
-  website: 'mucolabs.com',
+  email: 'contact@mucolabs.in',
+  website: 'mucolabs.in',
   image: founderPortrait,
   quote: 'Technology is my tool. Innovation is my language. People are my purpose. MUCO Labs is my legacy.',
   bio: 'Founder of MUCO Labs. Building multiple technology products, websites, Android applications, AI solutions, SaaS platforms, and business communities with a vision to make MUCO Labs one of India’s leading technology companies.'
@@ -66,10 +66,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socialLinks: {
       linkedin: '#',
       twitter: '#',
-      email: 'mailto:contact@mucolabs.com'
+      email: 'mailto:contact@mucolabs.in'
     },
     phone: '+91 6381809844',
-    email: 'contact@mucolabs.com',
+    email: 'contact@mucolabs.in',
     location: 'Erode, Tamil Nadu',
     isFounder: true
   },
@@ -87,10 +87,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socialLinks: {
       linkedin: '#',
       twitter: '#',
-      email: 'mailto:tech@mucolabs.com'
+      email: 'mailto:tech@mucolabs.in'
     },
     phone: '+91 6381809844',
-    email: 'tech@mucolabs.com',
+    email: 'tech@mucolabs.in',
     location: 'Erode, Tamil Nadu'
   },
   {
@@ -107,10 +107,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socialLinks: {
       linkedin: '#',
       twitter: '#',
-      email: 'mailto:marketing@mucolabs.com'
+      email: 'mailto:marketing@mucolabs.in'
     },
     phone: '+91 6381809844',
-    email: 'marketing@mucolabs.com',
+    email: 'marketing@mucolabs.in',
     location: 'Erode, Tamil Nadu'
   },
   {
@@ -127,10 +127,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socialLinks: {
       linkedin: '#',
       twitter: '#',
-      email: 'mailto:accounts@mucolabs.com'
+      email: 'mailto:accounts@mucolabs.in'
     },
     phone: '+91 6381809844',
-    email: 'accounts@mucolabs.com',
+    email: 'accounts@mucolabs.in',
     location: 'Erode, Tamil Nadu'
   },
   {
@@ -147,10 +147,10 @@ export const TEAM_MEMBERS: TeamMember[] = [
     socialLinks: {
       linkedin: '#',
       twitter: '#',
-      email: 'mailto:hr@mucolabs.com'
+      email: 'mailto:hr@mucolabs.in'
     },
     phone: '+91 6381809844',
-    email: 'hr@mucolabs.com',
+    email: 'hr@mucolabs.in',
     location: 'Erode, Tamil Nadu'
   }
 ];

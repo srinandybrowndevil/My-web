@@ -102,7 +102,7 @@ function generateBrandedHtmlEmail(data: {
     <div class="message-box">${data.message}</div>
 
     <div class="footer">
-      Official Dispatch via <strong>Resend API</strong> &bull; <a href="https://mucolabs.com">mucolabs.com</a><br>
+      Official Dispatch via <strong>Resend API</strong> &bull; <a href="https://mucolabs.in">mucolabs.in</a><br>
       Founder Srinivash Mahalingam &bull; Direct Phone: +91 63818 09844<br>
       MUCO Labs, Erode, Tamil Nadu, India
     </div>
@@ -140,7 +140,7 @@ function generateClientAutoReplyHtml(name: string, serviceCategory: string) {
     <p class="text" style="margin-top: 20px;">
       Warm regards,<br>
       <strong>MUCO Labs Team</strong><br>
-      Erode, Tamil Nadu, India | <a href="https://mucolabs.com" style="color: #ea580c;">mucolabs.com</a>
+      Erode, Tamil Nadu, India | <a href="https://mucolabs.in" style="color: #ea580c;">mucolabs.in</a>
     </p>
 
     <div class="footer">
@@ -158,11 +158,11 @@ async function startServer() {
   // Enable Gzip/Brotli HTTP compression for optimal network speed
   app.use(compression());
 
-  // Canonical host enforcement: 301 redirect www.mucolabs.com to https://mucolabs.com
+  // Canonical host enforcement: 301 redirect www.mucolabs.in to https://mucolabs.in
   app.use((req, res, next) => {
     const host = req.headers.host || '';
-    if (host.startsWith('www.mucolabs.com')) {
-      return res.redirect(301, `https://mucolabs.com${req.originalUrl}`);
+    if (host.startsWith('www.mucolabs.in')) {
+      return res.redirect(301, `https://mucolabs.in${req.originalUrl}`);
     }
     next();
   });
@@ -239,14 +239,14 @@ async function startServer() {
       configured: Boolean(resend),
       provider: 'resend',
       fromEmail: process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>',
-      toEmail: process.env.RESEND_TO_EMAIL || 'contact@mucolabs.com'
+      toEmail: process.env.RESEND_TO_EMAIL || 'contact@mucolabs.in'
     });
   });
 
   // Test Resend Email Dispatch
   app.post('/api/email/test', async (req, res) => {
     const resend = getResend();
-    const toEmail = req.body?.toEmail || process.env.RESEND_TO_EMAIL || 'contact@mucolabs.com';
+    const toEmail = req.body?.toEmail || process.env.RESEND_TO_EMAIL || 'contact@mucolabs.in';
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>';
 
     if (!resend) {
@@ -327,7 +327,7 @@ async function startServer() {
 
     const resend = getResend();
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'MUCO Labs <onboarding@resend.dev>';
-    const toEmail = process.env.RESEND_TO_EMAIL || 'contact@mucolabs.com';
+    const toEmail = process.env.RESEND_TO_EMAIL || 'contact@mucolabs.in';
 
     if (!resend) {
       return res.json({

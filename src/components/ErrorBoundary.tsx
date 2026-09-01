@@ -107,7 +107,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       `Time: ${new Date().toISOString()}\n\n` +
       `Please describe what you were doing when this error occurred:`
     );
-    window.location.href = `mailto:contact@mucolabs.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:contact@mucolabs.in?subject=${subject}&body=${body}`;
   };
 
   render(): ReactNode {

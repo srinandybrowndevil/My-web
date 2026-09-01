@@ -52,7 +52,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'faq-9',
     question: 'How do I get started with MUCO Labs?',
-    answer: 'You can request a free consultation or custom estimate right here on our website, call us directly at +91 6381809844, email contact@mucolabs.com, or click the floating WhatsApp button to chat instantly with founder Srinivash Mahalingam and the team.',
+    answer: 'You can request a free consultation or custom estimate right here on our website, call us directly at +91 6381809844, email contact@mucolabs.in, or click the floating WhatsApp button to chat instantly with founder Srinivash Mahalingam and the team.',
     category: 'general'
   },
   {

@@ -297,7 +297,7 @@ export const SeoSitemapInspector: React.FC = () => {
                       </td>
                       <td className="py-2.5 px-3 text-right">
                         <a
-                          href={item.loc.replace('https://mucolabs.com', '') || '/'}
+                          href={item.loc.replace('https://mucolabs.in', '') || '/'}
                           className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 transition-colors"
                         >
                           <span>Open</span>

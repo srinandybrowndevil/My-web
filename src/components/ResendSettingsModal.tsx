@@ -15,7 +15,7 @@ export const ResendSettingsModal: React.FC<ResendSettingsModalProps> = ({ isOpen
     configured: false,
     provider: 'resend',
     fromEmail: 'MUCO Labs <onboarding@resend.dev>',
-    toEmail: 'contact@mucolabs.com'
+    toEmail: 'contact@mucolabs.in'
   });
   const [copiedCode, setCopiedCode] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
@@ -43,7 +43,7 @@ export const ResendSettingsModal: React.FC<ResendSettingsModalProps> = ({ isOpen
 # Get your API key at https://resend.com/api-keys
 RESEND_API_KEY=re_your_api_key_here
 RESEND_FROM_EMAIL=MUCO Labs <onboarding@resend.dev>
-RESEND_TO_EMAIL=contact@mucolabs.com`;
+RESEND_TO_EMAIL=contact@mucolabs.in`;
 
     navigator.clipboard.writeText(envSnippet);
     setCopiedCode(true);
@@ -194,7 +194,7 @@ RESEND_TO_EMAIL=contact@mucolabs.com`;
 {`# .env
 RESEND_API_KEY=re_123456789abcdef
 RESEND_FROM_EMAIL=MUCO Labs <onboarding@resend.dev>
-RESEND_TO_EMAIL=contact@mucolabs.com`}
+RESEND_TO_EMAIL=contact@mucolabs.in`}
             </pre>
             <button
               onClick={handleCopyEnv}

@@ -16,10 +16,11 @@ import { RoleQuickSwitcher } from './components/RoleQuickSwitcher';
 import { updatePageSEO, syncUrlSEO } from './utils/seo';
 import { usePageMetaTags } from './utils/pageMetaTags';
 import { usePageViewLogger } from './hooks/usePageViewLogger';
-import { useAppReadiness } from './hooks/useAppReadiness';
 import { PagePerformanceTracker } from './components/PagePerformanceTracker';
 import { MobileQuickActionBar } from './components/MobileQuickActionBar';
 import { openWhatsApp } from './utils/whatsapp';
+import { Home } from './pages/Home';
+import { GeneralPageSkeleton } from './components/skeletons/GeneralPageSkeleton';
 import { ServicesSkeleton } from './components/skeletons/ServicesSkeleton';
 import { PortfolioSkeleton } from './components/skeletons/PortfolioSkeleton';
 
@@ -55,7 +56,6 @@ const WhatsAppDiagnosticsModal = lazyWithRetry(() => import('./components/WhatsA
 const PerformanceMonitor = lazyWithRetry(() => import('./components/PerformanceMonitor').then((m) => ({ default: m.PerformanceMonitor })));
 
 // Lazy-loaded route page components with resilient retries
-const Home = lazyWithRetry(() => import('./pages/Home').then((m) => ({ default: m.Home })));
 const About = lazyWithRetry(() => import('./pages/About').then((m) => ({ default: m.About })));
 const Services = lazyWithRetry(() => import('./pages/Services').then((m) => ({ default: m.Services })));
 const AiSystems = lazyWithRetry(() => import('./pages/AiSystems').then((m) => ({ default: m.AiSystems })));
@@ -83,9 +83,6 @@ export default function App() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isWhatsAppDiagOpen, setIsWhatsAppDiagOpen] = useState<boolean>(false);
   const [isIntroReplayOpen, setIsIntroReplayOpen] = useState<boolean>(false);
-
-  // Deterministic application & asset readiness probe (Promise.all + fallback safety)
-  const readiness = useAppReadiness();
 
   // Listen to global events
   useEffect(() => {
@@ -283,24 +280,8 @@ export default function App() {
         return <ServicesSkeleton />;
       case 'portfolio':
         return <PortfolioSkeleton />;
-      case 'courses':
-        return (
-          <div className="min-h-[55vh] flex items-center justify-center p-8">
-            <ModernLoadingScreen label="Loading Way2Me Mastery Academy..." sublabel="SYNCHRONIZING CURRICULUM & MENTORSHIP MODULES" size="md" />
-          </div>
-        );
-      case 'sheets':
-        return (
-          <div className="min-h-[55vh] flex items-center justify-center p-8">
-            <ModernLoadingScreen label="Connecting Google Sheets & Drive Hub..." sublabel="ESTABLISHING CLOUD OAUTH CHANNELS" size="md" />
-          </div>
-        );
       default:
-        return (
-          <div className="min-h-[55vh] flex items-center justify-center p-8">
-            <ModernLoadingScreen label="Loading MUCO Architecture..." size="md" />
-          </div>
-        );
+        return <GeneralPageSkeleton />;
     }
   };
 
@@ -447,8 +428,8 @@ export default function App() {
                   fullScreenOverlay={true}
                   size="fullscreen"
                   label="MUCO LABS ARCHITECTURE"
-                  sublabel={readiness.stage || "HIGH-PRECISION DIGITAL SYSTEMS // READY"}
-                  autoDismissTimeoutMs={2200}
+                  sublabel="HIGH-PRECISION DIGITAL SYSTEMS // READY"
+                  autoDismissTimeoutMs={1800}
                   onDismiss={() => setIsIntroReplayOpen(false)}
                   onComplete={() => setIsIntroReplayOpen(false)}
                 />

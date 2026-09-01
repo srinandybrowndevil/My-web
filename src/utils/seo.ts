@@ -199,7 +199,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
   },
   contact: {
     title: 'Contact MUCO Labs | Free Consultation & Project Quote',
-    description: 'Connect with MUCO Labs engineering leadership to discuss your software, AI automation, or cloud initiative. Email: contact@mucolabs.com | Direct: +91 6381809844.',
+    description: 'Connect with MUCO Labs engineering leadership to discuss your software, AI automation, or cloud initiative. Email: contact@mucolabs.in | Direct: +91 6381809844.',
     keywords: 'contact MUCO Labs, hire software developers, software development company contact, IT consulting Erode, request proposal MUCO, start a project',
     ogImage: 'https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&w=1200&h=630&q=85',
     ogImageAlt: 'Direct Communication and Project Consultation with MUCO Labs Specialists',
@@ -259,7 +259,7 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
 export function updatePageSEO(page: PageId) {
   const metadata = PAGE_METADATA[page] || PAGE_METADATA.home;
   const canonicalPath = page === 'home' ? '/' : `/${page}`;
-  const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}${canonicalPath}` : `https://mucolabs.com${canonicalPath}`;
+  const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}${canonicalPath}` : `https://mucolabs.in${canonicalPath}`;
   const ogImage = metadata.ogImage;
   const ogImageAlt = metadata.ogImageAlt || `${metadata.title} - MUCO Labs`;
   const ogType = metadata.ogType || 'website';
@@ -332,7 +332,7 @@ export function updateLocationSEO(location: LocationData) {
   const locDesc = location.overview;
   const locUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/locations?city=${location.id}` 
-    : `https://mucolabs.com/locations?city=${location.id}`;
+    : `https://mucolabs.in/locations?city=${location.id}`;
   const locKeywords = `software company in ${location.name}, website development ${location.name}, web design ${location.name}, mobile app development ${location.name}, SEO company ${location.name}, ERP software ${location.name}, AI development ${location.name}, ${location.district} software agency`;
 
   document.title = locTitle;
@@ -392,7 +392,7 @@ export function updateLocationSEO(location: LocationData) {
 export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
   const pageUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/locations?combo=${combo.id}`
-    : `https://mucolabs.com/locations?combo=${combo.id}`;
+    : `https://mucolabs.in/locations?combo=${combo.id}`;
   const keywords = `${combo.serviceName} in ${combo.locationName}, ${combo.serviceName} company ${combo.locationName}, best ${combo.serviceName} in ${combo.locationName}, ${combo.targetIndustries.join(', ')}`;
   const comboTitle = combo.seoTitle.length > 60 ? formatSeoTitle(combo.serviceName, `MUCO Labs ${combo.locationName}`, 60) : combo.seoTitle;
 
@@ -450,7 +450,7 @@ export function updateMemberSEO(member: TeamMember) {
   const memberDesc = `${member.name} serves as ${member.titleRole} (${member.affiliation}) at MUCO Labs. Discover leadership insights, responsibilities, and professional background.`;
   const profileUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/gallery?member=${encodeURIComponent(member.id)}` 
-    : `https://mucolabs.com/gallery?member=${member.id}`;
+    : `https://mucolabs.in/gallery?member=${member.id}`;
   const memberImage = member.image;
   const imageAlt = `${member.name} - ${member.titleRole} at MUCO Labs`;
 
@@ -513,7 +513,7 @@ export function updateBlogPostSEO(post: BlogPost) {
   const postDesc = post.excerpt;
   const postUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/blog?post=${encodeURIComponent(post.slug)}`
-    : `https://mucolabs.com/blog?post=${post.slug}`;
+    : `https://mucolabs.in/blog?post=${post.slug}`;
   const postImage = post.image;
   const imageAlt = `${post.title} - Article by ${post.author.name}`;
 
@@ -576,7 +576,7 @@ export function updateServiceSEO(service: DetailedService) {
     : service.description;
   const serviceUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/services?id=${encodeURIComponent(service.id)}`
-    : `https://mucolabs.com/services?id=${service.id}`;
+    : `https://mucolabs.in/services?id=${service.id}`;
   const keywords = `${service.title}, ${service.technologies.join(', ')}, software development Erode, MUCO Labs ${service.title}`;
 
   document.title = serviceTitle;
@@ -620,7 +620,7 @@ export function updateCourseSEO(course: CourseItem) {
   const courseDesc = course.description;
   const courseUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/courses?id=${encodeURIComponent(course.id)}`
-    : `https://mucolabs.com/courses?id=${course.id}`;
+    : `https://mucolabs.in/courses?id=${course.id}`;
   const keywords = `${course.title}, ${course.technologies.join(', ')}, ${course.category}, Way2Me Academy, Yogaharikaran, tech training Tamil Nadu`;
 
   document.title = courseTitle;
@@ -662,7 +662,7 @@ export function updateProjectSEO(project: ProjectItem) {
   const projDesc = project.description;
   const projUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/portfolio?id=${encodeURIComponent(project.id)}`
-    : `https://mucolabs.com/portfolio?id=${project.id}`;
+    : `https://mucolabs.in/portfolio?id=${project.id}`;
 
   document.title = projTitle;
 

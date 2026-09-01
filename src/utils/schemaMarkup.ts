@@ -32,7 +32,7 @@ export function injectJsonLdSchema(schemas: Record<string, unknown> | Array<Reco
  * Core Organization Schema for MUCO Labs
  */
 export function getOrganizationSchema() {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
 
   return {
     '@context': 'https://schema.org',
@@ -49,7 +49,7 @@ export function getOrganizationSchema() {
       name: 'Srinivash Mahalingam',
       jobTitle: 'Founder & Managing Director',
       telephone: '+91 6381809844',
-      email: 'contact@mucolabs.com'
+      email: 'contact@mucolabs.in'
     },
     address: {
       '@type': 'PostalAddress',
@@ -64,7 +64,7 @@ export function getOrganizationSchema() {
         '@type': 'ContactPoint',
         telephone: '+91 6381809844',
         contactType: 'customer service',
-        email: 'contact@mucolabs.com',
+        email: 'contact@mucolabs.in',
         areaServed: ['Erode', 'Tamil Nadu', 'India', 'Worldwide'],
         availableLanguage: ['English', 'Tamil']
       }
@@ -80,7 +80,7 @@ export function getOrganizationSchema() {
  * Generates verified LocalBusiness schema for a target location
  */
 export function getLocationSchema(location: LocationData): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
   const orgSchema = getOrganizationSchema();
 
   const localBusinessSchema = {
@@ -91,7 +91,7 @@ export function getLocationSchema(location: LocationData): Array<Record<string, 
     image: location.heroImage,
     url: `${origin}/#locations?city=${location.id}`,
     telephone: '+91 6381809844',
-    email: 'contact@mucolabs.com',
+    email: 'contact@mucolabs.in',
     priceRange: '₹₹',
     address: {
       '@type': 'PostalAddress',
@@ -186,7 +186,7 @@ export function getLocationSchema(location: LocationData): Array<Record<string, 
  * Generates verified Service-Location Combination schema
  */
 export function getServiceLocationSchema(combo: ServiceLocationCombo): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
   const orgSchema = getOrganizationSchema();
 
   const serviceSchema = {
@@ -254,7 +254,7 @@ export function getServiceLocationSchema(combo: ServiceLocationCombo): Array<Rec
  * BreadcrumbList Schema for navigation context
  */
 export function getBreadcrumbSchema(page: PageId, pageTitle: string) {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
 
   return {
     '@context': 'https://schema.org',
@@ -280,7 +280,7 @@ export function getBreadcrumbSchema(page: PageId, pageTitle: string) {
  * Generates page-specific JSON-LD schemas
  */
 export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
   const orgSchema = getOrganizationSchema();
 
   const schemas: Array<Record<string, unknown>> = [orgSchema];
@@ -475,7 +475,7 @@ export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>
             name: 'MUCO Labs Headquarters',
             image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
             telephone: '+91 6381809844',
-            email: 'contact@mucolabs.com',
+            email: 'contact@mucolabs.in',
             priceRange: '₹₹',
             address: {
               '@type': 'PostalAddress',
@@ -542,7 +542,7 @@ export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>
  * Generates Person schema markup for team member inspection
  */
 export function getMemberSchemaMarkup(member: TeamMember): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
   const orgSchema = getOrganizationSchema();
 
   const personSchema = {

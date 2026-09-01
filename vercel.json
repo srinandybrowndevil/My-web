@@ -7,10 +7,10 @@
       "has": [
         {
           "type": "host",
-          "value": "www.mucolabs.com"
+          "value": "www.mucolabs.in"
         }
       ],
-      "destination": "https://mucolabs.com/:path*",
+      "destination": "https://mucolabs.in/:path*",
       "permanent": true
     }
   ],

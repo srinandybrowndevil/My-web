@@ -42,9 +42,238 @@ export interface LeadCaptureFormData {
 export interface WhatsAppContext {
   serviceName?: string;
   pageName?: string;
+  path?: string;
   projectBudget?: string;
   customMessage?: string;
   leadData?: LeadCaptureFormData;
+}
+
+export interface PathHeuristicConfig {
+  greeting: string;
+  suggestedQuestions: string[];
+  pageTitle: string;
+}
+
+/**
+ * Local heuristic mapping of URL paths and route identifiers to contextual initial greetings
+ * and suggested prompt questions.
+ */
+export const PATH_HEURISTICS: Record<string, PathHeuristicConfig> = {
+  services: {
+    pageTitle: 'Software & Cloud Services',
+    greeting: 'Hello MUCO Labs! 👋 I am browsing your *Software & Web Engineering Services*. Could you provide details on your tech stack, scope of work, and project availability?',
+    suggestedQuestions: [
+      'Custom Full-Stack Web Application Quote',
+      'Cloud Architecture & API Microservices',
+      'Enterprise Software Modernization',
+      'What is your typical project timeline?'
+    ]
+  },
+  pricing: {
+    pageTitle: 'Pricing & Estimator',
+    greeting: 'Hello MUCO Labs! 👋 I am on your *Pricing & Estimator* page and would like to calculate a custom quote and timeline for my software/MVP idea.',
+    suggestedQuestions: [
+      'MVP Cost & Timeline Calculation',
+      'Monthly Cloud AMC & Maintenance Plans',
+      'Fixed-Bid vs Dedicated Team Inquiry',
+      'Request custom milestone quotation'
+    ]
+  },
+  portfolio: {
+    pageTitle: 'Client Portfolio & Case Studies',
+    greeting: 'Hello MUCO Labs! 👋 I was reviewing your *Client Portfolio & Case Studies* and would like to discuss building a high-performance platform similar to your work.',
+    suggestedQuestions: [
+      'Inquire about a project similar to your case studies',
+      'Request technical portfolio walkthrough',
+      'NDA & proprietary IP development',
+      'Client reference & delivery timeline inquiry'
+    ]
+  },
+  systems: {
+    pageTitle: 'Autonomous AI & Intelligence Systems',
+    greeting: 'Hello MUCO Labs! 👋 I am exploring your *Autonomous AI & Intelligence Systems*. How can MUCO Labs help integrate custom AI workflows and automation into our business?',
+    suggestedQuestions: [
+      'Autonomous AI Workflow Consultation',
+      'Custom LLM & AI Agent Integration',
+      'Enterprise Automation Feasibility Study',
+      'Schedule Live AI Architecture Demo'
+    ]
+  },
+  courses: {
+    pageTitle: 'Way2Me Mastery Academy',
+    greeting: 'Hello MUCO Labs! 👋 I am interested in the *Way2Me Mastery Academy* curriculum and mentorship programs. Could you share enrollment details and upcoming cohort schedules?',
+    suggestedQuestions: [
+      'Way2Me Full Stack Mastery Syllabus',
+      'Upcoming Cohort Dates & Fees',
+      '1-on-1 Mentorship & Placement Support',
+      'Book a Free Career Counseling Call'
+    ]
+  },
+  apps: {
+    pageTitle: 'Mobile & Web App Studio',
+    greeting: 'Hello MUCO Labs! 👋 I am exploring your *App Studio & Publishing* services. I have an iOS/Android or web application idea I would like to design and launch.',
+    suggestedQuestions: [
+      'Mobile App Development (iOS & Android)',
+      'App Store & Play Store Publishing',
+      'Cross-Platform React Native / Flutter Inquiry',
+      'App UI/UX Prototype & Architecture'
+    ]
+  },
+  maintenance: {
+    pageTitle: 'Cloud Infrastructure & AMC Maintenance',
+    greeting: 'Hello MUCO Labs! 👋 I am looking into your *Cloud Infrastructure & AMC Maintenance* packages to keep our systems secure, updated, and high-performing.',
+    suggestedQuestions: [
+      'Annual Maintenance Contract (AMC) Plans',
+      'Server Security & Performance Audit',
+      '24/7 Cloud Monitoring & DevOps Support',
+      'Legacy Software Migration & Optimization'
+    ]
+  },
+  process: {
+    pageTitle: 'Engineering Process & Standards',
+    greeting: 'Hello MUCO Labs! 👋 I am reviewing your 4-phase agile engineering process (Discovery, Architecture, Sprint Delivery, Launch) and would like to discuss my project timeline.',
+    suggestedQuestions: [
+      'Discovery & Technical Specification Sprint',
+      'Sprint Milestones & Agile Deliverables',
+      'Code Review & Quality Assurance Standards',
+      'Deployment & Production Launch Timeline'
+    ]
+  },
+  about: {
+    pageTitle: 'About MUCO Labs',
+    greeting: 'Hello MUCO Labs! 👋 I was reading about MUCO Labs\' engineering philosophy and leadership. I\'d love to connect with your team regarding a technical partnership.',
+    suggestedQuestions: [
+      'Schedule a meeting with Founder Srinivash M.',
+      'Technical Partnership & Vendor Onboarding',
+      'Engineering Hub Visit in Erode, Tamil Nadu',
+      'Explore Technology Collaboration'
+    ]
+  },
+  contact: {
+    pageTitle: 'Contact & Proposals',
+    greeting: 'Hello MUCO Labs! 👋 I would like to schedule a project consultation and request a technical proposal for our engineering roadmap.',
+    suggestedQuestions: [
+      'Schedule 15-Minute Strategy Call',
+      'Request Custom Technical Proposal',
+      'Immediate Project Kickoff Discussion',
+      'General Software Engineering Inquiry'
+    ]
+  },
+  locations: {
+    pageTitle: 'Regional Hubs & Locations',
+    greeting: 'Hello MUCO Labs! 👋 I noticed your engineering hubs in Erode, Perundurai, and across Tamil Nadu. I\'d like to inquire about local or remote software consulting.',
+    suggestedQuestions: [
+      'Software Consulting in Erode / Perundurai Hub',
+      'On-site vs Remote Engineering Engagement',
+      'Industrial SIPCOT Automation Solutions',
+      'Regional Digital Transformation Inquiry'
+    ]
+  },
+  faq: {
+    pageTitle: 'Frequently Asked Questions',
+    greeting: 'Hello MUCO Labs! 👋 I have a few questions about your development process, payment milestones, and ongoing support guarantees.',
+    suggestedQuestions: [
+      'Payment Milestones & Billing Terms',
+      'Source Code Ownership & IP Protection',
+      'Post-Launch Support & Warranty',
+      'Technology Stack & Architecture Consultation'
+    ]
+  },
+  blog: {
+    pageTitle: 'Engineering Blog & Insights',
+    greeting: 'Hello MUCO Labs! 👋 I was reading your technical articles and insights, and would like to discuss implementing similar software architectures for our company.',
+    suggestedQuestions: [
+      'Discuss architecture from tech blog',
+      'Enterprise AI & Full-Stack Tech Stack',
+      'Best practices for scalable cloud apps',
+      'Collaborate on technical research'
+    ]
+  },
+  sheets: {
+    pageTitle: 'Google Sheets & Cloud Hub',
+    greeting: 'Hello MUCO Labs! 👋 I am exploring your *Google Sheets & Cloud Data Integration* and would like to connect our operational workflows with custom software.',
+    suggestedQuestions: [
+      'Google Sheets API Integration',
+      'Automated Lead Capture & CRM Sync',
+      'Cloud Database to Spreadsheet Pipeline',
+      'Custom Google Workspace Automation'
+    ]
+  },
+  home: {
+    pageTitle: 'MUCO Labs Architecture',
+    greeting: 'Hello MUCO Labs! 👋 I am interested in your software engineering & AI services.',
+    suggestedQuestions: [
+      'Website Development Inquiry',
+      'Mobile App Development Quote',
+      'AI Chatbot & Automation Demo',
+      'Cloud Service Management / AMC'
+    ]
+  }
+};
+
+/**
+ * Resolves a normalized route key from a pathname, hash, or route string.
+ */
+export function resolvePathKey(input?: string): string {
+  if (!input) {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace(/^[#/]+|[#/]+$/g, '').split('?')[0].split('/')[0].toLowerCase();
+      if (hash) {
+        if (hash === 'calculator') return 'pricing';
+        if (PATH_HEURISTICS[hash]) return hash;
+      }
+      const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '').split('?')[0].split('/')[0].toLowerCase();
+      if (pathname && PATH_HEURISTICS[pathname]) return pathname;
+      if (pathname === 'calculator' || pathname === 'estimate') return 'pricing';
+      if (pathname === 'ai' || pathname === 'intelligence') return 'systems';
+      if (pathname === 'academy' || pathname === 'learn') return 'courses';
+      if (pathname === 'case-studies') return 'portfolio';
+      if (pathname === 'amc') return 'maintenance';
+    }
+    return 'home';
+  }
+
+  const clean = input.toLowerCase().replace(/^[#/]+|[#/]+$/g, '').split('?')[0].split('/')[0];
+  
+  // Specific alias mappings
+  if (clean === 'calculator' || clean === 'estimate' || clean === 'pricing & estimates') return 'pricing';
+  if (clean === 'ai' || clean === 'intelligence' || clean === 'ai systems') return 'systems';
+  if (clean === 'academy' || clean === 'learn' || clean === 'mastery academy' || clean === 'way2me mastery academy') return 'courses';
+  if (clean === 'case-studies' || clean === 'client portfolio') return 'portfolio';
+  if (clean === 'amc' || clean === 'cloud & amc maintenance') return 'maintenance';
+  if (clean === 'software services' || clean === 'software & cloud services') return 'services';
+  if (clean === 'about muco labs') return 'about';
+  if (clean === 'contact & proposals') return 'contact';
+  if (clean === 'app studio & publishing') return 'apps';
+  if (clean === 'blog & tech articles' || clean === 'engineering blog & insights') return 'blog';
+  if (clean === 'regional hubs & locations' || clean === 'locations') return 'locations';
+  if (clean === 'frequently asked questions') return 'faq';
+  if (clean === 'engineering process & standards') return 'process';
+  if (clean === 'google sheets & cloud hub' || clean === 'google sheets hub') return 'sheets';
+
+  if (PATH_HEURISTICS[clean]) return clean;
+
+  // Substring match check
+  for (const key of Object.keys(PATH_HEURISTICS)) {
+    if (clean.includes(key)) return key;
+  }
+
+  return 'home';
+}
+
+/**
+ * Returns the heuristic configuration (greeting, suggested questions, title) for any path or page.
+ */
+export function getPathHeuristic(pathOrPage?: string): PathHeuristicConfig {
+  const key = resolvePathKey(pathOrPage);
+  return PATH_HEURISTICS[key] || PATH_HEURISTICS.home;
+}
+
+/**
+ * Returns suggested questions tailored to the current path.
+ */
+export function getSuggestedQuestionsForPath(pathOrPage?: string): string[] {
+  return getPathHeuristic(pathOrPage).suggestedQuestions;
 }
 
 export interface WhatsAppUrlResult {
@@ -134,14 +363,17 @@ export function formatWhatsAppMessage(context?: WhatsAppContext | LeadCaptureFor
     if (details) lines.push(`📝 *Project Details:* ${details}`);
 
     message = lines.join('\n');
-  } else if (ctx?.serviceName) {
-    message = `Hello MUCO Labs! 👋 I am visiting your website and would like a quote and details regarding *${ctx.serviceName}*. Could you please assist me?`;
-  } else if (ctx?.pageName === 'Pricing' && ctx?.projectBudget) {
-    message = `Hello MUCO Labs! 👋 I am looking for a project estimate around *${ctx.projectBudget}*. Could we discuss custom software options?`;
-  } else if (ctx?.pageName === 'Portfolio') {
-    message = `Hello MUCO Labs! 👋 I saw your live client portfolio and would like to build a similar high-performance platform for my business.`;
   } else if (ctx?.customMessage) {
     message = ctx.customMessage;
+  } else if (ctx?.serviceName) {
+    message = `Hello MUCO Labs! 👋 I am visiting your website and would like a quote and details regarding *${ctx.serviceName}*. Could you please assist me?`;
+  } else if ((ctx?.pageName?.toLowerCase().includes('pricing') || ctx?.path?.toLowerCase().includes('pricing')) && ctx?.projectBudget) {
+    message = `Hello MUCO Labs! 👋 I am looking for a project estimate around *${ctx.projectBudget}*. Could we discuss custom software options?`;
+  } else {
+    // Local URL path heuristic: dynamically resolves initial greeting based on path, pageName, or window location
+    const pathKey = ctx?.path || ctx?.pageName;
+    const heuristic = getPathHeuristic(pathKey);
+    message = heuristic.greeting;
   }
 
   return sanitizeUnicode(message.trim() || 'Hello MUCO Labs! 👋');
@@ -378,7 +610,7 @@ export function openWhatsApp(context?: WhatsAppContext | LeadCaptureFormData): W
     });
 
     notifyUser(
-      'Could not open WhatsApp link directly. Please contact us directly at +91 6381809844 or contact@mucolabs.com.',
+      'Could not open WhatsApp link directly. Please contact us directly at +91 6381809844 or contact@mucolabs.in.',
       'error',
       'Connection Error'
     );

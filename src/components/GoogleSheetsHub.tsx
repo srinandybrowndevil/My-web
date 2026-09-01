@@ -75,12 +75,12 @@ const APPS_SCRIPT_CODE = `function doPost(e) {
           "Regards,\\n\\n" +
           "MUCO Labs\\n" +
           "Innovation in Digital Technology\\n\\n" +
-          "Email:\\ncontact@mucolabs.com\\n\\n" +
-          "Website:\\nhttps://mucolabs.com";
+          "Email:\\ncontact@mucolabs.in\\n\\n" +
+          "Website:\\nhttps://mucolabs.in";
 
         GmailApp.sendEmail(email, autoReplySubject, autoReplyBody, {
           name: "MUCO Labs Team",
-          replyTo: "contact@mucolabs.com"
+          replyTo: "contact@mucolabs.in"
         });
       } catch (emailErr) {
         Logger.log("Auto reply notice: " + emailErr.toString());

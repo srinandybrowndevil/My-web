@@ -5,7 +5,7 @@ import { ALL_LOCATIONS } from '../data/locationsData';
 import { SERVICE_LOCATIONS_DATA } from '../data/serviceLocationsData';
 import { COURSES_DATA } from '../data/coursesData';
 
-export const DOMAIN = 'https://mucolabs.com';
+export const DOMAIN = 'https://mucolabs.in';
 
 // Executive leadership and key team profiles
 export const TEAM_MEMBERS_SITEMAP = [
@@ -279,7 +279,7 @@ ${urlNodes}
 export function generateRobotsTxt(): string {
   return `# ==============================================================================
 # MUCO Labs - Official Robots Exclusion Protocol & Crawler Directives
-# Canonical Host: https://mucolabs.com
+# Canonical Host: https://mucolabs.in
 # Founder & Chairman: Srinivash Mahalingam
 # Headquarters: Erode, Tamil Nadu, India - 638001
 # Focus: Custom Software, Web Development, Mobile Apps & AI Automation
@@ -324,7 +324,7 @@ Disallow: /
 User-agent: Claude-Web
 Disallow: /
 
-Sitemap: https://mucolabs.com/sitemap.xml
+Sitemap: https://mucolabs.in/sitemap.xml
 `;
 }
 

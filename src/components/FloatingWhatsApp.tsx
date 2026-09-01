@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Sparkles, Settings2, Check, Phone, Calendar, Activity, FileSpreadsheet, Zap } from 'lucide-react';
 import { PageId } from '../types';
-import { openWhatsApp, WHATSAPP_NUMBER } from '../utils/whatsapp';
+import { openWhatsApp, WHATSAPP_NUMBER, getPathHeuristic } from '../utils/whatsapp';
 import { logWhatsAppInquiryToGoogleSheets } from '../services/whatsAppSheetsLogger';
 import { useEngagementNudge } from '../hooks/useEngagementNudge';
 
@@ -84,27 +84,19 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
     }
   }, [showLabel]);
 
-  const getPageTitle = (page: PageId) => {
-    switch (page) {
-      case 'services': return 'Software Services';
-      case 'pricing': return 'Pricing & Estimates';
-      case 'portfolio': return 'Client Portfolio';
-      case 'about': return 'About MUCO Labs';
-      case 'contact': return 'Contact & Proposals';
-      case 'blog': return 'Blog & Tech Articles';
-      case 'apps': return 'App Studio & Publishing';
-      case 'maintenance': return 'Cloud & AMC Maintenance';
-      default: return 'General Inquiries';
-    }
-  };
+  const heuristic = getPathHeuristic(currentPage);
+  const pageTitle = heuristic.pageTitle;
+  const suggestedTemplates = heuristic.suggestedQuestions;
 
-  const pageTitle = getPageTitle(currentPage);
-
-  const handleQuickSend = (serviceName?: string) => {
+  const handleQuickSend = (serviceOrQuestion?: string) => {
     openWhatsApp({
       pageName: pageTitle,
-      serviceName: serviceName,
-      customMessage: customText.trim() ? customText : undefined
+      path: currentPage,
+      customMessage: customText.trim()
+        ? customText
+        : serviceOrQuestion
+        ? `Hello MUCO Labs! 👋 Regarding ${pageTitle}: I would like to ask about "${serviceOrQuestion}".`
+        : undefined
     });
     setIsOpen(false);
     setCustomText('');
@@ -379,22 +371,17 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                   {/* Quick Templates */}
                   <div className="space-y-2">
                     <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">
-                      Quick Inquiry Templates:
+                      Suggested Questions for {pageTitle}:
                     </p>
                     <div className="grid grid-cols-1 gap-1.5">
-                      {[
-                        `Website Development Inquiry`,
-                        `Mobile App Development Quote`,
-                        `AI Chatbot & Automation Demo`,
-                        `Cloud Service Management / AMC`
-                      ].map((template) => (
+                      {suggestedTemplates.map((template) => (
                         <button
                           key={template}
                           onClick={() => handleQuickSend(template)}
                           className="text-left text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 bg-slate-50 dark:bg-slate-800/60 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500/40 transition-all flex items-center justify-between group"
                         >
-                          <span>{template}</span>
-                          <Send className="w-3 h-3 text-slate-400 group-hover:text-emerald-500 transition-colors" />
+                          <span className="truncate pr-2">{template}</span>
+                          <Send className="w-3 h-3 text-slate-400 group-hover:text-emerald-500 transition-colors shrink-0" />
                         </button>
                       ))}
                     </div>

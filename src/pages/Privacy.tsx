@@ -124,7 +124,7 @@ export const Privacy: React.FC<PrivacyProps> = ({ onNavigate }) => {
               <div className="text-slate-400">Organization: MUCO Labs Private Limited</div>
               <div className="flex items-center gap-2 text-slate-300">
                 <Mail className="w-3.5 h-3.5 text-orange-400" />
-                <span>privacy@mucolabs.com / contact@mucolabs.com</span>
+                <span>privacy@mucolabs.in / contact@mucolabs.in</span>
               </div>
               <div className="flex items-center gap-2 text-slate-300">
                 <Phone className="w-3.5 h-3.5 text-orange-400" />

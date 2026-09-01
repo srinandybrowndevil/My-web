@@ -528,7 +528,7 @@ export const OgImageStudio: React.FC = () => {
                     />
                   )}
                   <div className="p-3 bg-slate-950">
-                    <span className="text-[10px] uppercase font-bold text-slate-500 font-mono block">mucolabs.com</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 font-mono block">mucolabs.in</span>
                     <h5 className="text-xs font-bold text-slate-100 line-clamp-1">{title}</h5>
                     <p className="text-[11px] text-slate-400 line-clamp-1">{subtitle}</p>
                   </div>
@@ -560,7 +560,7 @@ export const OgImageStudio: React.FC = () => {
                     />
                   )}
                   <div className="p-3 bg-slate-900 border-t border-slate-800">
-                    <span className="text-[10px] text-slate-400 uppercase font-mono">MUCOLABS.COM</span>
+                    <span className="text-[10px] text-slate-400 uppercase font-mono">MUCOLABS.IN</span>
                     <h5 className="text-xs font-bold text-white line-clamp-1">{title}</h5>
                   </div>
                 </div>
@@ -581,7 +581,7 @@ export const OgImageStudio: React.FC = () => {
                   <div>
                     <h5 className="text-xs font-bold text-white">{title}</h5>
                     <p className="text-[11px] text-slate-300 line-clamp-2">{subtitle}</p>
-                    <span className="text-[10px] text-emerald-300 font-mono block mt-1">mucolabs.com</span>
+                    <span className="text-[10px] text-emerald-300 font-mono block mt-1">mucolabs.in</span>
                   </div>
                 </div>
                 <span className="text-[10px] text-slate-500 block text-right font-mono">19:59 ✓✓</span>
