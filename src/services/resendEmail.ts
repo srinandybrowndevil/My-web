@@ -1,4 +1,5 @@
 import { ContactFormData } from '../types';
+import { adminHeaders } from '../utils/adminClient';
 
 export interface EmailStatus {
   configured: boolean;
@@ -16,12 +17,9 @@ export interface EmailSendResult {
   warning?: string;
 }
 
-/**
- * Checks Resend configuration status on the backend
- */
 export async function getResendStatus(): Promise<EmailStatus> {
   try {
-    const res = await fetch('/api/email/status');
+    const res = await fetch('/api/email/status', { headers: await adminHeaders() });
     if (!res.ok) throw new Error('Failed to fetch status');
     return await res.json();
   } catch {
@@ -34,22 +32,16 @@ export async function getResendStatus(): Promise<EmailStatus> {
   }
 }
 
-/**
- * Sends a contact / proposal inquiry to MUCO Labs via the Resend API backend
- */
 export async function sendInquiryEmail(formData: ContactFormData): Promise<EmailSendResult> {
   try {
     const res = await fetch('/api/send-email', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
     });
 
     const data = await res.json();
-
-    if (!res.ok && !data.success) {
+    if (!res.ok || data.success === false) {
       return {
         success: false,
         status: res.status,
@@ -60,33 +52,27 @@ export async function sendInquiryEmail(formData: ContactFormData): Promise<Email
 
     return {
       success: true,
-      status: 200,
+      status: res.status,
       text: data.message || 'Inquiry successfully processed by MUCO Labs.',
       isSimulated: Boolean(data.isSimulated),
       data: data.data,
       warning: data.warning
     };
   } catch (err: unknown) {
-    console.warn('[Resend API Call Warning - Local Fallback]', err);
     return {
-      success: true,
-      status: 200,
-      text: 'Inquiry saved locally. (Backend server unreachable)',
-      isSimulated: true
+      success: false,
+      status: 500,
+      text: 'Unable to reach the inquiry server. Please try again or use WhatsApp.',
+      isSimulated: false
     };
   }
 }
 
-/**
- * Triggers a test email via the Resend backend
- */
 export async function sendTestEmail(toEmail?: string): Promise<EmailSendResult> {
   try {
     const res = await fetch('/api/email/test', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: await adminHeaders(),
       body: JSON.stringify({ toEmail })
     });
 
