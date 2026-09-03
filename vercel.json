@@ -1,5 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "redirects": [
     {
@@ -69,6 +71,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index"
+    },
     {
       "source": "/((?!assets/|images/|sitemap\\.xml|robots\\.txt|favicon\\.ico|site\\.webmanifest|api/|.*\\..*).*)",
       "destination": "/index.html"
