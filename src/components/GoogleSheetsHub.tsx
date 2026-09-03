@@ -76,7 +76,7 @@ const APPS_SCRIPT_CODE = `function doPost(e) {
           "MUCO Labs\\n" +
           "Innovation in Digital Technology\\n\\n" +
           "Email:\\ncontact@mucolabs.in\\n\\n" +
-          "Website:\\nhttps://mucolabs.in";
+          "Website:\\nhttps://mucolabs.com";
 
         GmailApp.sendEmail(email, autoReplySubject, autoReplyBody, {
           name: "MUCO Labs Team",

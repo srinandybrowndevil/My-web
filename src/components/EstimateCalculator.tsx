@@ -216,7 +216,7 @@ export const EstimateCalculator: React.FC<EstimateCalculatorProps> = ({ onNaviga
 
         <div class="footer">
           This estimate is for planning purposes based on client requirements. Official SLA and scope document will be provided upon onboarding.<br/>
-          <strong>MUCO Labs</strong> &bull; contact@mucolabs.in &bull; mucolabs.in
+          <strong>MUCO Labs</strong> &bull; contact@mucolabs.in &bull; mucolabs.com
         </div>
         <script>
           window.onload = function() { window.print(); }

@@ -32,7 +32,7 @@ export function injectJsonLdSchema(schemas: Record<string, unknown> | Array<Reco
  * Core Organization Schema for MUCO Labs
  */
 export function getOrganizationSchema() {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
 
   return {
     '@context': 'https://schema.org',
@@ -80,7 +80,7 @@ export function getOrganizationSchema() {
  * Generates verified LocalBusiness schema for a target location
  */
 export function getLocationSchema(location: LocationData): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
   const orgSchema = getOrganizationSchema();
 
   const localBusinessSchema = {
@@ -186,7 +186,7 @@ export function getLocationSchema(location: LocationData): Array<Record<string, 
  * Generates verified Service-Location Combination schema
  */
 export function getServiceLocationSchema(combo: ServiceLocationCombo): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
   const orgSchema = getOrganizationSchema();
 
   const serviceSchema = {
@@ -254,7 +254,7 @@ export function getServiceLocationSchema(combo: ServiceLocationCombo): Array<Rec
  * BreadcrumbList Schema for navigation context
  */
 export function getBreadcrumbSchema(page: PageId, pageTitle: string) {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
 
   return {
     '@context': 'https://schema.org',
@@ -280,7 +280,7 @@ export function getBreadcrumbSchema(page: PageId, pageTitle: string) {
  * Generates page-specific JSON-LD schemas
  */
 export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
   const orgSchema = getOrganizationSchema();
 
   const schemas: Array<Record<string, unknown>> = [orgSchema];
@@ -542,7 +542,7 @@ export function getPageSchemaMarkup(page: PageId): Array<Record<string, unknown>
  * Generates Person schema markup for team member inspection
  */
 export function getMemberSchemaMarkup(member: TeamMember): Array<Record<string, unknown>> {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.in';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
   const orgSchema = getOrganizationSchema();
 
   const personSchema = {

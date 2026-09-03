@@ -102,7 +102,7 @@ function generateBrandedHtmlEmail(data: {
     <div class="message-box">${data.message}</div>
 
     <div class="footer">
-      Official Dispatch via <strong>Resend API</strong> &bull; <a href="https://mucolabs.in">mucolabs.in</a><br>
+      Official Dispatch via <strong>Resend API</strong> &bull; <a href="https://mucolabs.com">mucolabs.com</a><br>
       Founder Srinivash Mahalingam &bull; Direct Phone: +91 63818 09844<br>
       MUCO Labs, Erode, Tamil Nadu, India
     </div>
@@ -140,7 +140,7 @@ function generateClientAutoReplyHtml(name: string, serviceCategory: string) {
     <p class="text" style="margin-top: 20px;">
       Warm regards,<br>
       <strong>MUCO Labs Team</strong><br>
-      Erode, Tamil Nadu, India | <a href="https://mucolabs.in" style="color: #ea580c;">mucolabs.in</a>
+      Erode, Tamil Nadu, India | <a href="https://mucolabs.com" style="color: #ea580c;">mucolabs.com</a>
     </p>
 
     <div class="footer">
@@ -158,11 +158,12 @@ async function startServer() {
   // Enable Gzip/Brotli HTTP compression for optimal network speed
   app.use(compression());
 
-  // Canonical host enforcement: 301 redirect www.mucolabs.in to https://mucolabs.in
+  // Canonical host enforcement for local/Express deployments.
   app.use((req, res, next) => {
-    const host = req.headers.host || '';
-    if (host.startsWith('www.mucolabs.in')) {
-      return res.redirect(301, `https://mucolabs.in${req.originalUrl}`);
+    const host = (req.headers.host || '').split(':')[0].toLowerCase();
+    const legacyHosts = new Set(['www.mucolabs.com', 'mucolabs.in', 'www.mucolabs.in']);
+    if (legacyHosts.has(host)) {
+      return res.redirect(301, `https://mucolabs.com${req.originalUrl}`);
     }
     next();
   });

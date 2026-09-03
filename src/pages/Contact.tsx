@@ -266,7 +266,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
 
                 {/* Website */}
                 <a
-                  href="https://mucolabs.in"
+                  href="https://mucolabs.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-slate-800/70 border border-slate-700/80 hover:border-blue-500 transition-all group"
@@ -277,7 +277,7 @@ export const Contact: React.FC<ContactProps> = ({ initialMessage = '', onNavigat
                   <div>
                     <span className="text-[10px] text-slate-400 uppercase font-semibold block">Website</span>
                     <span className="text-sm font-extrabold text-white group-hover:text-blue-400 transition-colors">
-                      mucolabs.in
+                      mucolabs.com
                     </span>
                   </div>
                 </a>

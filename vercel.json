@@ -7,10 +7,32 @@
       "has": [
         {
           "type": "host",
+          "value": "www.mucolabs.com"
+        }
+      ],
+      "destination": "https://mucolabs.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mucolabs.in"
+        }
+      ],
+      "destination": "https://mucolabs.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
           "value": "www.mucolabs.in"
         }
       ],
-      "destination": "https://mucolabs.in/:path*",
+      "destination": "https://mucolabs.com/:path*",
       "permanent": true
     }
   ],

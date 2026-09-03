@@ -528,7 +528,7 @@ export const OgImageStudio: React.FC = () => {
                     />
                   )}
                   <div className="p-3 bg-slate-950">
-                    <span className="text-[10px] uppercase font-bold text-slate-500 font-mono block">mucolabs.in</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-500 font-mono block">mucolabs.com</span>
                     <h5 className="text-xs font-bold text-slate-100 line-clamp-1">{title}</h5>
                     <p className="text-[11px] text-slate-400 line-clamp-1">{subtitle}</p>
                   </div>
@@ -581,7 +581,7 @@ export const OgImageStudio: React.FC = () => {
                   <div>
                     <h5 className="text-xs font-bold text-white">{title}</h5>
                     <p className="text-[11px] text-slate-300 line-clamp-2">{subtitle}</p>
-                    <span className="text-[10px] text-emerald-300 font-mono block mt-1">mucolabs.in</span>
+                    <span className="text-[10px] text-emerald-300 font-mono block mt-1">mucolabs.com</span>
                   </div>
                 </div>
                 <span className="text-[10px] text-slate-500 block text-right font-mono">19:59 ✓✓</span>

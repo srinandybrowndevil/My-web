@@ -180,13 +180,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </a>
 
               <a
-                href="https://mucolabs.in"
+                href="https://mucolabs.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 text-slate-300 hover:text-orange-400 transition-colors"
               >
                 <Globe className="w-4 h-4 text-orange-400 shrink-0" />
-                <span className="font-medium">mucolabs.in</span>
+                <span className="font-medium">mucolabs.com</span>
                 <ArrowUpRight className="w-3 h-3 text-slate-500" />
               </a>
 

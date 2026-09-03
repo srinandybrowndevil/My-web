@@ -79,7 +79,7 @@ function doPost(e) {
           "MUCO Labs\n" +
           "Innovation in Digital Technology\n\n" +
           "Email: mucolabs2026@gmail.com\n" +
-          "Website: https://mucolabs.in";
+          "Website: https://mucolabs.com";
 
         GmailApp.sendEmail(email, autoReplySubject, autoReplyBody, {
           name: "MUCO Labs Team",
