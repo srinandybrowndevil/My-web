@@ -188,15 +188,35 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className={`w-10 h-10 rounded-2xl ${currentTheme.bg} text-white flex items-center justify-center font-black text-sm shadow-md`}>
+                  <motion.div
+                    key={`avatar-${theme}`}
+                    initial={{ scale: 0.85, opacity: 0.7 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: 'spring', stiffness: 450, damping: 22 }}
+                    className={`w-10 h-10 rounded-2xl ${currentTheme.bg} text-white flex items-center justify-center font-black text-sm shadow-md transition-colors duration-300`}
+                  >
                     <MessageCircle className="w-5 h-5 fill-current" />
-                  </div>
-                  <span className={`absolute bottom-0 right-0 w-3 h-3 ${currentTheme.badge} border-2 border-white dark:border-slate-900 rounded-full animate-pulse`} />
+                  </motion.div>
+                  <motion.span
+                    key={`badge-${theme}`}
+                    initial={{ scale: 0.5 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                    className={`absolute bottom-0 right-0 w-3 h-3 ${currentTheme.badge} border-2 border-white dark:border-slate-900 rounded-full animate-pulse`}
+                  />
                 </div>
                 <div>
                   <h3 className="text-xs font-black text-slate-900 dark:text-white flex items-center gap-1.5">
                     <span>MUCO Labs WhatsApp</span>
-                    <span className={`text-[10px] bg-slate-100 dark:bg-slate-800 ${currentTheme.text} font-bold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700`}>Online</span>
+                    <motion.span
+                      key={`online-${theme}`}
+                      initial={{ scale: 0.9, opacity: 0.7 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.2 }}
+                      className={`text-[10px] bg-slate-100 dark:bg-slate-800 ${currentTheme.text} font-bold px-2 py-0.5 rounded-full border border-slate-200 dark:border-slate-700 transition-colors duration-300`}
+                    >
+                      Online
+                    </motion.span>
                   </h3>
                   <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
                     Instant Support • Founder Srinivash M.
@@ -270,18 +290,38 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                       {AVAILABLE_THEMES.map((t) => {
                         const isSelected = theme === t.id;
                         return (
-                          <button
+                          <motion.button
                             key={t.id}
                             type="button"
+                            layout
+                            whileHover={{ scale: 1.015 }}
+                            whileTap={{ scale: 0.985 }}
                             onClick={() => setTheme(t.id)}
-                            className={`p-2 rounded-xl text-left transition-all border flex items-center justify-between group ${
-                              isSelected
-                                ? 'bg-white dark:bg-slate-900 border-slate-900 dark:border-white shadow-md ring-1 ring-slate-900/10 dark:ring-white/20'
-                                : 'bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-slate-300'
-                            }`}
+                            className="relative p-2 rounded-xl text-left border flex items-center justify-between group overflow-hidden border-slate-200 dark:border-slate-700/80"
                           >
-                            <div className="flex items-center gap-2">
-                              <span className={`w-3.5 h-3.5 rounded-full ${t.dotColor} shrink-0 shadow-sm ${isSelected ? 'ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-600' : ''}`} />
+                            {/* Smooth layout indicator moving between options */}
+                            {isSelected ? (
+                              <motion.div
+                                layoutId="activeThemeHighlight"
+                                className="absolute inset-0 rounded-xl bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-md shadow-slate-950/10 dark:shadow-cyan-500/15 z-0"
+                                transition={{
+                                  type: 'spring',
+                                  stiffness: 450,
+                                  damping: 32
+                                }}
+                              />
+                            ) : (
+                              <div className="absolute inset-0 bg-slate-100/80 dark:bg-slate-800/60 group-hover:bg-white dark:group-hover:bg-slate-800 transition-colors z-0" />
+                            )}
+
+                            <div className="relative z-10 flex items-center gap-2">
+                              <motion.span
+                                animate={isSelected ? { scale: [1, 1.25, 1] } : { scale: 1 }}
+                                transition={{ duration: 0.28, ease: 'easeInOut' }}
+                                className={`w-3.5 h-3.5 rounded-full ${t.dotColor} shrink-0 shadow-sm ${
+                                  isSelected ? 'ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-500' : ''
+                                }`}
+                              />
                               <div>
                                 <div className="text-[11px] font-bold text-slate-900 dark:text-white leading-tight">
                                   {t.name}
@@ -291,27 +331,70 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({ currentPage 
                                 </div>
                               </div>
                             </div>
-                            {isSelected ? (
-                              <span className="p-0.5 rounded-full bg-emerald-500 text-white shadow-sm shrink-0">
-                                <Check className="w-2.5 h-2.5 stroke-[3]" />
-                              </span>
-                            ) : (
-                              <span className="w-2.5 h-2.5 rounded-full border border-slate-300 dark:border-slate-600 group-hover:border-slate-400 shrink-0" />
-                            )}
-                          </button>
+
+                            <div className="relative z-10 flex items-center">
+                              <AnimatePresence mode="wait">
+                                {isSelected ? (
+                                  <motion.span
+                                    key="selected-check"
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0, opacity: 0 }}
+                                    transition={{ type: 'spring', stiffness: 520, damping: 26 }}
+                                    className="p-0.5 rounded-full bg-emerald-500 text-white shadow-sm shrink-0"
+                                  >
+                                    <Check className="w-2.5 h-2.5 stroke-[3]" />
+                                  </motion.span>
+                                ) : (
+                                  <motion.span
+                                    key="unselected-dot"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    className="w-2.5 h-2.5 rounded-full border border-slate-300 dark:border-slate-600 group-hover:border-slate-400 shrink-0"
+                                  />
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          </motion.button>
                         );
                       })}
                     </div>
 
-                    {/* Live Preview Indicator */}
-                    <div className={`p-2 rounded-xl border ${currentTheme.border} ${currentTheme.accentBg} flex items-center justify-between transition-colors`}>
-                      <span className="text-[10px] text-slate-600 dark:text-slate-300 font-medium">
-                        Active Live Preview:
-                      </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${currentTheme.badge} text-slate-950 capitalize shadow-sm`}>
-                        {theme} Theme Active
-                      </span>
-                    </div>
+                    {/* Live Preview Indicator with smooth layout animation */}
+                    <motion.div
+                      layout
+                      transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+                      className={`p-2.5 rounded-xl border ${currentTheme.border} ${currentTheme.accentBg} flex items-center justify-between transition-colors duration-300 shadow-sm`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <motion.div
+                          key={`mini-${theme}`}
+                          initial={{ scale: 0.6, rotate: -12, opacity: 0 }}
+                          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                          transition={{ type: 'spring', stiffness: 450, damping: 22 }}
+                          className={`w-6 h-6 rounded-lg ${currentTheme.bg} text-white flex items-center justify-center shadow-md`}
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 fill-current" />
+                        </motion.div>
+                        <span className="text-[10px] text-slate-700 dark:text-slate-300 font-semibold">
+                          Active Visual Feedback
+                        </span>
+                      </div>
+
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={`badge-text-${theme}`}
+                          initial={{ opacity: 0, y: 5, scale: 0.88 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -5, scale: 0.88 }}
+                          transition={{ type: 'spring', stiffness: 480, damping: 26 }}
+                          className={`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${currentTheme.badge} text-slate-950 capitalize shadow-sm border border-black/10`}
+                        >
+                          {theme} Theme Active
+                        </motion.span>
+                      </AnimatePresence>
+                    </motion.div>
                   </div>
 
                   {/* Label Toggle */}
