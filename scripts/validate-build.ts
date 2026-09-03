@@ -55,7 +55,7 @@ function validateDependencies() {
 
 function validateTypeScript() {
   try {
-    execSync('npx tsc --noEmit', { stdio: 'pipe' });
+    execSync('npm run lint', { stdio: 'pipe' });
     addCheck('TypeScript', 'pass', 'No TypeScript errors found');
   } catch (error) {
     addCheck('TypeScript', 'fail', 'TypeScript compilation failed');

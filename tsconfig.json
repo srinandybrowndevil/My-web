@@ -24,5 +24,18 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "ignoreDeprecations": "5.0"
-  }
+  },
+  "include": [
+    "src",
+    "scripts",
+    "api",
+    "server.ts",
+    "server-firebase.ts",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".vercel"
+  ]
 }
