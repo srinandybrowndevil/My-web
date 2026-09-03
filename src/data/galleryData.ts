@@ -1,4 +1,4 @@
-import founderPortrait from '../assets/images/srinivashni.png';
+import founderPortrait from '../assets/images/srinivashni.webp';
 import vinothPortrait from '../assets/images/vinotom.webp';
 import chandruPortrait from '../assets/images/chandru.webp';
 import marimuthuPortrait from '../assets/images/marimuthuapk.webp';
