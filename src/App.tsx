@@ -134,22 +134,52 @@ export default function App() {
       'privacy'
     ];
 
-    // Check hash first (e.g. #services, #locations)
+    const pageAliases: Record<string, PageId> = {
+      calculator: 'pricing',
+      estimate: 'pricing',
+      quote: 'pricing',
+      ai: 'systems',
+      intelligence: 'systems',
+      automation: 'systems',
+      academy: 'courses',
+      learn: 'courses',
+      bootcamp: 'courses',
+      'case-studies': 'portfolio',
+      projects: 'portfolio',
+      amc: 'maintenance',
+      cloud: 'maintenance',
+      hub: 'sheets',
+      team: 'gallery',
+      leadership: 'gallery',
+      'terms-and-conditions': 'terms',
+      'privacy-policy': 'privacy',
+      '404': 'notfound'
+    };
+
+    // Check hash first (e.g. #services, #locations, #calculator)
     const hash = window.location.hash;
     if (hash) {
       const rawHash = hash.replace(/^#\/?/, '').split('?')[0].split('/')[0].toLowerCase();
       if (validPages.includes(rawHash as PageId)) {
         return rawHash as PageId;
       }
+      if (pageAliases[rawHash]) {
+        return pageAliases[rawHash];
+      }
     }
 
-    // Check pathname (e.g. /services, /locations, /courses)
+    // Check pathname (e.g. /services, /locations, /courses, /estimate)
     const pathname = window.location.pathname;
     if (pathname && pathname !== '/') {
       const rawPath = pathname.replace(/^\/+/, '').split('/')[0].toLowerCase();
       if (validPages.includes(rawPath as PageId)) {
         return rawPath as PageId;
       }
+      if (pageAliases[rawPath]) {
+        return pageAliases[rawPath];
+      }
+      // If path is specified but does not match any route, route to 404
+      return 'notfound';
     }
 
     return null;

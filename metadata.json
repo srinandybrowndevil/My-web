@@ -1,6 +1,6 @@
 {
   "name": "MUCO Labs",
-  "description": "MUCO AI Studio — Intelligent Digital Systems, AI Products, Autonomous Workflows, Enterprise Web & Mobile Platforms.",
+  "description": "MUCO Labs engineers custom software applications, web & mobile platforms, autonomous AI agents, and business automation for forward-thinking enterprises.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

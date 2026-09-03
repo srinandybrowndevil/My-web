@@ -292,8 +292,6 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /sheets
 Disallow: /sheets/
-Disallow: /*?
-Disallow: /*#?
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
