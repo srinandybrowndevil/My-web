@@ -514,7 +514,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
 
   // Generate Schema.org BreadcrumbList JSON-LD
   const breadcrumbSchema = useMemo(() => {
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mucolabs.com';
+    const origin = 'https://mucolabs.com';
     return {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',

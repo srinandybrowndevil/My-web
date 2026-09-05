@@ -1158,12 +1158,12 @@ export const About: React.FC<AboutProps> = ({ onNavigate }) => {
                   <div className="relative rounded-2xl overflow-hidden border border-amber-500/30 bg-slate-950 shadow-2xl">
                     {/* Portrait Image */}
                     <div className="relative h-96 sm:h-[420px] w-full overflow-hidden bg-slate-950">
-                      <Image
+                      <img
                         src={FOUNDER_INFO.image}
                         alt="Srinivash Mahalingam, Founder of MUCO Labs"
-                        priority={true}
-                        fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
                         className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        loading="eager"
+                        referrerPolicy="no-referrer"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
                       

@@ -253,13 +253,35 @@ export const PAGE_METADATA: Record<PageId, PageMetadata> = {
   }
 };
 
+export const PRODUCTION_CANONICAL_DOMAIN = 'https://mucolabs.com';
+
+/**
+ * Enforces strict crawler de-indexing directives on non-production and preview domains (like *.ai.studio)
+ * while preserving full search engine indexation on the canonical domain (mucolabs.com).
+ */
+export function enforceHostRobotsPolicy() {
+  if (typeof document === 'undefined') return;
+  const host = (window.location.hostname || '').toLowerCase();
+  const isOfficial = host === 'mucolabs.com' || host === 'www.mucolabs.com';
+
+  if (!isOfficial || host.includes('ai.studio') || host.includes('run.app')) {
+    setMetaTag('name', 'robots', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
+    setMetaTag('name', 'googlebot', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
+    setMetaTag('name', 'googlebot-news', 'noindex, nofollow');
+    setMetaTag('name', 'bingbot', 'noindex, nofollow, noarchive, nosnippet');
+  } else {
+    setMetaTag('name', 'robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+    setMetaTag('name', 'googlebot', 'index, follow');
+  }
+}
+
 /**
  * Dynamically generate and apply full Open Graph and Twitter Card social sharing meta tags for any page
  */
 export function updatePageSEO(page: PageId) {
   const metadata = PAGE_METADATA[page] || PAGE_METADATA.home;
   const canonicalPath = page === 'home' ? '/' : `/${page}`;
-  const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}${canonicalPath}` : `https://mucolabs.com${canonicalPath}`;
+  const canonicalUrl = `${PRODUCTION_CANONICAL_DOMAIN}${canonicalPath}`;
   const ogImage = metadata.ogImage;
   const ogImageAlt = metadata.ogImageAlt || `${metadata.title} - MUCO Labs`;
   const ogType = metadata.ogType || 'website';
@@ -278,7 +300,7 @@ export function updatePageSEO(page: PageId) {
   setMetaTag('property', 'og:title', metadata.title);
   setMetaTag('property', 'og:description', metadata.description);
   setMetaTag('property', 'og:type', ogType);
-  setMetaTag('property', 'og:url', currentUrl);
+  setMetaTag('property', 'og:url', canonicalUrl);
   setMetaTag('property', 'og:image', ogImage);
   setMetaTag('property', 'og:image:secure_url', ogImage);
   setMetaTag('property', 'og:image:type', 'image/jpeg');
@@ -296,8 +318,11 @@ export function updatePageSEO(page: PageId) {
   setMetaTag('name', 'twitter:image', ogImage);
   setMetaTag('name', 'twitter:image:alt', ogImageAlt);
 
-  // Set Canonical Link
-  setCanonicalUrl(currentUrl);
+  // Set Canonical Link strictly to production mucolabs.com
+  setCanonicalUrl(canonicalUrl);
+
+  // Enforce noindex if running on preview/staging/ai.studio domains
+  enforceHostRobotsPolicy();
 
   // Inject Page JSON-LD Structured Schema Markup
   try {
@@ -330,9 +355,7 @@ export function formatSeoTitle(primary: string, brand: string = 'MUCO Labs', max
 export function updateLocationSEO(location: LocationData) {
   const locTitle = formatSeoTitle(location.headline, `MUCO Labs ${location.name}`, 60);
   const locDesc = location.overview;
-  const locUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/locations?city=${location.id}` 
-    : `https://mucolabs.com/locations?city=${location.id}`;
+  const locUrl = `${PRODUCTION_CANONICAL_DOMAIN}/locations?city=${location.id}`;
   const locKeywords = `software company in ${location.name}, website development ${location.name}, web design ${location.name}, mobile app development ${location.name}, SEO company ${location.name}, ERP software ${location.name}, AI development ${location.name}, ${location.district} software agency`;
 
   document.title = locTitle;
@@ -366,6 +389,7 @@ export function updateLocationSEO(location: LocationData) {
   setMetaTag('name', 'twitter:image', location.heroImage);
 
   setCanonicalUrl(locUrl);
+  enforceHostRobotsPolicy();
 
   // Generate and inject dynamic customized Canvas Open Graph Card
   generateLocationOgImage(location)
@@ -390,9 +414,7 @@ export function updateLocationSEO(location: LocationData) {
  * Dynamically update SEO and Schema for a high-intent Service x Location combination
  */
 export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
-  const pageUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/locations?combo=${combo.id}`
-    : `https://mucolabs.com/locations?combo=${combo.id}`;
+  const pageUrl = `${PRODUCTION_CANONICAL_DOMAIN}/locations?combo=${combo.id}`;
   const keywords = `${combo.serviceName} in ${combo.locationName}, ${combo.serviceName} company ${combo.locationName}, best ${combo.serviceName} in ${combo.locationName}, ${combo.targetIndustries.join(', ')}`;
   const comboTitle = combo.seoTitle.length > 60 ? formatSeoTitle(combo.serviceName, `MUCO Labs ${combo.locationName}`, 60) : combo.seoTitle;
 
@@ -422,6 +444,7 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
   setMetaTag('name', 'twitter:description', combo.metaDescription);
 
   setCanonicalUrl(pageUrl);
+  enforceHostRobotsPolicy();
 
   // Generate and inject dynamic customized Canvas Open Graph Card for this Service x Location combo
   generateServiceLocationOgImage(combo)
@@ -448,9 +471,7 @@ export function updateServiceLocationSEO(combo: ServiceLocationCombo) {
 export function updateMemberSEO(member: TeamMember) {
   const memberTitle = formatSeoTitle(`${member.name} - ${member.titleRole}`, 'MUCO Labs', 60);
   const memberDesc = `${member.name} serves as ${member.titleRole} (${member.affiliation}) at MUCO Labs. Discover leadership insights, responsibilities, and professional background.`;
-  const profileUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/gallery?member=${encodeURIComponent(member.id)}` 
-    : `https://mucolabs.com/gallery?member=${member.id}`;
+  const profileUrl = `${PRODUCTION_CANONICAL_DOMAIN}/gallery?member=${encodeURIComponent(member.id)}`;
   const memberImage = member.image;
   const imageAlt = `${member.name} - ${member.titleRole} at MUCO Labs`;
 
@@ -495,6 +516,7 @@ export function updateMemberSEO(member: TeamMember) {
   setMetaTag('name', 'twitter:image:alt', imageAlt);
 
   setCanonicalUrl(profileUrl);
+  enforceHostRobotsPolicy();
 
   // Inject Team Member JSON-LD Structured Schema Markup
   try {
@@ -511,9 +533,7 @@ export function updateMemberSEO(member: TeamMember) {
 export function updateBlogPostSEO(post: BlogPost) {
   const postTitle = formatSeoTitle(post.title, 'MUCO Labs Blog', 60);
   const postDesc = post.excerpt;
-  const postUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/blog?post=${encodeURIComponent(post.slug)}`
-    : `https://mucolabs.com/blog?post=${post.slug}`;
+  const postUrl = `${PRODUCTION_CANONICAL_DOMAIN}/blog?post=${encodeURIComponent(post.slug)}`;
   const postImage = post.image;
   const imageAlt = `${post.title} - Article by ${post.author.name}`;
 
@@ -553,6 +573,7 @@ export function updateBlogPostSEO(post: BlogPost) {
   setMetaTag('name', 'twitter:image:alt', imageAlt);
 
   setCanonicalUrl(postUrl);
+  enforceHostRobotsPolicy();
 
   // Generate and inject dynamic customized Canvas Open Graph Card
   generateBlogPostOgImage(post)
@@ -574,9 +595,7 @@ export function updateServiceSEO(service: DetailedService) {
   const serviceDesc = service.description.length > 155 
     ? `${service.description.slice(0, 155)}...` 
     : service.description;
-  const serviceUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/services?id=${encodeURIComponent(service.id)}`
-    : `https://mucolabs.com/services?id=${service.id}`;
+  const serviceUrl = `${PRODUCTION_CANONICAL_DOMAIN}/services?id=${encodeURIComponent(service.id)}`;
   const keywords = `${service.title}, ${service.technologies.join(', ')}, software development Erode, MUCO Labs ${service.title}`;
 
   document.title = serviceTitle;
@@ -599,6 +618,7 @@ export function updateServiceSEO(service: DetailedService) {
   setMetaTag('name', 'twitter:image', 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=1200&h=630&q=85');
 
   setCanonicalUrl(serviceUrl);
+  enforceHostRobotsPolicy();
 
   // Generate and inject dynamic customized Canvas Open Graph Card
   generateServiceOgImage(service)
@@ -618,9 +638,7 @@ export function updateServiceSEO(service: DetailedService) {
 export function updateCourseSEO(course: CourseItem) {
   const courseTitle = formatSeoTitle(course.title, 'MUCO Labs Bootcamp', 60);
   const courseDesc = course.description;
-  const courseUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/courses?id=${encodeURIComponent(course.id)}`
-    : `https://mucolabs.com/courses?id=${course.id}`;
+  const courseUrl = `${PRODUCTION_CANONICAL_DOMAIN}/courses?id=${encodeURIComponent(course.id)}`;
   const keywords = `${course.title}, ${course.technologies.join(', ')}, ${course.category}, Way2Me Academy, Yogaharikaran, tech training Tamil Nadu`;
 
   document.title = courseTitle;
@@ -641,6 +659,7 @@ export function updateCourseSEO(course: CourseItem) {
   setMetaTag('name', 'twitter:description', courseDesc);
 
   setCanonicalUrl(courseUrl);
+  enforceHostRobotsPolicy();
 
   // Generate and inject dynamic customized Canvas Open Graph Card
   generateCourseOgImage(course)
@@ -660,9 +679,7 @@ export function updateCourseSEO(course: CourseItem) {
 export function updateProjectSEO(project: ProjectItem) {
   const projTitle = formatSeoTitle(project.title, 'MUCO Labs Portfolio', 60);
   const projDesc = project.description;
-  const projUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/portfolio?id=${encodeURIComponent(project.id)}`
-    : `https://mucolabs.com/portfolio?id=${project.id}`;
+  const projUrl = `${PRODUCTION_CANONICAL_DOMAIN}/portfolio?id=${encodeURIComponent(project.id)}`;
 
   document.title = projTitle;
 
@@ -682,6 +699,7 @@ export function updateProjectSEO(project: ProjectItem) {
   setMetaTag('name', 'twitter:description', projDesc);
 
   setCanonicalUrl(projUrl);
+  enforceHostRobotsPolicy();
 
   // Generate and inject dynamic customized Canvas Open Graph Card
   generateProjectOgImage(project)

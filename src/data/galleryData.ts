@@ -171,7 +171,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     title: 'Founder & Engineering Architectural Session',
     category: 'Engineering Lab',
     description: 'Founder & Chairman Srinivash Mahalingam leading a system design sprint for a multi-tenant cloud SaaS deployment.',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+    image: founderPortrait,
     date: 'July 2026',
     location: 'MUCO Labs HQ',
     tags: ['System Design', 'Architecture', 'SaaS', 'Engineering']

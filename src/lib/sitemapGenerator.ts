@@ -276,7 +276,28 @@ ${urlNodes}
 `;
 }
 
-export function generateRobotsTxt(): string {
+export function generateRobotsTxt(host?: string): string {
+  const cleanHost = (host || '').toLowerCase().split(':')[0];
+  const isOfficial = cleanHost === 'mucolabs.com' || cleanHost === 'www.mucolabs.com';
+
+  // If requested on ai.studio, run.app, or non-production staging hosts:
+  if (cleanHost && !isOfficial && (cleanHost.includes('ai.studio') || cleanHost.includes('run.app') || cleanHost.includes('localhost'))) {
+    return `# ==============================================================================
+# MUCO Labs - Non-Production Preview / Staging Host (${cleanHost})
+# Official Canonical Production Site: https://mucolabs.com
+# ==============================================================================
+
+# Search engine crawlers (Googlebot, Bingbot, etc.) are allowed to crawl
+# so that they immediately receive and process the HTTP response header
+# "X-Robots-Tag: noindex, nofollow, noarchive, nosnippet" and permanently
+# de-index this preview URL from search results.
+User-agent: *
+Allow: /
+
+# Canonical authority is strictly https://mucolabs.com
+`;
+  }
+
   return `# ==============================================================================
 # MUCO Labs - Official Robots Exclusion Protocol & Crawler Directives
 # Canonical Host: https://mucolabs.com

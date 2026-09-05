@@ -312,11 +312,12 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
                       <div className="flex items-start gap-4 pt-1">
                         <div className="relative shrink-0">
                           <div className="relative rounded-2xl overflow-hidden border-2 border-slate-200 dark:border-slate-700/80 group-hover:border-blue-500/50 transition-colors shadow-md bg-slate-950 w-24 h-28 sm:w-26 sm:h-32">
-                            <Image
+                            <img
                               src={member.image}
                               alt={member.name}
-                              fallbackSrc="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
                               className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
                             />
                           </div>
                         </div>
@@ -543,13 +544,13 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
               </button>
 
               <div className="flex items-start gap-4 pr-8">
-                <Image
+                <img
                   src={activeMember.image}
                   alt={activeMember.name}
                   width={96}
                   height={112}
-                  priority={true}
                   className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl object-cover border-2 border-slate-200 dark:border-slate-700 shrink-0"
+                  referrerPolicy="no-referrer"
                 />
                 <div className="space-y-1">
                   <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 rounded-full border border-blue-200 dark:border-blue-800">

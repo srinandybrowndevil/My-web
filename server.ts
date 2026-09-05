@@ -176,6 +176,20 @@ async function startServer() {
     next();
   });
 
+  // Search Engine De-indexing Middleware for Preview / Staging / ai.studio hosts
+  // Instructs Googlebot and all search engines to completely remove this host from Google Search results
+  app.use((req, res, next) => {
+    const rawHost = (req.headers.host || '').split(':')[0].toLowerCase();
+    const isOfficialProduction = rawHost === 'mucolabs.com' || rawHost === 'www.mucolabs.com';
+
+    // If accessed on mucolabs.ai.studio, *.ai.studio, *.run.app, or any preview/staging environment:
+    if (!isOfficialProduction || rawHost.includes('ai.studio') || rawHost.includes('run.app')) {
+      res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
+      res.setHeader('Link', `<https://mucolabs.com${req.originalUrl || '/'}>; rel="canonical"`);
+    }
+    next();
+  });
+
   app.use(express.json());
 
   // Firebase-based persistent storage for contact messages
@@ -189,6 +203,14 @@ async function startServer() {
   // Dynamic XML Sitemap Endpoint for Search Engine Bots & Audits
   app.get('/sitemap.xml', (req, res) => {
     try {
+      const host = (req.headers.host || '').split(':')[0].toLowerCase();
+      const isOfficialProduction = host === 'mucolabs.com' || host === 'www.mucolabs.com';
+
+      if (!isOfficialProduction && (host.includes('ai.studio') || host.includes('run.app'))) {
+        res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
+        return res.status(404).send('Sitemap is only available on the official production domain: https://mucolabs.com/sitemap.xml');
+      }
+
       const xml = generateSitemapXml();
       res.setHeader('Content-Type', 'application/xml; charset=utf-8');
       res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
@@ -202,9 +224,15 @@ async function startServer() {
   // Dynamic Robots.txt Endpoint
   app.get('/robots.txt', (req, res) => {
     try {
-      const robots = generateRobotsTxt();
+      const host = (req.headers.host || '').split(':')[0].toLowerCase();
+      const robots = generateRobotsTxt(host);
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+
+      const isOfficialProduction = host === 'mucolabs.com' || host === 'www.mucolabs.com';
+      if (!isOfficialProduction || host.includes('ai.studio') || host.includes('run.app')) {
+        res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
+      }
       res.send(robots);
     } catch (err: any) {
       console.error('[SEO Robots.txt Error]', err);
@@ -443,6 +471,10 @@ async function startServer() {
       res.status(500).json({ success: false, error: 'Failed to delete message from Firebase' });
     }
   });
+
+  // Direct static serving for public assets and image directories
+  app.use('/assets/images', express.static(path.join(process.cwd(), 'public/assets/images')));
+  app.use('/asset/images', express.static(path.join(process.cwd(), 'public/asset/images')));
 
   // Vite middleware for development vs static serve for production
   if (process.env.NODE_ENV !== 'production') {
